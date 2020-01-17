@@ -9,12 +9,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  google_fonts: ^0.3.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-
 flutter:
-
   uses-material-design: true
