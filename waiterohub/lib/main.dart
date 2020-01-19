@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:waitero/components/scaffold/custom_scaffold.dart';
+import 'package:flutter/services.dart';
 import 'package:waitero/screens/orders/orders.dart';
 
 void main() => runApp(WaiteroHubApp());
@@ -8,6 +7,9 @@ void main() => runApp(WaiteroHubApp());
 class WaiteroHubApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
+    SystemChrome.setEnabledSystemUIOverlays(<SystemUiOverlay>[]);
+
     return MaterialApp(
       title: 'Waitero Hub',
       debugShowCheckedModeBanner: false,

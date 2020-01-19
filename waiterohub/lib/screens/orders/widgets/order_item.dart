@@ -5,32 +5,40 @@ class OrderItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width * 0.8;
-    final BorderRadius radius = BorderRadius.circular(10);
+    const Radius radius = Radius.circular(50);
+    const BorderRadius borderRadius = BorderRadius.horizontal(
+      left: radius,
+      right: radius,
+    );
 
     return Card(
-      shape: RoundedRectangleBorder(borderRadius: radius),
+      shape: const RoundedRectangleBorder(borderRadius: borderRadius),
       elevation: 0,
-      color: const Color(0xFF474F98),
-      child: Container(
-        width: width,
-        height: 100,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                'Order ID: orderId',
-                style: GoogleFonts.oxygen(color: Colors.white, fontSize: 30),
+      child: InkWell(
+        onTap: () {
+//          TODO: dialog here
+        },
+        borderRadius: borderRadius,
+        child: Container(
+          width: width,
+          height: 75,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  'Order ID: orderId',
+                  style: GoogleFonts.poppins(color: Colors.black, fontSize: 18),
+                ),
               ),
-            ),
-            IconButton(
-              icon: Icon(Icons.arrow_right),
-              iconSize: 48,
-              color: Colors.grey,
-              onPressed: () {},
-            ),
-          ],
+              Icon(
+                Icons.arrow_forward,
+                size: 36,
+                color: Colors.grey,
+              ),
+            ],
+          ),
         ),
       ),
     );

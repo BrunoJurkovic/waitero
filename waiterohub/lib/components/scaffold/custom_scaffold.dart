@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:waitero/components/sidebar/sidebar.dart';
 
 class CustomScaffold extends StatelessWidget {
   const CustomScaffold({
@@ -12,22 +13,29 @@ class CustomScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: <Color>[
-            Color(0xFF43517A),
-            Color(0xFF1D253E),
-          ],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-        ),
-      ),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: SafeArea(child: body),
-        drawer: drawer,
-        extendBodyBehindAppBar: true,
+    return Scaffold(
+      backgroundColor: Colors.grey[200],
+      drawer: drawer,
+      extendBodyBehindAppBar: true,
+      resizeToAvoidBottomPadding: false,
+      extendBody: true,
+      body: Sidebar(
+        body: body,
+        items: <Widget>[
+//          TODO: add isSelected or something
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.blue[900],
+              borderRadius: BorderRadius.circular(12),
+            ),
+            margin: const EdgeInsets.symmetric(horizontal: 4),
+            child: IconButton(
+              icon: Icon(Icons.grid_on),
+              onPressed: () {},
+              splashColor: Colors.transparent,
+            ),
+          ),
+        ],
       ),
     );
   }
