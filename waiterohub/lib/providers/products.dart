@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Products extends ChangeNotifier {
+class Products with ChangeNotifier {
   Products(
     this.id,
     this.name,
