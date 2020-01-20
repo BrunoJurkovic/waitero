@@ -5,17 +5,14 @@ class CustomScaffold extends StatelessWidget {
   const CustomScaffold({
     Key key,
     @required this.body,
-    this.drawer,
   }) : super(key: key);
 
   final Widget body;
-  final Widget drawer;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[200],
-      drawer: drawer,
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomPadding: false,
       extendBody: true,

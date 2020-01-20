@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:waitero/routing/router.gr.dart';
 import 'package:waitero/screens/orders/orders.dart';
 
 void main() => runApp(WaiteroHubApp());
@@ -14,6 +15,9 @@ class WaiteroHubApp extends StatelessWidget {
       title: 'Waitero Hub',
       debugShowCheckedModeBanner: false,
       home: const OrdersPage(),
+      initialRoute: Router.orders,
+      navigatorKey: Router.navigatorKey,
+      onGenerateRoute: Router.onGenerateRoute,
     );
   }
 }

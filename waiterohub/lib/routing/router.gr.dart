@@ -11,6 +11,9 @@ import 'package:waitero/screens/orders/orders.dart';
 
 class Router {
   static const orders = '/';
+  static const routes = [
+    orders,
+  ];
   static GlobalKey<NavigatorState> get navigatorKey =>
       getNavigatorKey<Router>();
   static NavigatorState get navigator => navigatorKey.currentState;
