@@ -14,26 +14,43 @@ class OrdersPage extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 32.0),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-              'Incoming Orders',
-              style: GoogleFonts.pTSans(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 50.0,
+            Padding(
+              padding: const EdgeInsets.only(top: 16.0),
+              child: Text(
+                'Incoming Orders',
+                style: GoogleFonts.alata(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 30.0,
+                ),
               ),
             ),
+            const SizedBox(height: 8),
             Expanded(
-              child: ListView(
-                primary: false,
-                children: <Widget>[
-                  OrderItem(),
-                  OrderItem(),
-                  OrderItem(),
-                  OrderItem(),
-                  OrderItem(),
-                ],
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 32.0, top: 16),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(20),
+                    ),
+                  ),
+                  child: ListView(
+                    primary: false,
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    children: <Widget>[
+                      OrderItem(),
+                      OrderItem(),
+                      OrderItem(),
+                      OrderItem(),
+                      OrderItem(),
+                    ],
+                  ),
+                ),
               ),
             ),
           ],
