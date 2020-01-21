@@ -21,7 +21,7 @@ class ManageProductsPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 16.0),
               child: Text(
-                'Incoming Orders',
+                'Manage Products',
                 style: GoogleFonts.alata(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,

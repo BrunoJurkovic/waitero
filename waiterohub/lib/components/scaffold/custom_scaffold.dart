@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:waitero/components/sidebar/sidebar.dart';
+import 'package:waitero/routing/router.gr.dart';
 
 class CustomScaffold extends StatelessWidget {
   const CustomScaffold({
@@ -28,7 +29,24 @@ class CustomScaffold extends StatelessWidget {
             margin: const EdgeInsets.symmetric(horizontal: 4),
             child: IconButton(
               icon: Icon(Icons.grid_on),
-              onPressed: () {},
+              onPressed: () {
+                Router.navigator.pushNamed(Router.orders);
+              },
+              splashColor: Colors.transparent,
+            ),
+          ),
+          SizedBox(height: 8),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.blue[900],
+              borderRadius: BorderRadius.circular(12),
+            ),
+            margin: const EdgeInsets.symmetric(horizontal: 4),
+            child: IconButton(
+              icon: Icon(Icons.person),
+              onPressed: () {
+                Router.navigator.pushNamed(Router.manageProducts);
+              },
               splashColor: Colors.transparent,
             ),
           ),
