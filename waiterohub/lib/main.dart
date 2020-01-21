@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'package:waitero/providers/products.dart';
 import 'package:waitero/routing/router.gr.dart';
+import 'package:waitero/screens/orders/manage_product_screen.dart'; // ! temporary
 import 'package:waitero/screens/orders/orders.dart';
 
 void main() => runApp(WaiteroHubApp());
@@ -11,13 +14,22 @@ class WaiteroHubApp extends StatelessWidget {
 
     SystemChrome.setEnabledSystemUIOverlays(<SystemUiOverlay>[]);
 
-    return MaterialApp(
-      title: 'Waitero Hub',
-      debugShowCheckedModeBanner: false,
-      home: const OrdersPage(),
-      initialRoute: Router.orders,
-      navigatorKey: Router.navigatorKey,
-      onGenerateRoute: Router.onGenerateRoute,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(
+          value: Product(),
+        ),
+      ],
+          child: MaterialApp(
+        title: 'Waitero Hub',
+        debugShowCheckedModeBanner: false,
+        // home: const OrdersPage(),
+        // ! temporary
+        home: const OrdersPage(),
+        initialRoute: Router.orders,
+        navigatorKey: Router.navigatorKey,
+        onGenerateRoute: Router.onGenerateRoute,
+      ),
     );
   }
 }
