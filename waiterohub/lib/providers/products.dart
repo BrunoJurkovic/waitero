@@ -28,6 +28,7 @@ class Products with ChangeNotifier {
   ];
 
   List<Product> get products {
-    return [..._products];
+    // ignore: experiment_not_enabled
+    return <Product>[..._products];
   }
 }
