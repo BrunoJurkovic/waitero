@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "62252923366",
+    "firebase_url": "https://waitero.firebaseio.com",
+    "project_id": "waitero",
+    "storage_bucket": "waitero.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:62252923366:android:903237bb771edb67c67e27",
+        "android_client_info": {
+          "package_name": "com.remade.waiterohub"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "62252923366-2sfmee3ufhgg6bb9219c34so6b28da9p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWB1Gf7Y-bBosowTfMbxlEzRqsYSI9n_c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "62252923366-2sfmee3ufhgg6bb9219c34so6b28da9p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -9,13 +9,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:auto_route/router_utils.dart';
 import 'package:waitero/screens/orders/orders.dart';
 import 'package:waitero/screens/products/products.dart';
+import 'package:waitero/screens/products/add_product/add_product.dart';
 
 class Router {
   static const orders = '/';
   static const manageProducts = '/manage-products';
+  static const addProduct = '/add-product';
   static const routes = [
     orders,
     manageProducts,
+    addProduct,
   ];
   static GlobalKey<NavigatorState> get navigatorKey =>
       getNavigatorKey<Router>();
@@ -41,6 +44,12 @@ class Router {
         return MaterialPageRoute(
           builder: (_) => ManageProductsPage(key: typedArgs),
           settings: settings,
+        );
+      case Router.addProduct:
+        return MaterialPageRoute(
+          builder: (_) => AddProductPage(),
+          settings: settings,
+          fullscreenDialog: true,
         );
       default:
         return unknownRoutePage(settings.name);
