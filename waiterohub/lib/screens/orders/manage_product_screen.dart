@@ -15,6 +15,14 @@ class ManageProductsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
+      floatingActionButton: FloatingActionButton(
+        child: Icon(
+          Icons.add,
+          size: 34,
+        ),
+        onPressed: () {},
+        elevation: 3,
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 32.0),
         child: Column(
@@ -23,13 +31,17 @@ class ManageProductsPage extends StatelessWidget {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(top: 16.0),
-              child: Text(
-                'Manage Products',
-                style: GoogleFonts.alata(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 30.0,
-                ),
+              child: Row(
+                children: <Widget>[
+                  Text(
+                    'Manage Products',
+                    style: GoogleFonts.alata(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 30.0,
+                    ),
+                  ),
+                ],
               ),
             ),
             const SizedBox(height: 8),
@@ -37,23 +49,12 @@ class ManageProductsPage extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 32.0, top: 16),
                 child: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     // color: Colors.white,
-                    borderRadius: const BorderRadius.all(
+                    borderRadius: BorderRadius.all(
                       Radius.circular(20),
                     ),
                   ),
-                  // child: ListView(
-                  //   primary: false,
-                  //   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  //   children: <Widget>[
-                  //     ProductItem(),
-                  //     ProductItem(),
-                  //     ProductItem(),
-                  //     ProductItem(),
-                  //     ProductItem(),
-                  //   ],
-                  // ),
                   child: GridView.builder(
                     itemCount: Provider.of<Products>(context).products.length,
                     gridDelegate:
@@ -67,8 +68,6 @@ class ManageProductsPage extends StatelessWidget {
                     itemBuilder: (_, int index) {
                       final List<Product> products =
                           Provider.of<Products>(context).products;
-
-                      print(products);
 
                       return ProductItem(
                         product: products[index],

@@ -6,9 +6,13 @@ class CustomScaffold extends StatelessWidget {
   const CustomScaffold({
     Key key,
     @required this.body,
+    @required this.floatingActionButton,
+    this.floatingActionButtonLocation = FloatingActionButtonLocation.endFloat,
   }) : super(key: key);
 
   final Widget body;
+  final FloatingActionButton floatingActionButton;
+  final FloatingActionButtonLocation floatingActionButtonLocation;
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +21,8 @@ class CustomScaffold extends StatelessWidget {
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomPadding: false,
       extendBody: true,
+      floatingActionButton: floatingActionButton,
+      floatingActionButtonLocation: floatingActionButtonLocation,
       body: Sidebar(
         body: body,
         items: <Widget>[

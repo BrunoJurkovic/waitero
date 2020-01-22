@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:waitero/providers/product.dart';
 
-import 'package:waitero/providers/products.dart';
-
 class ProductItem extends StatelessWidget {
   const ProductItem({Key key, this.product}) : super(key: key);
 
@@ -33,11 +31,11 @@ class ProductItem extends StatelessWidget {
           Text(
             product.name,
             style: GoogleFonts.poppins(
-                color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
+                color: Colors.black, fontSize: 28, fontWeight: FontWeight.bold),
           ),
           Text(
             '${product.price} USD',
-            style: GoogleFonts.poppins(color: Colors.black, fontSize: 18),
+            style: GoogleFonts.poppins(color: Colors.black, fontSize: 22),
           ),
         ],
       ),
