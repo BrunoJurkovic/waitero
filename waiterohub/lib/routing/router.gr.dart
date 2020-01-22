@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:auto_route/router_utils.dart';
 import 'package:waitero/screens/orders/orders.dart';
-import 'package:waitero/screens/orders/manage_product_screen.dart';
+import 'package:waitero/screens/products/products.dart';
 
 class Router {
   static const orders = '/';
