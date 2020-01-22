@@ -1,4 +1,4 @@
-package com.remade.waitero.waitero
+package com.remade.waiterohub
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:waitero/components/scaffold/custom_scaffold.dart';
 import 'package:waitero/providers/product.dart';
 import 'package:waitero/providers/products.dart';
+import 'package:waitero/routing/router.gr.dart';
 import 'package:waitero/screens/products/widgets/product_item.dart';
 
 class ManageProductsPage extends StatelessWidget {
@@ -19,7 +20,9 @@ class ManageProductsPage extends StatelessWidget {
           Icons.add,
           size: 34,
         ),
-        onPressed: () {},
+        onPressed: () {
+          Router.navigator.pushNamed(Router.addProduct);
+        },
         elevation: 3,
       ),
       body: Padding(
