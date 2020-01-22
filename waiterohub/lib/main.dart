@@ -15,15 +15,12 @@ class WaiteroHubApp extends StatelessWidget {
 
     return MultiProvider(
       providers: <SingleChildWidget>[
-        ChangeNotifierProvider(
+        ChangeNotifierProvider<Products>(
           create: (_) => Products(),
         ),
-        ChangeNotifierProvider(
+        ChangeNotifierProvider<Product>(
           create: (_) => Product(),
         )
-        // ChangeNotifierProvider<Product>.value(
-        //   value: Product(),
-        // ),
       ],
       child: MaterialApp(
         title: 'Waitero Hub',
