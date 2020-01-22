@@ -46,8 +46,8 @@ class _AddProductFormState extends State<_AddProductForm> {
   @override
   void initState() {
     super.initState();
-    _productName.text = '';
-    _productPrice.text = '0.0';
+    // _productName.text = '';
+    // _productPrice.text = '0.0';
   }
 
   @override
@@ -75,7 +75,6 @@ class _AddProductFormState extends State<_AddProductForm> {
   @override
   Widget build(BuildContext context) {
     final double fontSize = MediaQuery.of(context).size.width / 40;
-
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 24),
       children: <Widget>[
@@ -85,6 +84,7 @@ class _AddProductFormState extends State<_AddProductForm> {
           focusNode: _productNameFocus,
           controller: _productName,
           textCapitalization: TextCapitalization.words,
+          onChanged: (String text) {},
           validator: (String value) {
             if (value.isEmpty) {
               return 'You must choose a product name';
@@ -145,13 +145,34 @@ class _AddProductFormState extends State<_AddProductForm> {
           },
         ),
         const SizedBox(height: 20),
-        Center(
-          child: _pickedImage != null
-              ? Image(image: FileImage(_pickedImage))
-              : Text(
-                  'Select an image',
-                  style: TextStyle(fontSize: fontSize),
-                ),
+        Container(
+          width: MediaQuery.of(context).size.width * 0.4,
+          height: MediaQuery.of(context).size.height * 0.4,
+          child: Center(
+            child: _pickedImage != null
+                ? Image(image: FileImage(_pickedImage))
+                : Text(
+                    'Select an image',
+                    style: TextStyle(
+                        fontSize: fontSize, fontWeight: FontWeight.bold),
+                  ),
+          ),
+        ),
+        FlatButton(
+          color: Colors.blueAccent,
+          onPressed: () {
+            if (_pickedImage == null ||
+                _productName == null ||
+                _productPrice == null) {
+                  // TODO: Add dialog.
+            }
+          },
+          child: Text(
+            'Submit',
+            style: TextStyle(
+              fontSize: fontSize,
+            ),
+          ),
         ),
       ],
     );
