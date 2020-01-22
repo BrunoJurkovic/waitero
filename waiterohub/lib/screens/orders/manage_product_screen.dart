@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:waitero/components/scaffold/custom_scaffold.dart';
 import 'package:waitero/providers/product.dart';
 import 'package:waitero/providers/products.dart';
-import 'package:waitero/screens/orders/widgets/order_item.dart';
 import 'package:waitero/screens/orders/widgets/product_item.dart';
 
 class ManageProductsPage extends StatelessWidget {

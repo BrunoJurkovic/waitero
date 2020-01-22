@@ -6,7 +6,7 @@ class CustomScaffold extends StatelessWidget {
   const CustomScaffold({
     Key key,
     @required this.body,
-    @required this.floatingActionButton,
+    this.floatingActionButton,
     this.floatingActionButtonLocation = FloatingActionButtonLocation.endFloat,
   }) : super(key: key);
 
