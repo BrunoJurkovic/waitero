@@ -35,7 +35,7 @@ class CustomScaffold extends StatelessWidget {
               splashColor: Colors.transparent,
             ),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Container(
             decoration: BoxDecoration(
               color: Colors.blue[900],
