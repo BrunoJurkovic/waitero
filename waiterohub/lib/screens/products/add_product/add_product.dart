@@ -1,12 +1,23 @@
 import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
 import 'package:waitero/components/scaffold/custom_scaffold.dart';
 import 'package:waitero/routing/router.gr.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:image/image.dart' as im;
+import 'package:uuid/uuid.dart';
+import 'package:waitero/services/database/images_repo.dart';
+import 'package:waitero/services/database/init.dart';
 
-class AddProductPage extends StatelessWidget {
+class AddProductPage extends StatefulWidget {
+  @override
+  _AddProductPageState createState() => _AddProductPageState();
+}
+
+class _AddProductPageState extends State<AddProductPage> {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
@@ -40,8 +51,11 @@ class _AddProductFormState extends State<_AddProductForm> {
 
   final FocusNode _productNameFocus = FocusNode();
   final FocusNode _productPriceFocus = FocusNode();
+  final StorageReference ref = StorageBucket().instance;
 
   File _pickedImage;
+  String imageId = Uuid().v4();
+  bool isUploading = false;
 
   @override
   void initState() {
@@ -59,6 +73,17 @@ class _AddProductFormState extends State<_AddProductForm> {
     super.dispose();
   }
 
+  Future<void> compressImage() async {
+    final Directory tempDir = await getTemporaryDirectory();
+    final String path = tempDir.path;
+
+    final im.Image imageFile = im.decodeImage(_pickedImage.readAsBytesSync());
+    final File compressedImageFile = File('$path/img_$imageId.jpg')..writeAsBytesSync(im.encodeJpg(imageFile, quality: 80),);
+    setState(() {
+      _pickedImage = compressedImageFile;
+    });
+  }
+
   void changeFieldFocus(FocusNode oldFocus, FocusNode newFocus) {
     oldFocus.unfocus();
     newFocus.requestFocus();
@@ -70,6 +95,21 @@ class _AddProductFormState extends State<_AddProductForm> {
     setState(() {
       _pickedImage = image;
     });
+  }
+
+  Future<void> handleSubmit() async {
+    setState(() {
+      isUploading = true;
+    });
+    await compressImage();
+    await uploadImage(_pickedImage);
+  }
+
+  Future<String> uploadImage(File file) async {
+    StorageUploadTask uploadTask = ref.child('post_$imageId.jpg').putFile(file);
+    StorageTaskSnapshot storageSnap = await uploadTask.onComplete;
+    final String downloadUrl = await storageSnap.ref.getDownloadURL();
+    return downloadUrl;
   }
 
   @override
@@ -165,6 +205,9 @@ class _AddProductFormState extends State<_AddProductForm> {
                 _productName == null ||
                 _productPrice == null) {
                   // TODO: Add dialog.
+            }
+            else {
+              handleSubmit();
             }
           },
           child: Text(
