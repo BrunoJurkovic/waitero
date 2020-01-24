@@ -8,10 +8,6 @@ class ProductsRepo {
 
   Firestore firestore;
 
-  void addProduct() {
-
-  }
-
-  
+  CollectionReference ref = Firestore.instance.collection('products');
 
 }

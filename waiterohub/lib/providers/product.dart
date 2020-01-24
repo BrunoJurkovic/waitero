@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Product with ChangeNotifier {
@@ -8,11 +9,19 @@ class Product with ChangeNotifier {
     this.imageUrl,
   });
 
+  factory Product.fromDocument(DocumentSnapshot doc) {
+    return Product(
+      id: doc['productId'] as String,
+      name: doc['name'] as String,
+      price: doc['price'] as String,
+      imageUrl: doc['imageUrl'] as String,
+    );
+  }
+
   final String id;
   final String name;
-  final double price;
+  final String price;
   final String imageUrl;
   // final string description;
 
-  
 }

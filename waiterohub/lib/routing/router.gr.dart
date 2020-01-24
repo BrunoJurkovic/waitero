@@ -46,8 +46,17 @@ class Router {
           settings: settings,
         );
       case Router.addProduct:
+        if (hasInvalidArgs<AddProductPageArguments>(args)) {
+          return misTypedArgsRoute<AddProductPageArguments>(args);
+        }
+        final typedArgs =
+            args as AddProductPageArguments ?? AddProductPageArguments();
         return MaterialPageRoute(
-          builder: (_) => AddProductPage(),
+          builder: (_) => AddProductPage(
+              price: typedArgs.price,
+              name: typedArgs.name,
+              id: typedArgs.id,
+              imageUrl: typedArgs.imageUrl),
           settings: settings,
           fullscreenDialog: true,
         );
@@ -55,4 +64,17 @@ class Router {
         return unknownRoutePage(settings.name);
     }
   }
+}
+
+//**************************************************************************
+// Arguments holder classes
+//***************************************************************************
+
+//AddProductPage arguments holder class
+class AddProductPageArguments {
+  final String price;
+  final String name;
+  final String id;
+  final String imageUrl;
+  AddProductPageArguments({this.price, this.name, this.id, this.imageUrl});
 }

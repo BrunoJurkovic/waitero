@@ -3,13 +3,14 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 import 'package:waitero/providers/product.dart';
-import 'package:waitero/providers/products.dart';
 import 'package:waitero/routing/router.gr.dart';
+import 'package:waitero/services/database/images_repo.dart';
 import 'package:waitero/services/database/init.dart';
 
 void main() {
-  DatabaseHelper();
   runApp(WaiteroHubApp());
+  DatabaseHelper();
+  StorageBucket();
 }
 
 class WaiteroHubApp extends StatelessWidget {
@@ -19,9 +20,9 @@ class WaiteroHubApp extends StatelessWidget {
 
     return MultiProvider(
       providers: <SingleChildWidget>[
-        ChangeNotifierProvider<Products>(
-          create: (_) => Products(),
-        ),
+        // ChangeNotifierProvider<Products>(
+        //   create: (_) => Products(),
+        // ),
         ChangeNotifierProvider<Product>(
           create: (_) => Product(),
         )
