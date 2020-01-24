@@ -82,7 +82,13 @@ class _ManageProductsPageState extends State<ManageProductsPage> {
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 32.0, top: 16),
                 child: isLoading
-                    ? Center(child: Container(child: const CircularProgressIndicator(), width: MediaQuery.of(context).size.width * 0.25, height: MediaQuery.of(context).size.height * 0.25,),)
+                    ? Center(
+                        child: Container(
+                          child: const CircularProgressIndicator(),
+                          width: MediaQuery.of(context).size.width * 0.5,
+                          height: MediaQuery.of(context).size.height * 0.5,
+                        ),
+                      )
                     : Container(
                         decoration: const BoxDecoration(
                           // color: Colors.white,

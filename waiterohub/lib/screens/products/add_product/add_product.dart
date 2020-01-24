@@ -11,7 +11,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:image/image.dart' as im;
 import 'package:uuid/uuid.dart';
 import 'package:waitero/services/database/images_repo.dart';
-import 'package:waitero/services/database/init.dart';
 import 'package:waitero/services/database/products_repo.dart';
 
 class AddProductPage extends StatefulWidget {
@@ -108,7 +107,7 @@ class _AddProductFormState extends State<_AddProductForm> {
       isUploading = true;
     });
     await compressImage();
-    String mediaUrl = await uploadImage(_pickedImage);
+    final String mediaUrl = await uploadImage(_pickedImage);
     createPostInFirestore(
       mediaUrl: mediaUrl,
       name: _productName.text,
@@ -146,108 +145,116 @@ class _AddProductFormState extends State<_AddProductForm> {
   @override
   Widget build(BuildContext context) {
     final double fontSize = MediaQuery.of(context).size.width / 40;
-    return isUploading ? CircularProgressIndicator() : ListView(
-      padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 24),
-      children: <Widget>[
-        TextFormField(
-          autofocus: true,
-          autocorrect: false,
-          focusNode: _productNameFocus,
-          controller: _productName,
-          textCapitalization: TextCapitalization.words,
-          onChanged: (String text) {},
-          validator: (String value) {
-            if (value.isEmpty) {
-              return 'You must choose a product name';
-            }
-            return null;
-          },
-          style: TextStyle(fontSize: fontSize),
-          decoration: const InputDecoration(
-            labelText: 'Product Name',
-            border: OutlineInputBorder(),
-          ),
-          onFieldSubmitted: (_) =>
-              changeFieldFocus(_productNameFocus, _productPriceFocus),
-        ),
-        const SizedBox(height: 50),
-        TextFormField(
-          autocorrect: false,
-          focusNode: _productPriceFocus,
-          controller: _productPrice,
-          keyboardType: TextInputType.number,
-          style: TextStyle(fontSize: fontSize),
-          decoration: const InputDecoration(
-            labelText: 'Product Price',
-            border: OutlineInputBorder(),
-          ),
-        ),
-        const SizedBox(height: 50),
-        FormField<File>(
-          validator: (File file) {
-            if (file == null) {
-              return 'You must pick an image';
-            }
-            return null;
-          },
-          builder: (FormFieldState<File> state) {
-            return InkWell(
-              onTap: getProductImage,
-              child: InputDecorator(
-                decoration: InputDecoration(
-                  labelText: 'Product Image',
-                  errorText: state.errorText,
-                  border: const OutlineInputBorder(),
-                ),
-                baseStyle: TextStyle(
-                  fontSize: fontSize,
-                ),
-                child: _pickedImage != null
-                    ? Text(
-                        path.basenameWithoutExtension(_pickedImage.path),
-                        style: TextStyle(fontSize: fontSize),
-                      )
-                    : Text(
-                        'Pick an image',
-                        style: TextStyle(fontSize: fontSize),
-                      ),
-              ),
-            );
-          },
-        ),
-        const SizedBox(height: 20),
-        Container(
-          width: MediaQuery.of(context).size.width * 0.4,
-          height: MediaQuery.of(context).size.height * 0.4,
-          child: Center(
-            child: _pickedImage != null
-                ? Image(image: FileImage(_pickedImage))
-                : Text(
-                    'Select an image',
-                    style: TextStyle(
-                        fontSize: fontSize, fontWeight: FontWeight.bold),
-                  ),
-          ),
-        ),
-        FlatButton(
-          color: Colors.blueAccent,
-          onPressed: () {
-            if (_pickedImage == null ||
-                _productName == null ||
-                _productPrice == null) {
-              // TODO: Add dialog.
-            } else {
-              handleSubmit();
-            }
-          },
-          child: Text(
-            'Submit',
-            style: TextStyle(
-              fontSize: fontSize,
+    return isUploading
+        ? Center(
+            child: Container(
+              child: const CircularProgressIndicator(),
+              width: MediaQuery.of(context).size.width * 0.5,
+              height: MediaQuery.of(context).size.height * 0.5,
             ),
-          ),
-        ),
-      ],
-    );
+          )
+        : ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 24),
+            children: <Widget>[
+              TextFormField(
+                autofocus: true,
+                autocorrect: false,
+                focusNode: _productNameFocus,
+                controller: _productName,
+                textCapitalization: TextCapitalization.words,
+                onChanged: (String text) {},
+                validator: (String value) {
+                  if (value.isEmpty) {
+                    return 'You must choose a product name';
+                  }
+                  return null;
+                },
+                style: TextStyle(fontSize: fontSize),
+                decoration: const InputDecoration(
+                  labelText: 'Product Name',
+                  border: OutlineInputBorder(),
+                ),
+                onFieldSubmitted: (_) =>
+                    changeFieldFocus(_productNameFocus, _productPriceFocus),
+              ),
+              const SizedBox(height: 50),
+              TextFormField(
+                autocorrect: false,
+                focusNode: _productPriceFocus,
+                controller: _productPrice,
+                keyboardType: TextInputType.number,
+                style: TextStyle(fontSize: fontSize),
+                decoration: const InputDecoration(
+                  labelText: 'Product Price',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 50),
+              FormField<File>(
+                validator: (File file) {
+                  if (file == null) {
+                    return 'You must pick an image';
+                  }
+                  return null;
+                },
+                builder: (FormFieldState<File> state) {
+                  return InkWell(
+                    onTap: getProductImage,
+                    child: InputDecorator(
+                      decoration: InputDecoration(
+                        labelText: 'Product Image',
+                        errorText: state.errorText,
+                        border: const OutlineInputBorder(),
+                      ),
+                      baseStyle: TextStyle(
+                        fontSize: fontSize,
+                      ),
+                      child: _pickedImage != null
+                          ? Text(
+                              path.basenameWithoutExtension(_pickedImage.path),
+                              style: TextStyle(fontSize: fontSize),
+                            )
+                          : Text(
+                              'Pick an image',
+                              style: TextStyle(fontSize: fontSize),
+                            ),
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 20),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.4,
+                height: MediaQuery.of(context).size.height * 0.4,
+                child: Center(
+                  child: _pickedImage != null
+                      ? Image(image: FileImage(_pickedImage))
+                      : Text(
+                          'Select an image',
+                          style: TextStyle(
+                              fontSize: fontSize, fontWeight: FontWeight.bold),
+                        ),
+                ),
+              ),
+              FlatButton(
+                color: Colors.blueAccent,
+                onPressed: () {
+                  if (_pickedImage == null ||
+                      _productName == null ||
+                      _productPrice == null) {
+                    // TODO: Add dialog.
+                  } else {
+                    handleSubmit();
+                  }
+                },
+                child: Text(
+                  'Submit',
+                  style: TextStyle(
+                    fontSize: fontSize,
+                  ),
+                ),
+              ),
+            ],
+          );
   }
 }

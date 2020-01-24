@@ -9,12 +9,6 @@ class Product with ChangeNotifier {
     this.imageUrl,
   });
 
-  final String id;
-  final String name;
-  final String price;
-  final String imageUrl;
-  // final string description;
-
   factory Product.fromDocument(DocumentSnapshot doc) {
     return Product(
       id: doc['productId'] as String,
@@ -23,4 +17,11 @@ class Product with ChangeNotifier {
       imageUrl: doc['imageUrl'] as String,
     );
   }
+
+  final String id;
+  final String name;
+  final String price;
+  final String imageUrl;
+  // final string description;
+
 }
