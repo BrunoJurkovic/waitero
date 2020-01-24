@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,6 +12,7 @@ import 'package:image/image.dart' as im;
 import 'package:uuid/uuid.dart';
 import 'package:waitero/services/database/images_repo.dart';
 import 'package:waitero/services/database/init.dart';
+import 'package:waitero/services/database/products_repo.dart';
 
 class AddProductPage extends StatefulWidget {
   @override
@@ -52,16 +54,17 @@ class _AddProductFormState extends State<_AddProductForm> {
   final FocusNode _productNameFocus = FocusNode();
   final FocusNode _productPriceFocus = FocusNode();
   final StorageReference ref = StorageBucket().instance;
+  final CollectionReference products = ProductsRepo().ref;
 
   File _pickedImage;
-  String imageId = Uuid().v4();
+  String productId = Uuid().v4();
   bool isUploading = false;
 
   @override
   void initState() {
     super.initState();
-    // _productName.text = '';
-    // _productPrice.text = '0.0';
+    _productName.text = '';
+    _productPrice.text = '0.00';
   }
 
   @override
@@ -78,7 +81,10 @@ class _AddProductFormState extends State<_AddProductForm> {
     final String path = tempDir.path;
 
     final im.Image imageFile = im.decodeImage(_pickedImage.readAsBytesSync());
-    final File compressedImageFile = File('$path/img_$imageId.jpg')..writeAsBytesSync(im.encodeJpg(imageFile, quality: 80),);
+    final File compressedImageFile = File('$path/img_$productId.jpg')
+      ..writeAsBytesSync(
+        im.encodeJpg(imageFile, quality: 80),
+      );
     setState(() {
       _pickedImage = compressedImageFile;
     });
@@ -102,20 +108,45 @@ class _AddProductFormState extends State<_AddProductForm> {
       isUploading = true;
     });
     await compressImage();
-    await uploadImage(_pickedImage);
+    String mediaUrl = await uploadImage(_pickedImage);
+    createPostInFirestore(
+      mediaUrl: mediaUrl,
+      name: _productName.text,
+      price: _productPrice.text,
+    );
   }
 
   Future<String> uploadImage(File file) async {
-    StorageUploadTask uploadTask = ref.child('post_$imageId.jpg').putFile(file);
-    StorageTaskSnapshot storageSnap = await uploadTask.onComplete;
-    final String downloadUrl = await storageSnap.ref.getDownloadURL();
+    final StorageUploadTask uploadTask =
+        ref.child('product_$productId.jpg').putFile(file);
+
+    final StorageTaskSnapshot storageSnap = await uploadTask.onComplete;
+    final String downloadUrl = await storageSnap.ref.getDownloadURL() as String;
+
     return downloadUrl;
+  }
+
+  Future<void> createPostInFirestore(
+      {String mediaUrl, String price, String name}) {
+    products.document(productId).setData(<String, String>{
+      'productId': productId,
+      'imageUrl': mediaUrl,
+      'name': _productName.text,
+      'price': '${_productPrice.text}\$',
+    });
+    _productName.clear();
+    _productPrice.clear();
+    setState(() {
+      _pickedImage = null;
+      isUploading = false;
+    });
+    return null;
   }
 
   @override
   Widget build(BuildContext context) {
     final double fontSize = MediaQuery.of(context).size.width / 40;
-    return ListView(
+    return isUploading ? CircularProgressIndicator() : ListView(
       padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 24),
       children: <Widget>[
         TextFormField(
@@ -204,9 +235,8 @@ class _AddProductFormState extends State<_AddProductForm> {
             if (_pickedImage == null ||
                 _productName == null ||
                 _productPrice == null) {
-                  // TODO: Add dialog.
-            }
-            else {
+              // TODO: Add dialog.
+            } else {
               handleSubmit();
             }
           },

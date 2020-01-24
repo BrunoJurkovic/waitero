@@ -21,6 +21,7 @@ dependencies:
   path_provider: ^1.5.1
   image: 2.1.4
   uuid: ^2.0.4
+  cached_network_image: ^2.0.0
 
 dev_dependencies:
   flutter_test:
