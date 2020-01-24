@@ -14,8 +14,15 @@ import 'package:waitero/services/database/images_repo.dart';
 import 'package:waitero/services/database/products_repo.dart';
 
 class AddProductPage extends StatefulWidget {
+  const AddProductPage({this.price, this.name, this.id, this.imageUrl});
+
   @override
   _AddProductPageState createState() => _AddProductPageState();
+
+  final String price;
+  final String name;
+  final String id;
+  final String imageUrl;
 }
 
 class _AddProductPageState extends State<AddProductPage> {
@@ -32,7 +39,13 @@ class _AddProductPageState extends State<AddProductPage> {
               Router.navigator.pop();
             },
           ),
-          const Expanded(child: _AddProductForm()),
+          Expanded(
+              child: _AddProductForm(
+            id: widget.id,
+            price: widget.price,
+            imageUrl: widget.imageUrl,
+            name: widget.name,
+          )),
         ],
       ),
     );
@@ -40,7 +53,12 @@ class _AddProductPageState extends State<AddProductPage> {
 }
 
 class _AddProductForm extends StatefulWidget {
-  const _AddProductForm({Key key}) : super(key: key);
+  const _AddProductForm({this.price, this.name, this.id, this.imageUrl});
+
+  final String price;
+  final String name;
+  final String id;
+  final String imageUrl;
 
   @override
   _AddProductFormState createState() => _AddProductFormState();
@@ -56,14 +74,19 @@ class _AddProductFormState extends State<_AddProductForm> {
   final CollectionReference products = ProductsRepo().ref;
 
   File _pickedImage;
-  String productId = Uuid().v4();
+  String productId;
   bool isUploading = false;
+  String imageUrl;
 
   @override
   void initState() {
     super.initState();
-    _productName.text = '';
-    _productPrice.text = '0.00';
+    setState(() {
+      _productName.text = widget.name ?? '';
+      _productPrice.text.isEmpty ? '' : _productPrice.text = widget.price.substring(0, widget.price.length - 1) ?? '0.00';
+      productId = widget.id ?? Uuid().v4();
+      imageUrl = widget.imageUrl ?? widget.imageUrl;
+    });
   }
 
   @override
@@ -102,12 +125,28 @@ class _AddProductFormState extends State<_AddProductForm> {
     });
   }
 
-  Future<void> handleSubmit() async {
+  Future<void> handleDelete(String id) async {
     setState(() {
       isUploading = true;
     });
-    await compressImage();
-    final String mediaUrl = await uploadImage(_pickedImage);
+    await ref.child('product_$productId.jpg').delete();
+    await products.document(productId).delete();
+    Router.navigator.pop(id);
+    setState(() {
+      isUploading = false;
+    });
+  }
+
+  Future<void> handleSubmit() async {
+    String mediaUrl = '';
+    setState(() {
+      isUploading = true;
+    });
+    if (imageUrl == null) {
+      await compressImage();
+      mediaUrl = await uploadImage(_pickedImage);
+    }
+    mediaUrl = imageUrl;
     createPostInFirestore(
       mediaUrl: mediaUrl,
       name: _productName.text,
@@ -149,8 +188,8 @@ class _AddProductFormState extends State<_AddProductForm> {
         ? Center(
             child: Container(
               child: const CircularProgressIndicator(),
-              width: MediaQuery.of(context).size.width * 0.5,
-              height: MediaQuery.of(context).size.height * 0.5,
+              width: MediaQuery.of(context).size.width * 0.08,
+              height: MediaQuery.of(context).size.height * 0.08,
             ),
           )
         : ListView(
@@ -228,12 +267,19 @@ class _AddProductFormState extends State<_AddProductForm> {
                 height: MediaQuery.of(context).size.height * 0.4,
                 child: Center(
                   child: _pickedImage != null
-                      ? Image(image: FileImage(_pickedImage))
-                      : Text(
-                          'Select an image',
-                          style: TextStyle(
-                              fontSize: fontSize, fontWeight: FontWeight.bold),
-                        ),
+                      ? Image(
+                          image: FileImage(_pickedImage),
+                        )
+                      : imageUrl == null
+                          ? Text(
+                              'Select an image',
+                              style: TextStyle(
+                                  fontSize: fontSize,
+                                  fontWeight: FontWeight.bold),
+                            )
+                          : Image(
+                              image: NetworkImage(imageUrl),
+                            ),
                 ),
               ),
               FlatButton(
@@ -249,6 +295,18 @@ class _AddProductFormState extends State<_AddProductForm> {
                 },
                 child: Text(
                   'Submit',
+                  style: TextStyle(
+                    fontSize: fontSize,
+                  ),
+                ),
+              ),
+              widget.imageUrl == null ? SizedBox() : FlatButton(
+                color: Colors.redAccent,
+                onPressed: () {
+                  handleDelete(productId);
+                },
+                child: Text(
+                  'Delete',
                   style: TextStyle(
                     fontSize: fontSize,
                   ),

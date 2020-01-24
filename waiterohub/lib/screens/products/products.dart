@@ -107,8 +107,24 @@ class _ManageProductsPageState extends State<ManageProductsPage> {
                           ),
                           primary: false,
                           itemBuilder: (_, int index) {
-                            return ProductItem(
-                              product: products[index],
+                            return InkWell(
+                              onTap: () async {
+                                var response = await Router.navigator.pushNamed(
+                                  Router.addProduct,
+                                  arguments: AddProductPageArguments(
+                                    id: products[index].id,
+                                    imageUrl: products[index].imageUrl,
+                                    name: products[index].name,
+                                    price: products[index].price,
+                                  ),
+                                );
+                                if (response != null) {
+                                  products.removeWhere((Product item) => item.id == response);
+                                }
+                              },
+                              child: ProductItem(
+                                product: products[index],
+                              ),
                             );
                           },
                         ),
