@@ -83,7 +83,7 @@ class _AddProductFormState extends State<_AddProductForm> {
     super.initState();
     setState(() {
       _productName.text = widget.name ?? '';
-      _productPrice.text.isEmpty ? '' : _productPrice.text = widget.price.substring(0, widget.price.length - 1) ?? '0.00';
+      _productPrice.text = widget.price.substring(0, widget.price.length - 1) ?? '0.00';
       productId = widget.id ?? Uuid().v4();
       imageUrl = widget.imageUrl ?? widget.imageUrl;
     });
@@ -143,10 +143,12 @@ class _AddProductFormState extends State<_AddProductForm> {
       isUploading = true;
     });
     if (imageUrl == null) {
-      await compressImage();
       mediaUrl = await uploadImage(_pickedImage);
+      await compressImage();
     }
-    mediaUrl = imageUrl;
+    else {
+      mediaUrl = imageUrl;
+    }
     createPostInFirestore(
       mediaUrl: mediaUrl,
       name: _productName.text,

@@ -28,6 +28,6 @@ dev_dependencies:
     sdk: flutter
   build_runner: ^1.7.3
   auto_route_generator: ^0.2.2
-
+    
 flutter:
   uses-material-design: true
