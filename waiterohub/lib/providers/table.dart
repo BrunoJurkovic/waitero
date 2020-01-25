@@ -9,8 +9,8 @@ class RestaurantTable with ChangeNotifier {
   });
 
   factory RestaurantTable.fromDocument(DocumentSnapshot doc) {
-    final double positionX = double.parse(doc['positionX'] as String);
-    final double positionY = double.parse(doc['positionY'] as String);
+    final double positionX = doc['positionX'] as double;
+    final double positionY = doc['positionY'] as double;
     final Offset offset = Offset(positionX, positionY);
     return RestaurantTable(
       id: doc['productId'] as String,

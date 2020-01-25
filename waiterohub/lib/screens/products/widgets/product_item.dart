@@ -26,17 +26,23 @@ class ProductItem extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
-          const SizedBox(
-            height: 8,
-          ),
+          const SizedBox(height: 8),
           Text(
             product.name,
-            style: GoogleFonts.poppins(
-                color: Colors.black, fontSize: 28, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 28,
+              fontFamily: 'HKGrotesk',
+              fontWeight: FontWeight.bold,
+            ),
           ),
           Text(
             '${product.price} USD',
-            style: GoogleFonts.poppins(color: Colors.black, fontSize: 22),
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 22,
+              fontFamily: 'HKGrotesk',
+            ),
           ),
         ],
       ),

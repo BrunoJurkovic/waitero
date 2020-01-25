@@ -25,17 +25,21 @@ class OrderItem extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(16.0),
+              const Padding(
+                padding: EdgeInsets.all(16.0),
                 child: Text(
                   'Order ID: orderId',
-                  style: GoogleFonts.poppins(color: Colors.black, fontSize: 18),
+                  style: TextStyle(
+                    color: Color(0xFF8E8D93),
+                    fontSize: 18,
+                    fontFamily: 'HKGrotesk'
+                  ),
                 ),
               ),
               Icon(
                 Icons.arrow_forward,
                 size: 36,
-                color: Colors.grey,
+                color: const Color(0xFF89898C),
               ),
             ],
           ),

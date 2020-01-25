@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:waitero/components/custom_icons/custom_icons.dart';
 import 'package:waitero/routing/router.gr.dart';
 
 class NavRail extends StatefulWidget {
   const NavRail({
     Key key,
-    this.fab,
     this.body,
   }) : super(key: key);
 
-  final FloatingActionButton fab;
   final Widget body;
 
   @override
@@ -22,25 +21,47 @@ class _NavRailState extends State<NavRail> {
     return Row(
       children: <Widget>[
         Container(
-          width: 72,
-          margin: const EdgeInsets.only(left: 16, top: 8),
+          width: 250,
+          decoration: const BoxDecoration(
+            color: Color(0xFF6621F9),
+            borderRadius: BorderRadius.horizontal(
+              right: Radius.circular(35),
+            ),
+          ),
           child: Column(
             children: <Widget>[
-              widget.fab ?? Container(),
-              NavRailItem(
-                icon: Icons.view_agenda,
-                label: 'Orders',
-                route: Router.orders,
+              const Padding(
+                padding: EdgeInsets.only(top: 32.0),
+                child: Text(
+                  'Waitero Hub',
+                  style: TextStyle(
+                    fontSize: 30.0,
+                    color: Colors.white,
+                    fontFamily: 'Substance',
+                  ),
+                ),
               ),
-              NavRailItem(
-                icon: Icons.attach_money,
-                label: 'Products',
-                route: Router.manageProducts,
-              ),
-              NavRailItem(
-                icon: CustomIcons.table,
-                label: 'Tables',
-                route: Router.orders,
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    NavRailItem(
+                      icon: OMIcons.viewAgenda,
+                      label: 'ORDERS',
+                      route: Router.orders,
+                    ),
+                    NavRailItem(
+                      icon: OMIcons.attachMoney,
+                      label: 'PRODUCTS',
+                      route: Router.manageProducts,
+                    ),
+                    NavRailItem(
+                      icon: CustomIcons.table,
+                      label: 'TABLES',
+                      route: Router.orders,
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
@@ -71,25 +92,28 @@ class NavRailItem extends StatelessWidget {
       onTap: () {
         Router.navigator.pushNamed(route);
       },
+      splashColor: Colors.red,
+      borderRadius: const BorderRadius.horizontal(left: Radius.circular(50)),
       child: Container(
-        height: 100,
-        width: 100,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Icon(
-              icon,
-              size: 48,
+        height: 50,
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.horizontal(left: Radius.circular(50)),
+        ),
+        child: ListTile(
+          leading: Icon(
+            icon,
+            color: Colors.white,
+          ),
+          title: Text(
+            label,
+            style: const TextStyle(
+              fontFamily: 'Substance',
+              fontSize: 14,
+              letterSpacing: 2.0,
+              color: Colors.white,
             ),
-            Visibility(
-              visible: true,
-              child: Text(
-                label,
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 16),
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );

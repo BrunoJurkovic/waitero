@@ -61,9 +61,8 @@ class ManageProductsPage extends StatelessWidget {
                       case ConnectionState.done:
                         if (snapshot.hasData)
                           return ProductsList(products: snapshot.data);
-                        if (snapshot.data.isEmpty) {
+                        if (snapshot.data.isEmpty)
                           return buildNoData(context);
-                        }
                         break;
                       case ConnectionState.none:
                         return buildLoading(context);
