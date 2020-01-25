@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:waitero/components/nav_rail/nav_rail.dart';
 
-class CustomScaffold extends StatelessWidget {
-  const CustomScaffold({
+class NoNavScaffold extends StatelessWidget {
+  const NoNavScaffold({
     Key key,
     @required this.body,
     this.floatingActionButton,
@@ -22,9 +21,7 @@ class CustomScaffold extends StatelessWidget {
       extendBody: true,
       floatingActionButton: floatingActionButton,
       floatingActionButtonLocation: floatingActionButtonLocation,
-      body: NavRail(
-        body: body,
-      ),
+      body: body,
     );
   }
 }
