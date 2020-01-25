@@ -1,8 +1,6 @@
 name: waitero
-description: Waitero is a smart ordering system to be implemented at coffee shops or other similar.
-
 version: 1.0.0+1
-
+description: Waitero is a smart ordering system to be implemented at coffee shops or other similar.
 environment:
   sdk: ">=2.2.2 <3.0.0"
 
@@ -28,6 +26,11 @@ dev_dependencies:
     sdk: flutter
   build_runner: ^1.7.3
   auto_route_generator: ^0.2.2
-    
+
 flutter:
   uses-material-design: true
+
+  fonts:
+    - family: CustomIcons
+      fonts:
+        - asset: assets/icon_fonts/custom_icons.ttf
