@@ -40,7 +40,7 @@ class _NavRailState extends State<NavRail> {
               NavRailItem(
                 icon: CustomIcons.table,
                 label: 'Tables',
-                route: Router.orders,
+                route: Router.tables,
               ),
             ],
           ),

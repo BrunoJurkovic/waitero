@@ -9,15 +9,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:auto_route/router_utils.dart';
 import 'package:waitero/screens/orders/orders.dart';
 import 'package:waitero/screens/products/products.dart';
+import 'package:waitero/screens/tables/tables.dart';
 import 'package:waitero/screens/products/add_product/add_product.dart';
 
 class Router {
   static const orders = '/';
   static const manageProducts = '/manage-products';
+  static const tables = '/tables';
   static const addProduct = '/add-product';
   static const routes = [
     orders,
     manageProducts,
+    tables,
     addProduct,
   ];
   static GlobalKey<NavigatorState> get navigatorKey =>
@@ -43,6 +46,15 @@ class Router {
         final typedArgs = args as Key;
         return MaterialPageRoute(
           builder: (_) => ManageProductsPage(key: typedArgs),
+          settings: settings,
+        );
+      case Router.tables:
+        if (hasInvalidArgs<Key>(args)) {
+          return misTypedArgsRoute<Key>(args);
+        }
+        final typedArgs = args as Key;
+        return MaterialPageRoute(
+          builder: (_) => TablesPage(key: typedArgs),
           settings: settings,
         );
       case Router.addProduct:
