@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import 'package:google_fonts/google_fonts.dart';
@@ -20,8 +21,8 @@ class ProductItem extends StatelessWidget {
         children: <Widget>[
           Container(
             height: MediaQuery.of(context).size.height * 0.17,
-            child: Image.network(
-              product.imageUrl,
+            child: CachedNetworkImage(
+              imageUrl: product.imageUrl,
               fit: BoxFit.cover,
             ),
           ),

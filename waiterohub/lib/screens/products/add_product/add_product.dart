@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
@@ -279,9 +280,7 @@ class _AddProductFormState extends State<_AddProductForm> {
                         style: TextStyle(
                             fontSize: fontSize, fontWeight: FontWeight.bold),
                       )
-                    : Image(
-                        image: NetworkImage(_imageUrl),
-                      ),
+                    : CachedNetworkImage(imageUrl: _imageUrl, placeholder: (BuildContext ctx, _) {return buildLoadingIndicator(context);},),
           ),
         ),
         FlatButton(

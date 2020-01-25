@@ -19,12 +19,12 @@ class RestaurantTable with ChangeNotifier {
     );
   }
 
-  Map<String, String> toJson() {
-    return <String, String>{
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
       'productId': id,
       'imageUrl': qrCodeURL,
-      'positionX': position.dx.toString(),
-      'positionY': position.dy.toString(),
+      'positionX': position.dx,
+      'positionY': position.dy,
     };
   }
 
