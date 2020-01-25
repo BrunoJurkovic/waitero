@@ -26,6 +26,16 @@
                 "$dart-pub-build_runner"
             ],
             "isBackground": true
+        },
+        {
+            "label": "Generate Icons",
+            "type": "shell",
+            "command": "icon_font_generator --from=assets/icons --class-name=CustomIcons --out-flutter=lib/components/custom_icons/custom_icons.dart --out-font=assets/icon_fonts/custom_icons.ttf",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
         }
     ]
 }

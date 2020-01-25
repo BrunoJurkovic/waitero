@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:waitero/components/sidebar/sidebar.dart';
-import 'package:waitero/routing/router.gr.dart';
+import 'package:waitero/components/nav_rail/nav_rail.dart';
 
 class CustomScaffold extends StatelessWidget {
   const CustomScaffold({
@@ -23,40 +22,8 @@ class CustomScaffold extends StatelessWidget {
       extendBody: true,
       floatingActionButton: floatingActionButton,
       floatingActionButtonLocation: floatingActionButtonLocation,
-      body: Sidebar(
+      body: NavRail(
         body: body,
-        items: <Widget>[
-//          TODO: add isSelected or something
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.blue[900],
-              borderRadius: BorderRadius.circular(12),
-            ),
-            margin: const EdgeInsets.symmetric(horizontal: 4),
-            child: IconButton(
-              icon: Icon(Icons.grid_on),
-              onPressed: () {
-                Router.navigator.pushNamed(Router.orders);
-              },
-              splashColor: Colors.transparent,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.blue[900],
-              borderRadius: BorderRadius.circular(12),
-            ),
-            margin: const EdgeInsets.symmetric(horizontal: 4),
-            child: IconButton(
-              icon: Icon(Icons.person),
-              onPressed: () {
-                Router.navigator.pushNamed(Router.manageProducts);
-              },
-              splashColor: Colors.transparent,
-            ),
-          ),
-        ],
       ),
     );
   }
