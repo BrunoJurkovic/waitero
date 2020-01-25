@@ -47,8 +47,8 @@ class _AddProductPageState extends State<AddProductPage> {
                   'Add New Product',
                   style: const TextStyle(fontSize: 32),
                 ) else Text(
-                  'Manage ${widget.name.trim()} Product',
-                  style: const TextStyle(fontSize: 32),
+                  'Manage "${widget.name.trim()}"',
+                  style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -99,7 +99,7 @@ class _AddProductFormState extends State<_AddProductForm> {
     super.initState();
     _productName.text = widget.name ?? '';
     _productPrice.text =
-        widget.price?.substring(0, widget.price.length - 1) ?? '0.00';
+        widget.price?.substring(1, widget.price.length) ?? '0.00';
     _productID = widget.id ?? Uuid().v4();
     _imageUrl = widget.imageUrl ?? widget.imageUrl;
     if (mounted) {
