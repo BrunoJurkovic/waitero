@@ -43,7 +43,10 @@ class _AddProductPageState extends State<AddProductPage> {
                   },
                 ),
                 const SizedBox(width: 8),
-                Text(
+                if (widget.name == null) Text(
+                  'Add New Product',
+                  style: const TextStyle(fontSize: 32),
+                ) else Text(
                   'Manage ${widget.name.trim()} Product',
                   style: const TextStyle(fontSize: 32),
                 ),

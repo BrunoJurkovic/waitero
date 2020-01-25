@@ -13,7 +13,7 @@ class ImagesRepository {
         ref.child('product_$productID.jpg').putFile(file);
 
     final StorageTaskSnapshot storageSnap = await uploadTask.onComplete;
-    return storageSnap.ref.getDownloadURL() as String;
+    return await storageSnap.ref.getDownloadURL() as String;
   }
 
   Future<void> deleteProductImage(String productID) {
