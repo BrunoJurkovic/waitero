@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:waitero/components/scaffold/custom_scaffold.dart';
 
 class TablesPage extends StatefulWidget {
@@ -25,18 +24,22 @@ class _TablesPageState extends State<TablesPage> {
     double screenHeight = MediaQuery.of(context).size.height;
 
     return CustomScaffold(
-      body: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(top: 16.0),
-            child: Text(
-              'Tables',
-              style: GoogleFonts.alata(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 30.0,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 32),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(top: 16.0),
+              child: Text(
+                'Tables',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Diodrum',
+                  fontSize: 30.0,
+                ),
               ),
             ),
           ),

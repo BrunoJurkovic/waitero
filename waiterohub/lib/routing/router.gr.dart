@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:auto_route/router_utils.dart';
 import 'package:waitero/screens/orders/orders.dart';
+import 'package:auto_route/transitions_builders.dart';
 import 'package:waitero/screens/products/products.dart';
 import 'package:waitero/screens/tables/tables.dart';
 import 'package:waitero/screens/products/add_product/add_product.dart';
@@ -35,18 +36,22 @@ class Router {
           return misTypedArgsRoute<Key>(args);
         }
         final typedArgs = args as Key;
-        return MaterialPageRoute(
-          builder: (_) => OrdersPage(key: typedArgs),
+        return PageRouteBuilder(
+          pageBuilder: (ctx, animation, secondaryAnimation) =>
+              OrdersPage(key: typedArgs),
           settings: settings,
+          transitionsBuilder: TransitionsBuilders.zoomIn,
         );
       case Router.manageProducts:
         if (hasInvalidArgs<Key>(args)) {
           return misTypedArgsRoute<Key>(args);
         }
         final typedArgs = args as Key;
-        return MaterialPageRoute(
-          builder: (_) => ManageProductsPage(key: typedArgs),
+        return PageRouteBuilder(
+          pageBuilder: (ctx, animation, secondaryAnimation) =>
+              ManageProductsPage(key: typedArgs),
           settings: settings,
+          transitionsBuilder: TransitionsBuilders.zoomIn,
         );
       case Router.tables:
         if (hasInvalidArgs<Key>(args)) {
@@ -63,13 +68,14 @@ class Router {
         }
         final typedArgs =
             args as AddProductPageArguments ?? AddProductPageArguments();
-        return MaterialPageRoute(
-          builder: (_) => AddProductPage(
+        return PageRouteBuilder(
+          pageBuilder: (ctx, animation, secondaryAnimation) => AddProductPage(
               price: typedArgs.price,
               name: typedArgs.name,
               id: typedArgs.id,
               imageUrl: typedArgs.imageUrl),
           settings: settings,
+          transitionsBuilder: TransitionsBuilders.zoomIn,
           fullscreenDialog: true,
         );
       default:

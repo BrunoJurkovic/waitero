@@ -7,7 +7,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  google_fonts: ^0.3.2
   auto_route: ^0.2.2
   provider: ^4.0.2
   image_picker: ^0.6.3+1
@@ -20,6 +19,7 @@ dependencies:
   image: 2.1.4
   uuid: ^2.0.4
   cached_network_image: ^2.0.0
+  outline_material_icons: ^0.1.1
 
 dev_dependencies:
   flutter_test:
@@ -34,3 +34,7 @@ flutter:
     - family: CustomIcons
       fonts:
         - asset: assets/icon_fonts/custom_icons.ttf
+    - family: Diodrum
+      fonts:
+        - asset: assets/fonts/Diodrum-Semibold.ttf
+          weight: 600

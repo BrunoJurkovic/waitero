@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:waitero/components/scaffold/custom_scaffold.dart';
 import 'package:waitero/providers/product.dart';
@@ -38,9 +37,10 @@ class ManageProductsPage extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     'Manage Products',
-                    style: GoogleFonts.alata(
+                    style: TextStyle(
                       color: Colors.black,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w600,
+                      fontFamily: 'Diodrum',
                       fontSize: 30.0,
                     ),
                   ),
@@ -61,9 +61,8 @@ class ManageProductsPage extends StatelessWidget {
                       case ConnectionState.done:
                         if (snapshot.hasData)
                           return ProductsList(products: snapshot.data);
-                        if (snapshot.data.isEmpty) {
+                        if (snapshot.data.isEmpty)
                           return buildNoData(context);
-                        }
                         break;
                       case ConnectionState.none:
                         return buildLoading(context);
@@ -87,7 +86,7 @@ class ManageProductsPage extends StatelessWidget {
     return Center(
       child: Text(
         'No products, add some!',
-        style: GoogleFonts.alata(fontSize: fontSize),
+        style: TextStyle(fontSize: fontSize, fontFamily: 'Diodrum'),
       ),
     );
   }

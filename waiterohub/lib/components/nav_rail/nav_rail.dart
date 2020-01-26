@@ -1,15 +1,18 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:waitero/components/custom_icons/custom_icons.dart';
 import 'package:waitero/routing/router.gr.dart';
+
+int _selectedIndex = 0;
 
 class NavRail extends StatefulWidget {
   const NavRail({
     Key key,
-    this.fab,
     this.body,
   }) : super(key: key);
 
-  final FloatingActionButton fab;
   final Widget body;
 
   @override
@@ -17,30 +20,65 @@ class NavRail extends StatefulWidget {
 }
 
 class _NavRailState extends State<NavRail> {
+  void _onItemSelected(int index) {
+    _selectedIndex = index;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
         Container(
-          width: 72,
-          margin: const EdgeInsets.only(left: 16, top: 8),
+          width: 250,
+          decoration: const BoxDecoration(
+            color: Colors.white,
+          ),
           child: Column(
             children: <Widget>[
-              widget.fab ?? Container(),
-              NavRailItem(
-                icon: Icons.view_agenda,
-                label: 'Orders',
-                route: Router.orders,
+              const Padding(
+                padding: EdgeInsets.only(top: 32.0),
+                child: Text(
+                  'Waitero Hub',
+                  style: TextStyle(
+                    fontSize: 30.0,
+                    color: Colors.white,
+                    fontFamily: 'Diodrum',
+                  ),
+                ),
               ),
-              NavRailItem(
-                icon: Icons.attach_money,
-                label: 'Products',
-                route: Router.manageProducts,
-              ),
-              NavRailItem(
-                icon: CustomIcons.table,
-                label: 'Tables',
-                route: Router.tables,
+              Expanded(
+                child: SingleChildScrollView(
+                  primary: false,
+                  padding: const EdgeInsets.symmetric(vertical: 100),
+                  child: Column(
+                    children: <Widget>[
+                      NavRailItem(
+                        icon: OMIcons.viewAgenda,
+                        label: 'Orders',
+                        route: Router.orders,
+                        index: 0,
+                        onTap: () => _onItemSelected(0),
+                      ),
+                      const SizedBox(height: 20),
+                      NavRailItem(
+                        icon: OMIcons.attachMoney,
+                        label: 'Products',
+                        route: Router.manageProducts,
+                        index: 1,
+                        onTap: () => _onItemSelected(1),
+                      ),
+                      const SizedBox(height: 20),
+                      NavRailItem(
+                        icon: CustomIcons.table,
+                        label: 'Tables',
+                        route: Router.orders,
+                        index: 2,
+                        onTap: () => _onItemSelected(2),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ],
           ),
@@ -57,39 +95,50 @@ class NavRailItem extends StatelessWidget {
     @required this.icon,
     @required this.label,
     @required this.route,
-    this.isSelected = false,
+    @required this.index,
+    @required this.onTap,
   }) : super(key: key);
 
   final IconData icon;
   final String route;
   final String label;
-  final bool isSelected;
+  final int index;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        Router.navigator.pushNamed(route);
-      },
-      child: Container(
-        height: 100,
-        width: 100,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Icon(
+    return Container(
+      height: 50,
+      margin: const EdgeInsets.only(left: 16),
+      child: Material(
+        type: MaterialType.transparency,
+        child: InkWell(
+          onTap: () {
+            Router.navigator.pushNamed(route);
+            onTap();
+          },
+          borderRadius:
+              const BorderRadius.horizontal(left: Radius.circular(50)),
+          child: ListTile(
+            leading: Icon(
               icon,
-              size: 48,
+              color: _selectedIndex == index ? Colors.blueAccent : Colors.grey[500],
             ),
-            Visibility(
-              visible: true,
-              child: Text(
-                label,
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 16),
+            title: Text(
+              label,
+              style: TextStyle(
+                fontFamily: 'Diodrum',
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: _selectedIndex == index ? Colors.black : Colors.grey[500],
               ),
             ),
-          ],
+            trailing: _selectedIndex == index ? Container(
+              height: 20,
+              width: 5,
+              color: Colors.blueAccent,
+            ) : const SizedBox(),
+          ),
         ),
       ),
     );
