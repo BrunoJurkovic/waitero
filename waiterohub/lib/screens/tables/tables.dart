@@ -42,54 +42,54 @@ class _TablesPageState extends State<TablesPage> {
                 ),
               ),
             ),
-          ),
-          Flexible(
-            flex: 2,
-            child: Container(
-              key: gKey,
-              child: Stack(
-                children: <Widget>[
-                  Positioned(
-                    left: offset.dx,
-                    top: offset.dy,
-                    child: GestureDetector(
-                      onPanUpdate: (DragUpdateDetails details) {
-                        fun();
-                        // manual positions
-                        print(offset);
-                        if (offset.dx < 0) {
-                          offset = Offset(offset.dx + 1, offset.dy);
-                          return;
-                        }
-                        if (offset.dx > 1090) {
-                          offset = Offset(offset.dx - 1, offset.dy);
-                          return;
-                        }
-                        if (offset.dy < 0) {
-                          offset = Offset(offset.dx, offset.dy + 1);
-                          return;
-                        }
-                        if (offset.dy > 640) {
-                          offset = Offset(offset.dx, offset.dy - 1);
-                          return;
-                        }
-                        setState(() {
-                          offset = Offset(offset.dx + details.delta.dx,
-                              offset.dy + details.delta.dy);
-                        });
-                      },
-                      child: Container(
-                        color: Colors.blue,
-                        width: 100,
-                        height: 100,
+            Flexible(
+              flex: 2,
+              child: Container(
+                key: gKey,
+                child: Stack(
+                  children: <Widget>[
+                    Positioned(
+                      left: offset.dx,
+                      top: offset.dy,
+                      child: GestureDetector(
+                        onPanUpdate: (DragUpdateDetails details) {
+                          fun();
+                          // manual positions
+                          print(offset);
+                          if (offset.dx < 0) {
+                            offset = Offset(offset.dx + 1, offset.dy);
+                            return;
+                          }
+                          if (offset.dx > 1090) {
+                            offset = Offset(offset.dx - 1, offset.dy);
+                            return;
+                          }
+                          if (offset.dy < 0) {
+                            offset = Offset(offset.dx, offset.dy + 1);
+                            return;
+                          }
+                          if (offset.dy > 640) {
+                            offset = Offset(offset.dx, offset.dy - 1);
+                            return;
+                          }
+                          setState(() {
+                            offset = Offset(offset.dx + details.delta.dx,
+                                offset.dy + details.delta.dy);
+                          });
+                        },
+                        child: Container(
+                          color: Colors.blue,
+                          width: 100,
+                          height: 100,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
