@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class OrderItem extends StatelessWidget {
   @override
@@ -32,7 +31,7 @@ class OrderItem extends StatelessWidget {
                   style: TextStyle(
                     color: Color(0xFF8E8D93),
                     fontSize: 18,
-                    fontFamily: 'HKGrotesk'
+                    fontFamily: 'Diodrum'
                   ),
                 ),
               ),

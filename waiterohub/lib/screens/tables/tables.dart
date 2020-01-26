@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:waitero/components/scaffold/custom_scaffold.dart';
 
 class TablesPage extends StatelessWidget {
@@ -18,9 +17,10 @@ class TablesPage extends StatelessWidget {
               padding: const EdgeInsets.only(top: 16.0),
               child: Text(
                 'Tables',
-                style: GoogleFonts.alata(
+                style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
+                  fontFamily: 'Diodrum',
                   fontSize: 30.0,
                 ),
               ),

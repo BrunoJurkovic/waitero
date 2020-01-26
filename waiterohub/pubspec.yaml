@@ -9,7 +9,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  google_fonts: ^0.3.2
   auto_route: ^0.2.2
   provider: ^4.0.2
   image_picker: ^0.6.3+1
@@ -37,11 +36,7 @@ flutter:
     - family: CustomIcons
       fonts:
         - asset: assets/icon_fonts/custom_icons.ttf
-    - family: Substance
+    - family: Diodrum
       fonts:
-        - asset: assets/fonts/Substance-Medium.ttf
-          weight: 500
-    - family: HKGrotesk
-      fonts:
-        - asset: assets/fonts/HKGrotesk-Regular.otf
-          weight: 400
+        - asset: assets/fonts/Diodrum-Semibold.ttf
+          weight: 600

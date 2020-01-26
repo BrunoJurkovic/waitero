@@ -22,8 +22,8 @@ class OrdersPage extends StatelessWidget {
                 'Incoming Orders',
                 style: TextStyle(
                   color: const Color(0xFF20212C),
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Substance',
+                  fontWeight: FontWeight.w600,
+                  fontFamily: 'Diodrum',
                   fontSize: 30.0,
                 ),
               ),
@@ -35,9 +35,7 @@ class OrdersPage extends StatelessWidget {
                 child: Container(
                   decoration: const BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20)
-                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
                   ),
                   child: ListView(
                     primary: false,
