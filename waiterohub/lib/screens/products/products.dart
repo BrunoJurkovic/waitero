@@ -1,50 +1,20 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:waitero/components/scaffold/custom_scaffold.dart';
 import 'package:waitero/providers/product.dart';
 import 'package:waitero/routing/router.gr.dart';
-import 'package:waitero/screens/products/widgets/product_item.dart';
+import 'package:waitero/screens/products/widgets/products_list.dart';
 import 'package:waitero/services/database/products_repo.dart';
 
-class ManageProductsPage extends StatefulWidget {
-  const ManageProductsPage({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  _ManageProductsPageState createState() => _ManageProductsPageState();
-}
-
-class _ManageProductsPageState extends State<ManageProductsPage> {
-  final CollectionReference productsRef = ProductsRepo().ref;
-  bool isLoading = false;
-  List<Product> products = <Product>[];
-
-  @override
-  void initState() {
-    getProducts();
-    super.initState();
-  }
-
-  Future<void> getProducts() async {
-    setState(() {
-      isLoading = true;
-    });
-    final QuerySnapshot snapshot =
-        await productsRef.orderBy('name', descending: true).getDocuments();
-    setState(() {
-      isLoading = false;
-      products = snapshot.documents
-          .map<Product>(
-            (DocumentSnapshot doc) => Product.fromDocument(doc),
-          )
-          .toList();
-    });
-  }
+class ManageProductsPage extends StatelessWidget {
+  const ManageProductsPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final ProductsRepository productsRepo =
+        Provider.of<ProductsRepository>(context);
+
     return CustomScaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(
@@ -80,59 +50,54 @@ class _ManageProductsPageState extends State<ManageProductsPage> {
             const SizedBox(height: 8),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.only(bottom: 32.0, top: 16),
-                child: isLoading
-                    ? Center(
-                        child: Container(
-                          child: const CircularProgressIndicator(),
-                          width: MediaQuery.of(context).size.width * 0.5,
-                          height: MediaQuery.of(context).size.height * 0.5,
-                        ),
-                      )
-                    : Container(
-                        decoration: const BoxDecoration(
-                          // color: Colors.white,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(20),
-                          ),
-                        ),
-                        child: GridView.builder(
-                          itemCount: products.length,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                            childAspectRatio: 1.3,
-                            crossAxisSpacing: 25,
-                            mainAxisSpacing: 25,
-                          ),
-                          primary: false,
-                          itemBuilder: (_, int index) {
-                            return InkWell(
-                              onTap: () async {
-                                var response = await Router.navigator.pushNamed(
-                                  Router.addProduct,
-                                  arguments: AddProductPageArguments(
-                                    id: products[index].id,
-                                    imageUrl: products[index].imageUrl,
-                                    name: products[index].name,
-                                    price: products[index].price,
-                                  ),
-                                );
-                                if (response != null) {
-                                  products.removeWhere((Product item) => item.id == response);
-                                }
-                              },
-                              child: ProductItem(
-                                product: products[index],
-                              ),
-                            );
-                          },
-                        ),
-                      ),
+                padding: const EdgeInsets.only(bottom: 32, top: 16),
+                child: FutureBuilder<List<Product>>(
+                  future: productsRepo.getAllProducts(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<List<Product>> snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.waiting:
+                        return buildLoading(context);
+                      case ConnectionState.done:
+                        if (snapshot.hasData)
+                          return ProductsList(products: snapshot.data);
+                        if (snapshot.data.isEmpty) {
+                          return buildNoData(context);
+                        }
+                        break;
+                      case ConnectionState.none:
+                        return buildLoading(context);
+                      case ConnectionState.active:
+                        return buildLoading(context);
+                    }
+                    return buildLoading(context);
+                  },
+                ),
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget buildNoData(BuildContext context) {
+    final double fontSize = MediaQuery.of(context).size.width / 20;
+
+    return Center(
+      child: Text(
+        'No products, add some!',
+        style: GoogleFonts.alata(fontSize: fontSize),
+      ),
+    );
+  }
+
+  Widget buildLoading(BuildContext context) {
+    return Center(
+      child: Container(
+        child: const CircularProgressIndicator(),
+        width: MediaQuery.of(context).size.width * 0.03,
+        height: MediaQuery.of(context).size.height * 0.05,
       ),
     );
   }

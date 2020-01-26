@@ -18,6 +18,15 @@ class Product with ChangeNotifier {
     );
   }
 
+  Map<String, String> toJson() {
+    return <String, String>{
+      'productId': id,
+      'imageUrl': imageUrl,
+      'name': name,
+      'price': price,
+    };
+  }
+
   final String id;
   final String name;
   final String price;
