@@ -1,8 +1,6 @@
 name: waitero
-description: Waitero is a smart ordering system to be implemented at coffee shops or other similar.
-
 version: 1.0.0+1
-
+description: Waitero is a smart ordering system to be implemented at coffee shops or other similar.
 environment:
   sdk: ">=2.2.2 <3.0.0"
 
