@@ -3,6 +3,7 @@ import 'package:auto_route/transitions_builders.dart';
 import 'package:waitero/screens/products/add_product/add_product.dart';
 import 'package:waitero/screens/products/products.dart';
 import 'package:waitero/screens/orders/orders.dart';
+import 'package:waitero/screens/tables/tables.dart';
 
 @AutoRouter(generateRouteList: true)
 class $Router {
@@ -11,5 +12,7 @@ class $Router {
   @CustomRoute(transitionsBuilder: TransitionsBuilders.zoomIn)
   ManageProductsPage manageProducts;
   @CustomRoute(fullscreenDialog: true, transitionsBuilder: TransitionsBuilders.zoomIn)
+  TablesPage tables;
+  @MaterialRoute(fullscreenDialog: true)
   AddProductPage addProduct;
 }
