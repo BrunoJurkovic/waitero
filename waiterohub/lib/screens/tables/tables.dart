@@ -14,8 +14,9 @@ class _TablesPageState extends State<TablesPage> {
   GlobalKey gKey = GlobalKey();
 
   void fun() {
-    final Size rBox = gKey.currentContext.size;
-    print("SIZE:" + rBox.toString());
+    final RenderBox rBox = gKey.currentContext.findRenderObject() as RenderBox;
+    final Size size = rBox.size;
+    print(size);
   }
 
   @override
@@ -39,35 +40,50 @@ class _TablesPageState extends State<TablesPage> {
               ),
             ),
           ),
-          Expanded(
-            child: Stack(
+          Flexible(
+            flex: 2,
+            child: Container(
               key: gKey,
-              overflow: Overflow.visible,
-              children: <Widget>[
-                Positioned(
-                  left: offset.dx,
-                  top: offset.dy,
-                  child: GestureDetector(
-                    onPanUpdate: (DragUpdateDetails details) {
-                      fun();
-                      print('OFFSET: ${offset.dx}, ${offset.dy}');
-                      if (offset.dx < 0) {
-                        offset = Offset(offset.dx + 1, offset.dy);
-                        return;
-                      }
-                      setState(() {
-                        offset = Offset(offset.dx + details.delta.dx,
-                            offset.dy + details.delta.dy);
-                      });
-                    },
-                    child: Container(
-                      color: Colors.blue,
-                      width: 100,
-                      height: 100,
+              child: Stack(
+                children: <Widget>[
+                  Positioned(
+                    left: offset.dx,
+                    top: offset.dy,
+                    child: GestureDetector(
+                      onPanUpdate: (DragUpdateDetails details) {
+                        fun();
+                        // manual positions
+                        print(offset);
+                        if (offset.dx < 0) {
+                          offset = Offset(offset.dx + 1, offset.dy);
+                          return;
+                        }
+                        if (offset.dx > 1090) {
+                          offset = Offset(offset.dx - 1, offset.dy);
+                          return;
+                        }
+                        if (offset.dy < 0) {
+                          offset = Offset(offset.dx, offset.dy + 1);
+                          return;
+                        }
+                        if (offset.dy > 640) {
+                          offset = Offset(offset.dx, offset.dy - 1);
+                          return;
+                        }
+                        setState(() {
+                          offset = Offset(offset.dx + details.delta.dx,
+                              offset.dy + details.delta.dy);
+                        });
+                      },
+                      child: Container(
+                        color: Colors.blue,
+                        width: 100,
+                        height: 100,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],
