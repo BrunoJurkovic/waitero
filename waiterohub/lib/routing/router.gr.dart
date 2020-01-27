@@ -7,18 +7,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:auto_route/router_utils.dart';
-import 'package:waitero/screens/orders/orders.dart';
+import 'package:waitero/screens/dashboard/dashboard.dart';
 import 'package:auto_route/transitions_builders.dart';
+import 'package:waitero/screens/orders/orders.dart';
 import 'package:waitero/screens/products/products.dart';
 import 'package:waitero/screens/tables/tables.dart';
 import 'package:waitero/screens/products/add_product/add_product.dart';
 
 class Router {
-  static const orders = '/';
+  static const dashboard = '/';
+  static const orders = '/orders';
   static const manageProducts = '/manage-products';
   static const tables = '/tables';
   static const addProduct = '/add-product';
   static const routes = [
+    dashboard,
     orders,
     manageProducts,
     tables,
@@ -31,6 +34,17 @@ class Router {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     final args = settings.arguments;
     switch (settings.name) {
+      case Router.dashboard:
+        if (hasInvalidArgs<Key>(args)) {
+          return misTypedArgsRoute<Key>(args);
+        }
+        final typedArgs = args as Key;
+        return PageRouteBuilder(
+          pageBuilder: (ctx, animation, secondaryAnimation) =>
+              DashboardPage(key: typedArgs),
+          settings: settings,
+          transitionsBuilder: TransitionsBuilders.zoomIn,
+        );
       case Router.orders:
         if (hasInvalidArgs<Key>(args)) {
           return misTypedArgsRoute<Key>(args);
@@ -58,9 +72,12 @@ class Router {
           return misTypedArgsRoute<Key>(args);
         }
         final typedArgs = args as Key;
-        return MaterialPageRoute(
-          builder: (_) => TablesPage(key: typedArgs),
+        return PageRouteBuilder(
+          pageBuilder: (ctx, animation, secondaryAnimation) =>
+              TablesPage(key: typedArgs),
           settings: settings,
+          transitionsBuilder: TransitionsBuilders.zoomIn,
+          fullscreenDialog: true,
         );
       case Router.addProduct:
         if (hasInvalidArgs<AddProductPageArguments>(args)) {
@@ -68,14 +85,13 @@ class Router {
         }
         final typedArgs =
             args as AddProductPageArguments ?? AddProductPageArguments();
-        return PageRouteBuilder(
-          pageBuilder: (ctx, animation, secondaryAnimation) => AddProductPage(
+        return MaterialPageRoute(
+          builder: (_) => AddProductPage(
               price: typedArgs.price,
               name: typedArgs.name,
               id: typedArgs.id,
               imageUrl: typedArgs.imageUrl),
           settings: settings,
-          transitionsBuilder: TransitionsBuilders.zoomIn,
           fullscreenDialog: true,
         );
       default:
