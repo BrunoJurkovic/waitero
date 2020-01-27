@@ -92,7 +92,7 @@ class _NavRailState extends State<NavRail> {
                       NavRailItem(
                         icon: CustomIcons.table,
                         label: 'Tables',
-                        route: Router.orders,
+                        route: Router.tables,
                         index: 3,
                         onTap: () => _onItemSelected(3),
                       ),
