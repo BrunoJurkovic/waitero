@@ -20,6 +20,7 @@ dependencies:
   uuid: ^2.0.4
   cached_network_image: ^2.0.0
   outline_material_icons: ^0.1.1
+  fl_chart: ^0.8.0
 
 dev_dependencies:
   flutter_test:
@@ -29,6 +30,9 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/images/logo.png
 
   fonts:
     - family: CustomIcons

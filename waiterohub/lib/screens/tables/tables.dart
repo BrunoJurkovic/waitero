@@ -10,22 +10,17 @@ class TablesPage extends StatefulWidget {
 
 class _TablesPageState extends State<TablesPage> {
   Offset offset = Offset.zero;
-  GlobalKey gKey = GlobalKey();
-
-  void fun() {
-    final RenderBox rBox = gKey.currentContext.findRenderObject() as RenderBox;
-    final Size size = rBox.size;
-    print(size);
-  }
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidthOffset = screenWidth / 1.43;
+    double screenHeightOffset = screenHeight / 1.205;
 
     return CustomScaffold(
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 32),
+        padding: const EdgeInsets.only(left: 32),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,10 +37,10 @@ class _TablesPageState extends State<TablesPage> {
                 ),
               ),
             ),
-            Flexible(
-              flex: 2,
+            Expanded(
               child: Container(
-                key: gKey,
+                width: screenWidth / 1.286,
+                height: screenHeight / 1.35,
                 child: Stack(
                   children: <Widget>[
                     Positioned(
@@ -53,23 +48,22 @@ class _TablesPageState extends State<TablesPage> {
                       top: offset.dy,
                       child: GestureDetector(
                         onPanUpdate: (DragUpdateDetails details) {
-                          fun();
                           // manual positions
                           print(offset);
                           if (offset.dx < 0) {
-                            offset = Offset(offset.dx + 1, offset.dy);
+                            offset = Offset(5, offset.dy);
                             return;
                           }
-                          if (offset.dx > 1090) {
-                            offset = Offset(offset.dx - 1, offset.dy);
-                            return;
+                          if (offset.dx > screenWidthOffset) {
+                            offset = Offset(screenWidthOffset - 5, offset.dy);
+                            return; 
                           }
                           if (offset.dy < 0) {
-                            offset = Offset(offset.dx, offset.dy + 1);
+                            offset = Offset(offset.dx, 0);
                             return;
                           }
-                          if (offset.dy > 640) {
-                            offset = Offset(offset.dx, offset.dy - 1);
+                          if (offset.dy > screenHeightOffset) {
+                            offset = Offset(offset.dx, screenHeightOffset - 5);
                             return;
                           }
                           setState(() {
