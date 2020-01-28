@@ -1,4 +1,4 @@
-![GitHub closed issues](https://img.shields.io/github/issues-closed/BrunoJurkovic/waitero)
+[![Codemagic build status](https://api.codemagic.io/apps/5e20cf4dc5faa61476296a4b/5e20cf4dc5faa61476296a4a/status_badge.svg)](https://codemagic.io/apps/5e20cf4dc5faa61476296a4b/5e20cf4dc5faa61476296a4a/latest_build)
 # Waitero
 Waitero is a **smart ordering system** to be used in bars, coffee shops, restaurants and similar places. 
 
