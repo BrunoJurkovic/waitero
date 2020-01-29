@@ -6,6 +6,7 @@ import 'package:waitero/components/scaffold/custom_scaffold.dart';
 import 'package:waitero/providers/order.dart';
 import 'package:waitero/screens/dashboard/widgets/data_container.dart';
 import 'package:waitero/services/database/orders_repo.dart';
+import 'package:waitero/services/database/products_repo.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({
@@ -23,6 +24,7 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     final OrdersRepository orders = Provider.of<OrdersRepository>(context);
+    final ProductsRepository products = Provider.of<ProductsRepository>(context);
     List<LineChartBarData> linesBar() {
       const LineChartBarData lineChartBarData1 = LineChartBarData(
         spots: <FlSpot>[
@@ -107,21 +109,21 @@ class _DashboardPageState extends State<DashboardPage> {
       );
     }
 
-    Future<List<int>> _getData() async {
-      return [
-        await orders.countOrders(OrderFetch.Today),
-        await orders.countOrders(OrderFetch.Monthly),
-      ];
+    Future<Map<String, dynamic>> _getData() async {
+      return <String, dynamic>{
+        'ordersToday': await orders.countOrders(OrderFetch.Today),
+        'ordersMonthly': await orders.countOrders(OrderFetch.Monthly),
+        'productCount': await products.countProducts(),
+      };
     }
     return CustomScaffold(
-      body: FutureBuilder<List<int>>(
+      body: FutureBuilder<Map<String, dynamic>>(
           future: _getData(),
-          builder: (BuildContext context, AsyncSnapshot<List<int>> snapshot) {
+          builder: (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
             if (snapshot.hasData) {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 32.0),
                 child: Column(
-                  // mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     const Padding(
@@ -163,9 +165,9 @@ class _DashboardPageState extends State<DashboardPage> {
                                     MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
                                   DataContainer(
-                                    color1: Color(0xFFEF7198),
-                                    color2: Color(0xFFF296B7),
-                                    bottomText: '${snapshot.data[0]}',
+                                    color1: const Color(0xFFEF7198),
+                                    color2: const Color(0xFFF296B7),
+                                    bottomText: '${snapshot.data['ordersToday']}',
                                     topText: 'NEW ORDERS',
                                     sideText: 'orders',
                                     icon: Icon(
@@ -175,9 +177,9 @@ class _DashboardPageState extends State<DashboardPage> {
                                     ),
                                   ),
                                   DataContainer(
-                                    color1: Color(0xFFBA82FF),
-                                    color2: Color(0xFFD0A3FF),
-                                    bottomText: '23',
+                                    color1: const Color(0xFFBA82FF),
+                                    color2: const Color(0xFFD0A3FF),
+                                    bottomText: '${snapshot.data['productCount']}',
                                     topText: 'MENU ITEMS',
                                     sideText: 'items',
                                     icon: Icon(
@@ -187,9 +189,9 @@ class _DashboardPageState extends State<DashboardPage> {
                                     ),
                                   ),
                                   DataContainer(
-                                    color1: Color(0xFF5EC999),
-                                    color2: Color(0xFF7EDDB9),
-                                    bottomText: '${snapshot.data[1]}',
+                                    color1: const Color(0xFF5EC999),
+                                    color2: const Color(0xFF7EDDB9),
+                                    bottomText: '${snapshot.data['ordersMonthly']}',
                                     topText: 'MONTHLY ORDERS',
                                     sideText: 'orders',
                                     icon: Icon(

@@ -13,6 +13,11 @@ class ProductsRepository {
     return allProducts;
   }
 
+  Future<int> countProducts() async {
+    final List<Product> products = await getAllProducts();
+    return products.length;
+  }
+
   Future<void> createProduct(Product product) {
     return ref.document(product.id).setData(product.toJson(), merge: true);
   }
