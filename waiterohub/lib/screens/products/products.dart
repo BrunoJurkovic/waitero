@@ -31,20 +31,14 @@ class ManageProductsPage extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 16.0),
-              child: Row(
-                children: <Widget>[
-                  Text(
-                    'Manage Products',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w600,
-                      fontFamily: 'Diodrum',
-                      fontSize: 30.0,
-                    ),
-                  ),
-                ],
+            const SizedBox(height: 16),
+            Text(
+              'Manage Products',
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.w600,
+                fontFamily: 'Diodrum',
+                fontSize: 30.0,
               ),
             ),
             const SizedBox(height: 8),
