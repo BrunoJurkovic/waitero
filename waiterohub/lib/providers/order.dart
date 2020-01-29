@@ -14,7 +14,7 @@ class Order with ChangeNotifier {
   factory Order.fromDocument(DocumentSnapshot doc) {
     return Order(
       id: doc['id'] as String,
-      tableID: doc['tableID'] as String,
+      tableID: doc['tableID'] as String,  
       isCompleted: doc['isCompleted'] as bool,
       products: doc['products'] as List<dynamic>,
       timestamp: DateTime.fromMillisecondsSinceEpoch(doc['timestamp'] as int),

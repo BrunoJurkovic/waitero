@@ -56,6 +56,9 @@ class OrdersRepository {
         final List<Order> validOrders = <Order>[];
         orders.forEach((Order order) {
           final DateTime dateTime = DateTime.now();
+          final DateTime ordertime = order.timestamp;
+          print(dateTime.day);
+          print(ordertime.day);
           if (dateTime.day == order.timestamp.day) {
             validOrders.add(order);
           }
