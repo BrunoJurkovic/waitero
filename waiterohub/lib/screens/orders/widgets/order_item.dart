@@ -30,6 +30,7 @@ class OrderItem extends StatelessWidget {
             if (!snapshot.hasData) {
               return const SizedBox();
             }
+            print(snapshot.data);
             return ItemBody(
               orderID: orderID,
               tableID: tableID,
@@ -64,45 +65,41 @@ class ItemBody extends StatelessWidget {
       height: MediaQuery.of(context).size.height * 0.05,
       width: MediaQuery.of(context).size.width * 0.75,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           Text(
             '#${orderID?.substring(0, 8)?.toUpperCase()}',
+            textAlign: TextAlign.center,
             style: TextStyle(
               fontFamily: 'Diodrum',
               fontSize: 20,
               fontWeight: FontWeight.w400,
             ),
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.width * 0.1),
-            child: Text(
-              'TBL-$tableID',
-              style: TextStyle(
-                fontFamily: 'Diodrum',
-                fontSize: 20,
-                fontWeight: FontWeight.w400,
-              ),
+          Text(
+            'TBL-$tableID',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: 'Diodrum',
+              fontSize: 20,
+              fontWeight: FontWeight.w400,
             ),
           ),
           IndicatorWidget(
             status: status,
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.width * 0.1),
-            child: Text(
-              '\$$total',
-              style: TextStyle(
-                fontFamily: 'Diodrum',
-                fontSize: 20,
-                fontWeight: FontWeight.w400,
-              ),
+          Text(
+            '\$$total',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: 'Diodrum',
+              fontSize: 20,
+              fontWeight: FontWeight.w400,
             ),
           ),
           Text(
             '${DateFormat('HH:mm').format(timestamp.toLocal())}',
+            textAlign: TextAlign.center,
             style: TextStyle(
               fontFamily: 'Diodrum',
               fontSize: 20,

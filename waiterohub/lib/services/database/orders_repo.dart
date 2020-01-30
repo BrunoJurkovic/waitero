@@ -92,10 +92,10 @@ class OrdersRepository with ChangeNotifier {
 
     final List<dynamic> productIDs = allOrders[0].products;
     double total = 0;
-    productIDs.forEach((dynamic id) async {
+    for (dynamic id in productIDs) {
       final double price = await _products.getProductPrice(id as String);
-      total = total + price;
-    });
+      total += price;
+    }
     return total;
   }
 
