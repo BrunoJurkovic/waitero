@@ -18,6 +18,13 @@ class ProductsRepository {
     return products.length;
   }
 
+  Future<double> getProductPrice(String id) async {
+    final QuerySnapshot query = await ref.where('productId', isEqualTo: id).getDocuments();
+    final String stringPrice = query.documents[0]['price'] as String;
+    return double.parse(stringPrice.substring(1, stringPrice.length));
+
+  }
+
   Future<void> createProduct(Product product) {
     return ref.document(product.id).setData(product.toJson(), merge: true);
   }

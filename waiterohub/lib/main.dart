@@ -23,11 +23,16 @@ class WaiteroHubApp extends StatelessWidget {
         //   create: (_) => Products(),
         // ),
         ChangeNotifierProvider<Product>(create: (_) => Product()),
-        ChangeNotifierProvider<RestaurantTable>(create: (_) => RestaurantTable()),
+        ChangeNotifierProvider<RestaurantTable>(
+            create: (_) => RestaurantTable()),
         Provider<DatabaseHelper>(create: (_) => DatabaseHelper()),
         Provider<ImagesRepository>(create: (_) => ImagesRepository()),
         Provider<ProductsRepository>(create: (_) => ProductsRepository()),
-        Provider<OrdersRepository>(create: (_) => OrdersRepository()),
+        ChangeNotifierProxyProvider<ProductsRepository, OrdersRepository>(
+          create: (_) => OrdersRepository(null),
+          update: (_, ProductsRepository products, __) =>
+              OrdersRepository(products),
+        ),
       ],
       child: MaterialApp(
         title: 'Waitero Hub',

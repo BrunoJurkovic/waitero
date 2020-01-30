@@ -66,7 +66,7 @@ class OrdersPage extends StatelessWidget {
                               final DocumentSnapshot doc = snapshot.data.documents[index];
                               final Order order = Order.fromDocument(doc);
                               final OrderStatus status = order.isCompleted ? OrderStatus.Completed : OrderStatus.Unfinished;
-                              return OrderItem(orderID: order.id, status: status, tableID: order.tableID, timestamp: order.timestamp, total: '1400',);
+                              return OrderItem(orderID: order.id, status: status, tableID: order.tableID, timestamp: order.timestamp);
                             },
                           ),
                         ),

@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:waitero/providers/order.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:waitero/services/database/products_repo.dart';
 
 enum OrderSort {
   Completed,
@@ -14,24 +16,37 @@ enum OrderFetch {
   Today,
 }
 
-class OrdersRepository {
+class OrdersRepository with ChangeNotifier {
+  OrdersRepository(this._products);
+  final ProductsRepository _products;
   CollectionReference ref = Firestore.instance.collection('orders');
 
   Future<List<Order>> getAllOrders(OrderSort sort) async {
     QuerySnapshot query;
     switch (sort) {
       case OrderSort.Completed:
-        query = await ref.where('isCompleted', isEqualTo: true).limit(250).getDocuments();
+        query = await ref
+            .where('isCompleted', isEqualTo: true)
+            .limit(250)
+            .getDocuments();
         break;
       case OrderSort.Unfinished:
-        query = await ref.where('isCompleted', isEqualTo: false).limit(250).getDocuments();
+        query = await ref
+            .where('isCompleted', isEqualTo: false)
+            .limit(250)
+            .getDocuments();
         break;
       case OrderSort.Newest:
-        query = await ref.orderBy('timestamp', descending: true).limit(250).getDocuments();
+        query = await ref
+            .orderBy('timestamp', descending: true)
+            .limit(250)
+            .getDocuments();
         break;
       case OrderSort.Oldest:
-        query =
-            await ref.orderBy('timestamp', descending: false).limit(250).getDocuments();
+        query = await ref
+            .orderBy('timestamp', descending: false)
+            .limit(250)
+            .getDocuments();
         break;
     }
     final List<Order> allOrders = query.documents
@@ -59,13 +74,29 @@ class OrdersRepository {
         orders.forEach((Order order) {
           final DateTime dateTime = DateTime.now();
           final DateTime ordertime = order.timestamp;
-          if (dateTime.day == order.timestamp.day &&
-              dateTime.year == order.timestamp.year) {
+          if (dateTime.day == ordertime.day &&
+              dateTime.year == ordertime.year) {
             validOrders.add(order);
           }
         });
         return validOrders.length;
     }
+  }
+
+  Future<double> calculateItemCost(String id) async {
+    final QuerySnapshot query =
+        await ref.where('id', isEqualTo: id).getDocuments();
+    final List<Order> allOrders = query.documents
+        .map((DocumentSnapshot doc) => Order.fromDocument(doc))
+        .toList();
+
+    final List<dynamic> productIDs = allOrders[0].products;
+    double total = 0;
+    productIDs.forEach((dynamic id) async {
+      final double price = await _products.getProductPrice(id as String);
+      total = total + price;
+    });
+    return total;
   }
 
   //todo make this work
