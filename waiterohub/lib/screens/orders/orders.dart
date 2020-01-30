@@ -14,7 +14,6 @@ class OrdersPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<AnimatedListState> list = GlobalKey<AnimatedListState>();
     final OrdersRepository orders = Provider.of<OrdersRepository>(context);
 
     Widget buildLoading(BuildContext context) {

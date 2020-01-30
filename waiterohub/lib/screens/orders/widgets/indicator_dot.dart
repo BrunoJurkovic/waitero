@@ -16,7 +16,7 @@ class IndicatorWidget extends StatelessWidget {
             height: MediaQuery.of(context).size.height * 0.03,
             width: MediaQuery.of(context).size.width * 0.1,
             child: Card(
-              color: Color(0xFF5EC999).withOpacity(0.25),
+              color: status == OrderStatus.Completed ? const Color(0xFF5EC999).withOpacity(0.25) : const Color(0xFFEF7198).withOpacity(0.25),
               elevation: 0,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),
@@ -24,13 +24,13 @@ class IndicatorWidget extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  const IndicatorDot(
-                    status: OrderStatus.Completed,
+                  IndicatorDot(
+                    status: status,
                   ),
                   Text(
-                    'COMPLETED',
+                    status == OrderStatus.Completed ? 'COMPLETED' : 'UNFINISHED',
                     style: TextStyle(
-                      color: Color(0xFF5EC999),
+                      color: status == OrderStatus.Completed ? const Color(0xFF5EC999) : const Color(0xFFEF7198),
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                       fontFamily: 'Diodrum',

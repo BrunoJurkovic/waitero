@@ -29,7 +29,7 @@ class OrderItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Text(
-              orderID?.substring(0, 8),
+              '#${orderID?.substring(0, 8)?.toUpperCase()}',
               style: TextStyle(
                 fontFamily: 'Diodrum',
                 fontSize: 20,
