@@ -23,7 +23,8 @@ class _TablesPageState extends State<TablesPage> {
   @override
   void initState() {
     WidgetsBinding.instance.scheduleFrameCallback((_) {
-      tableList = Provider.of<TablesRepository>(context).getAllTables();
+      tableList = Provider.of<TablesRepository>(context, listen: false).getAllTables();
+      setState(() {});
     });
     super.initState();
   }
@@ -32,7 +33,7 @@ class _TablesPageState extends State<TablesPage> {
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
-    final TablesRepository tables = Provider.of<TablesRepository>(context);
+    // final TablesRepository tables = Provider.of<TablesRepository>(context);
 
     return CustomScaffold(
       body: Padding(

@@ -53,7 +53,7 @@ class _TableItemState extends State<TableItem> {
               offset = Offset(offset.dx, screenHeightOffset - 5);
               return;
             }
-            if (!widget.isEditing) {
+            if (widget.isEditing) {
               setState(() {
                 offset = Offset(
                     offset.dx + details.delta.dx, offset.dy + details.delta.dy);

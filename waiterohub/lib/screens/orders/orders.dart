@@ -47,33 +47,42 @@ class OrdersPage extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             StreamBuilder<QuerySnapshot>(
-                stream: orders.ref.snapshots(),
-                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (!snapshot.hasData) {
-                    return buildLoading(context);
-                  } else {
-                    return Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 32.0, top: 16),
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                          ),
-                          child: ListView.builder(
-                            itemCount: snapshot.data.documents.length,
-                            itemBuilder: (BuildContext ctx, int index) {
-                              final DocumentSnapshot doc = snapshot.data.documents[index];
-                              final Order order = Order.fromDocument(doc);
-                              final OrderStatus status = order.isCompleted ? OrderStatus.Completed : OrderStatus.Unfinished;
-                              return OrderItem(orderID: order.id, status: status, tableID: order.tableID, timestamp: order.timestamp);
-                            },
-                          ),
+              stream: orders.ref.snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (!snapshot.hasData) {
+                  return buildLoading(context);
+                } else {
+                  return Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 32.0, top: 16),
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        child: ListView.builder(
+                          itemCount: snapshot.data.documents.length,
+                          itemBuilder: (BuildContext ctx, int index) {
+                            final DocumentSnapshot doc =
+                                snapshot.data.documents[index];
+                            final Order order = Order.fromDocument(doc);
+                            final OrderStatus status = order.isCompleted
+                                ? OrderStatus.Completed
+                                : OrderStatus.Unfinished;
+                            return OrderItem(
+                                orderID: order.id,
+                                status: status,
+                                tableID: order.tableID,
+                                timestamp: order.timestamp);
+                          },
                         ),
                       ),
-                    );
-                  }
-                }),
+                    ),
+                  );
+                }
+              },
+            ),
           ],
         ),
       ),

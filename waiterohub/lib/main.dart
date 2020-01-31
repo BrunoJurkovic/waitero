@@ -38,7 +38,7 @@ class WaiteroHubApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Waitero Hub',
         debugShowCheckedModeBanner: false,
-        initialRoute: Router.orders,
+        initialRoute: Router.routes[0],
         navigatorKey: Router.navigatorKey,
         onGenerateRoute: Router.onGenerateRoute,
       ),

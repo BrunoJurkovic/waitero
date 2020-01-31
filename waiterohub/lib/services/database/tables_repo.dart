@@ -5,8 +5,7 @@ class TablesRepository {
   CollectionReference ref = Firestore.instance.collection('tables');
 
   Future<List<RestaurantTable>> getAllTables() async {
-    final QuerySnapshot query =
-        await ref.orderBy('name', descending: true).getDocuments();
+    final QuerySnapshot query = await ref.getDocuments();
     final List<RestaurantTable> allTables = query.documents
         .map((DocumentSnapshot doc) => RestaurantTable.fromDocument(doc))
         .toList();
