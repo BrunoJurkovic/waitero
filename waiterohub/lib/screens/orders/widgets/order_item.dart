@@ -98,7 +98,7 @@ class ItemBody extends StatelessWidget {
             ),
           ),
           Text(
-            '${DateFormat('HH:mm').format(timestamp.toLocal())}',
+            '${DateFormat.jm().format(timestamp.toLocal())}',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontFamily: 'Diodrum',
