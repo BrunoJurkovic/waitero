@@ -37,8 +37,7 @@ class _TablesPageState extends State<TablesPage> {
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
-    tablesList = Provider.of<TablesRepository>(context,).tables;
-    final cachedTables = tablesList;
+    tablesList = Provider.of<TablesRepository>(context).tables;
 
     return CustomScaffold(
       body: Padding(
@@ -70,6 +69,7 @@ class _TablesPageState extends State<TablesPage> {
                           icon: Icon(OMIcons.edit),
                           onPressed: () {
                             setState(() {
+                              cachedTables = tablesList;
                               isEditing = true;
                             });
                           },
@@ -92,13 +92,17 @@ class _TablesPageState extends State<TablesPage> {
                                     position: const Offset(0, 0),
                                   ),
                                 );
+                                setState(() {});
                               },
                               iconSize: 32,
                             ),
                             const SizedBox(width: 6),
                             IconButton(
                               icon: Icon(OMIcons.check),
-                              onPressed: () {
+                              onPressed: () async {
+                                await Provider.of<TablesRepository>(context,
+                                        listen: false)
+                                    .sendTables();
                                 setState(() {
                                   isEditing = false;
                                 });
@@ -113,7 +117,6 @@ class _TablesPageState extends State<TablesPage> {
                                 //     await Provider.of<TablesRepository>(context,
                                 //             listen: false)
                                 //         .getAllTables();
-                                tablesList.clear();
                                 tablesList = cachedTables;
                                 isEditing = false;
                                 setState(() {});

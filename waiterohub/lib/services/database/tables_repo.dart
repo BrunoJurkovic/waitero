@@ -3,8 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:waitero/providers/table.dart';
 
 class TablesRepository with ChangeNotifier {
-  TablesRepository() {
-  }
+  TablesRepository() {}
 
   CollectionReference ref = Firestore.instance.collection('tables');
 
@@ -33,10 +32,6 @@ class TablesRepository with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> sendTableToDatabase(RestaurantTable table) {
-    return ref.document(table.id).setData(table.toJson(), merge: true);
-  }
-
   Future<void> updateTable(String id, RestaurantTable newTable) {
     final int index =
         _localTables.indexWhere((RestaurantTable table) => table.id == id);
@@ -48,18 +43,26 @@ class TablesRepository with ChangeNotifier {
   }
 
   Future<void> sendTables() async {
+    await getAllTables();
     final List<RestaurantTable> dbTables = _localTables;
-    for (final RestaurantTable localTable in _localTables) {
+    for (final RestaurantTable localTable in dbTables) {
       if (dbTables.contains(localTable)) {
         final int index = dbTables.indexOf(localTable);
         dbTables.removeAt(index);
       }
     }
     final List<RestaurantTable> newTables = dbTables;
-    if (newTables.isNotEmpty) {
-      newTables.forEach(sendTableToDatabase);
-      notifyListeners();
+    if (newTables.isEmpty) {
+      return;
     }
+    final WriteBatch batch = Firestore.instance.batch();
+
+    for (final RestaurantTable table in newTables) {
+      final DocumentReference docRef = ref.document(table.id);
+      batch.setData(docRef, table.toJson());
+    }
+    await batch.commit();
+    notifyListeners();
   }
 
   Future<void> deleteTable(String productID) {

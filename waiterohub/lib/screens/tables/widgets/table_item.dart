@@ -24,6 +24,14 @@ class _TableItemState extends State<TableItem> {
   }
 
   @override
+  void didUpdateWidget (TableItem oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (offset != oldWidget.offset) {
+      offset = widget.offset;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
