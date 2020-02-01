@@ -20,26 +20,25 @@ class _TablesPageState extends State<TablesPage> {
   List<RestaurantTable> tablesList;
   List<RestaurantTable> dbTables;
   bool init = false;
+  List<RestaurantTable> cachedTables = <RestaurantTable>[];
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (!init) {
-      getDBTables();
+      Future<void>.delayed(Duration.zero, () async {
+        await Provider.of<TablesRepository>(context, listen: false).init();
+      });
       init = true;
     }
-  }
-
-  Future<void> getDBTables() async {
-    final List<RestaurantTable> tables =
-        await Provider.of<TablesRepository>(context).getAllTables();
-    tablesList = tables;
   }
 
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
+    tablesList = Provider.of<TablesRepository>(context,).tables;
+    final cachedTables = tablesList;
 
     return CustomScaffold(
       body: Padding(
@@ -110,14 +109,14 @@ class _TablesPageState extends State<TablesPage> {
                             IconButton(
                               icon: Icon(OMIcons.cancel),
                               onPressed: () async {
-                                final List<RestaurantTable> tables =
-                                    await Provider.of<TablesRepository>(context,
-                                            listen: false)
-                                        .getAllTables();
-                                setState(() {
-                                  tablesList = tables;
-                                  isEditing = false;
-                                });
+                                // final List<RestaurantTable> tables =
+                                //     await Provider.of<TablesRepository>(context,
+                                //             listen: false)
+                                //         .getAllTables();
+                                tablesList.clear();
+                                tablesList = cachedTables;
+                                isEditing = false;
+                                setState(() {});
                               },
                               iconSize: 32,
                             ),

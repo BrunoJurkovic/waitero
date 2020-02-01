@@ -15,13 +15,13 @@ class TablesDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: tables
-          .map((RestaurantTable table) => TableItem(
+          ?.map((RestaurantTable table) => TableItem(
                 id: table.id,
                 offset: table.position,
                 qrCodeUrl: table.qrCodeURL,
                 isEditing: isEditing,
               ))
-          .toList(),
+          ?.toList() ?? [Container()],
     );
   }
 }

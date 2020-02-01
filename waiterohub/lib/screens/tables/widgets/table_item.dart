@@ -36,6 +36,7 @@ class _TableItemState extends State<TableItem> {
         top: offset.dy,
         child: GestureDetector(
           onPanUpdate: (DragUpdateDetails details) {
+            print(offset.dx);
             // manual positions
             if (offset.dx < 0) {
               offset = Offset(5, offset.dy);

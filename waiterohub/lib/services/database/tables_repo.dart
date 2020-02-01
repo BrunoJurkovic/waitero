@@ -4,28 +4,32 @@ import 'package:waitero/providers/table.dart';
 
 class TablesRepository with ChangeNotifier {
   TablesRepository() {
-    _init();
   }
 
   CollectionReference ref = Firestore.instance.collection('tables');
 
-  List<RestaurantTable> localTables;
+  List<RestaurantTable> _localTables;
 
-  Future<void> _init() async {
-    localTables = await getAllTables();
+  Future<void> init() async {
+    await getAllTables();
+
     notifyListeners();
   }
 
-  Future<List<RestaurantTable>> getAllTables() async {
+  Future<void> getAllTables() async {
     final QuerySnapshot query = await ref.getDocuments();
     final List<RestaurantTable> allTables = query.documents
         .map((DocumentSnapshot doc) => RestaurantTable.fromDocument(doc))
         .toList();
-    return allTables;
+    _localTables = allTables;
+  }
+
+  List<RestaurantTable> get tables {
+    return _localTables ?? [];
   }
 
   void createTable(RestaurantTable table) {
-    localTables.add(table);
+    _localTables.add(table);
     notifyListeners();
   }
 
@@ -35,8 +39,8 @@ class TablesRepository with ChangeNotifier {
 
   Future<void> updateTable(String id, RestaurantTable newTable) {
     final int index =
-        localTables.indexWhere((RestaurantTable table) => table.id == id);
-    localTables
+        _localTables.indexWhere((RestaurantTable table) => table.id == id);
+    _localTables
       ..removeAt(index)
       ..insert(index, newTable);
     notifyListeners();
@@ -44,8 +48,8 @@ class TablesRepository with ChangeNotifier {
   }
 
   Future<void> sendTables() async {
-    final List<RestaurantTable> dbTables = await getAllTables();
-    for (final RestaurantTable localTable in localTables) {
+    final List<RestaurantTable> dbTables = _localTables;
+    for (final RestaurantTable localTable in _localTables) {
       if (dbTables.contains(localTable)) {
         final int index = dbTables.indexOf(localTable);
         dbTables.removeAt(index);
@@ -59,7 +63,7 @@ class TablesRepository with ChangeNotifier {
   }
 
   Future<void> deleteTable(String productID) {
-    localTables.removeWhere((RestaurantTable table) => table.id == productID);
+    _localTables.removeWhere((RestaurantTable table) => table.id == productID);
     return ref.document(productID).delete();
   }
 }
