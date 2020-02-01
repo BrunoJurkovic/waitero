@@ -7,6 +7,9 @@ import 'package:waitero/routing/router.gr.dart';
 
 int _selectedIndex = 0;
 
+// ! NavRail is our custom sidebar widget defined by Material Design Guidelines by Google
+// ? NavRail je 'widget' koji je nasa verzija 'sidebar-a' definirana Material Design Guidelines od strane Googlea,
+
 class NavRail extends StatefulWidget {
   const NavRail({
     Key key,
@@ -14,6 +17,9 @@ class NavRail extends StatefulWidget {
   }) : super(key: key);
 
   final Widget body;
+
+  // ! We get the 'body' through the constructor to make the widget reusable.
+  // ? Kako bi smo mogli koristiti NavRail na svakom screen-u, moramo poslati 'body' kroz constructor.
 
   @override
   _NavRailState createState() => _NavRailState();

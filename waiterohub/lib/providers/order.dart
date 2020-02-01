@@ -2,6 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:waitero/providers/product.dart';
 
+/*
+  ! We use a state management s
+*/
+
 class Order with ChangeNotifier {
   Order({
     this.id,
