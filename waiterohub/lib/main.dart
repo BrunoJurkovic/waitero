@@ -20,15 +20,16 @@ class WaiteroHubApp extends StatelessWidget {
 
     return MultiProvider(
       providers: <SingleChildWidget>[
-        // ChangeNotifierProvider<Products>(
-        //   create: (_) => Products(),
-        // ),
         ChangeNotifierProvider<Product>(create: (_) => Product()),
-        ChangeNotifierProvider<RestaurantTable>(create: (_) => RestaurantTable()),
+        ChangeNotifierProvider<RestaurantTable>(
+          create: (_) => RestaurantTable(),
+        ),
         Provider<DatabaseHelper>(create: (_) => DatabaseHelper()),
         Provider<ImagesRepository>(create: (_) => ImagesRepository()),
         Provider<ProductsRepository>(create: (_) => ProductsRepository()),
-        Provider<TablesRepository>(create: (_) => TablesRepository(),),
+        ChangeNotifierProvider<TablesRepository>(
+          create: (_) => TablesRepository(),
+        ),
         ChangeNotifierProxyProvider<ProductsRepository, OrdersRepository>(
           create: (_) => OrdersRepository(null),
           update: (_, ProductsRepository products, __) =>

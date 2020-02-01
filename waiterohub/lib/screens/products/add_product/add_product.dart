@@ -103,6 +103,8 @@ class _AddProductFormState extends State<_AddProductForm> {
         widget.price?.substring(1, widget.price.length) ?? '0.00';
     _productID = widget.id ?? Uuid().v4();
     _imageUrl = widget.imageUrl ?? widget.imageUrl;
+    _imagesRepository = Provider.of<ImagesRepository>(context, listen: false);
+    _productsRepository = Provider.of<ProductsRepository>(context, listen: false);
     if (mounted) {
       setState(() {});
     }
@@ -193,8 +195,6 @@ class _AddProductFormState extends State<_AddProductForm> {
 
   Widget buildForm(BuildContext context) {
     final double fontSize = MediaQuery.of(context).size.width / 40;
-    _imagesRepository = Provider.of<ImagesRepository>(context);
-    _productsRepository = Provider.of<ProductsRepository>(context);
 
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 24),

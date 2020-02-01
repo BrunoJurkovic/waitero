@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 import 'package:waitero/components/scaffold/custom_scaffold.dart';
 import 'package:waitero/providers/table.dart';
 import 'package:waitero/screens/tables/widgets/table_display.dart';
-import 'package:waitero/screens/tables/widgets/table_item.dart';
 import 'package:waitero/services/database/tables_repo.dart';
 
 class TablesPage extends StatefulWidget {
@@ -16,24 +16,30 @@ class TablesPage extends StatefulWidget {
 
 class _TablesPageState extends State<TablesPage> {
   Offset offset = Offset.zero;
-
   bool isEditing = false;
-  Future<List<RestaurantTable>> tableList;
+  List<RestaurantTable> tablesList;
+  List<RestaurantTable> dbTables;
+  bool init = false;
 
   @override
-  void initState() {
-    WidgetsBinding.instance.scheduleFrameCallback((_) {
-      tableList = Provider.of<TablesRepository>(context, listen: false).getAllTables();
-      setState(() {});
-    });
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!init) {
+      getDBTables();
+      init = true;
+    }
+  }
+
+  Future<void> getDBTables() async {
+    final List<RestaurantTable> tables =
+        await Provider.of<TablesRepository>(context).getAllTables();
+    tablesList = tables;
   }
 
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
-    // final TablesRepository tables = Provider.of<TablesRepository>(context);
 
     return CustomScaffold(
       body: Padding(
@@ -58,26 +64,65 @@ class _TablesPageState extends State<TablesPage> {
                   ),
                   Row(
                     children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(right: 20),
+                      const SizedBox(width: 20),
+                      Visibility(
+                        visible: !isEditing,
                         child: IconButton(
-                          icon: isEditing
-                              ? Icon(OMIcons.check)
-                              : Icon(OMIcons.edit),
+                          icon: Icon(OMIcons.edit),
                           onPressed: () {
                             setState(() {
-                              isEditing = !isEditing;
+                              isEditing = true;
                             });
                           },
                           iconSize: 32,
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 6),
-                        child: IconButton(
-                          icon: Icon(OMIcons.add),
-                          onPressed: () {},
-                          iconSize: 32,
+                      const SizedBox(width: 6),
+                      Visibility(
+                        visible: isEditing,
+                        child: Row(
+                          children: <Widget>[
+                            IconButton(
+                              icon: Icon(OMIcons.add),
+                              onPressed: () {
+                                Provider.of<TablesRepository>(context,
+                                        listen: false)
+                                    .createTable(
+                                  RestaurantTable(
+                                    id: Uuid().v4(),
+                                    position: const Offset(0, 0),
+                                  ),
+                                );
+                              },
+                              iconSize: 32,
+                            ),
+                            const SizedBox(width: 6),
+                            IconButton(
+                              icon: Icon(OMIcons.check),
+                              onPressed: () {
+                                setState(() {
+                                  isEditing = false;
+                                });
+                              },
+                              iconSize: 32,
+                            ),
+                            const SizedBox(width: 6),
+                            IconButton(
+                              icon: Icon(OMIcons.cancel),
+                              onPressed: () async {
+                                final List<RestaurantTable> tables =
+                                    await Provider.of<TablesRepository>(context,
+                                            listen: false)
+                                        .getAllTables();
+                                setState(() {
+                                  tablesList = tables;
+                                  isEditing = false;
+                                });
+                              },
+                              iconSize: 32,
+                            ),
+                            const SizedBox(width: 6),
+                          ],
                         ),
                       ),
                     ],
@@ -89,18 +134,22 @@ class _TablesPageState extends State<TablesPage> {
               child: Container(
                 width: screenWidth / 1.286,
                 height: screenHeight / 1.35,
-                child: FutureBuilder<List<RestaurantTable>>(
-                  future: tableList,
-                  builder: (BuildContext context,
-                      AsyncSnapshot<List<RestaurantTable>> snapshot) {
-                    if (!snapshot.hasData) {
-                      return SizedBox(); // ! add the universal loader here
-                    }
-                    return TablesDisplay(
-                      isEditing: isEditing,
-                      tables: snapshot.data,
-                    );
-                  },
+                // child: FutureBuilder<List<RestaurantTable>>(
+                //   future: tableList,
+                //   builder: (BuildContext context,
+                //       AsyncSnapshot<List<RestaurantTable>> snapshot) {
+                //     if (!snapshot.hasData) {
+                //       return SizedBox(); // ! add the universal loader here
+                //     }
+                //     return TablesDisplay(
+                //       isEditing: isEditing,
+                //       tables: snapshot.data,
+                //     );
+                //   },
+                // ),
+                child: TablesDisplay(
+                  isEditing: isEditing,
+                  tables: tablesList,
                 ),
               ),
             ),
