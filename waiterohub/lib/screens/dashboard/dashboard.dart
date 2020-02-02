@@ -8,6 +8,11 @@ import 'package:waitero/screens/dashboard/widgets/data_container.dart';
 import 'package:waitero/services/database/orders_repo.dart';
 import 'package:waitero/services/database/products_repo.dart';
 
+/*
+  ! The dashboard screen is where we display all of the data to the management.
+  ? Kroz dashboard management moze vidjeti sve podatke.
+*/
+
 class DashboardPage extends StatefulWidget {
   const DashboardPage({
     Key key,
@@ -291,9 +296,12 @@ class _DashboardPageState extends State<DashboardPage> {
                 ],
               ),
             );
-          } else {
+          } 
+        /*
+  ! [loadingIndicator()] is a widget that builds the loading indicator.
+  ? Kroz [loadingIndicator()] mozemo prikazati loading krug.
+*/
             return const LoadingIndicator();
-          }
         },
       ),
     );

@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 
+
+/*
+  ! This widget is used for creating the custom gradient container that displays all of the counters.
+  ? Ovaj widget se koristi za stvaranje gradient container-a koji prikazuje sve brojace (narudzbi, stvari na meni-u, itd.).
+*/
+
+
 class DataContainer extends StatelessWidget {
   const DataContainer({
     Key key,
@@ -16,6 +23,11 @@ class DataContainer extends StatelessWidget {
   final String bottomText; 
   final Icon icon;
   final String sideText;
+
+  /*
+  ! We pass some items through the constructor to make it reusable, such as gradient colors, text, icon, etc.
+  ? Kroz constructor posaljemo neke stvari kako bi smo mogli reciklirati widget, kao sto su boje za gradient, text, ikone, itd.
+*/
 
   @override
   Widget build(BuildContext context) {

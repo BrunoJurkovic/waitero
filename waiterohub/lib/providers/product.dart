@@ -9,6 +9,11 @@ class Product with ChangeNotifier {
     this.imageUrl,
   });
 
+/*
+  ! The factory gives us an easy way to create our personal objects from Firebase.
+  ? Factory nam daje sposobnost lakog prebacivanja podataka iz Firebase-a u nas osobni model.
+*/
+
   factory Product.fromDocument(DocumentSnapshot doc) {
     return Product(
       id: doc['productId'] as String,
@@ -17,6 +22,11 @@ class Product with ChangeNotifier {
       imageUrl: doc['imageUrl'] as String,
     );
   }
+
+  /*
+  ! 'toJson()' is a function which encodes our custom model to Json for Firebase.
+  ? 'toJson()' je funkcija koja pretvara nas model u Json za Firebase
+*/
 
   Map<String, String> toJson() {
     return <String, String>{

@@ -6,6 +6,11 @@ import 'package:waitero/routing/router.gr.dart';
 import 'package:waitero/screens/products/widgets/products_list.dart';
 import 'package:waitero/services/database/products_repo.dart';
 
+/*
+  ! This screen  utilizes all of the widgets in this sub-tree.
+  ? Ovaj screen koristi sve widget-e u ovoj sub-kategoriji.
+*/
+
 class ManageProductsPage extends StatelessWidget {
   const ManageProductsPage({Key key}) : super(key: key);
 

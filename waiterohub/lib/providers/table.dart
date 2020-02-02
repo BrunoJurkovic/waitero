@@ -8,6 +8,11 @@ class RestaurantTable with ChangeNotifier {
     this.position,
   });
 
+  /*
+  ! The factory gives us an easy way to create our personal objects from Firebase.
+  ? Factory nam daje sposobnost lakog prebacivanja podataka iz Firebase-a u nas osobni model.
+*/
+
   factory RestaurantTable.fromDocument(DocumentSnapshot doc) {
     final double positionX = doc['positionX'] as double;
     final double positionY = doc['positionY'] as double;
@@ -18,6 +23,11 @@ class RestaurantTable with ChangeNotifier {
       position: offset,
     );
   }
+
+  /*
+  ! 'toJson()' is a function which encodes our custom model to Json for Firebase.
+  ? 'toJson()' je funkcija koja pretvara nas model u Json za Firebase
+*/
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
