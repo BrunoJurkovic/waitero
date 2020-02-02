@@ -13,6 +13,10 @@ import 'package:uuid/uuid.dart';
 import 'package:waitero/services/database/images_repo.dart';
 import 'package:waitero/services/database/products_repo.dart';
 
+/*
+  ! This screen gives the ability to add products to the database.
+  ? Na ovom screen-u management moze dodati novi proizvod.
+*/
 class AddProductPage extends StatelessWidget {
   const AddProductPage({this.price, this.name, this.id, this.imageUrl});
 

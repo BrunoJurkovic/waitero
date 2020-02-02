@@ -3,6 +3,11 @@ import 'package:flutter/material.dart';
 
 import 'package:waitero/providers/product.dart';
 
+/*
+  ! This widget is used for showing an individual product item with an image which is cached locally.
+  ? Ovaj widget se koristi za prikazivanje individualnog proizvoda sa slikom koja je cache-ana lokalno.
+*/
+
 class ProductItem extends StatelessWidget {
   const ProductItem({Key key, this.product}) : super(key: key);
 
