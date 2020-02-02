@@ -5,7 +5,7 @@ import 'package:waitero/components/loading/loading.dart';
 import 'package:waitero/components/scaffold/custom_scaffold.dart';
 import 'package:waitero/screens/dashboard/widgets/chart_legend.dart';
 import 'package:waitero/screens/dashboard/widgets/info_widget.dart';
-import 'package:waitero/screens/dashboard/widgets/lines_data.dart';
+import 'package:waitero/screens/dashboard/widgets/orders_chart.dart';
 import 'package:waitero/services/database/orders_repo.dart';
 import 'package:waitero/services/database/products_repo.dart';
 
@@ -111,13 +111,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   const SizedBox(
                     height: 24,
                   ),
-                  Container(
-                    height: MediaQuery.of(context).size.height * 0.4,
-                    width: MediaQuery.of(context).size.width * 0.5,
-                    child: LineChart(
-                      LinesData().lineChartData(),
-                    ),
-                  ),
+                  OrdersChart(),
                 ],
               ),
             );
@@ -132,3 +126,4 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 }
+

@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:date_utils/date_utils.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/foundation.dart';
 import 'package:waitero/providers/order.dart';
 import 'package:waitero/services/database/products_repo.dart';
@@ -19,7 +21,6 @@ enum OrderSort {
   Oldest,
 }
 
-
 ///! The enum [OrderFetch] is used for simplifying the fetching of orders.
 ///
 ///? Ovaj enum [OrderFetch] se korsti za pojednostavljanje nacina na koji se potrazuju narudzbe.
@@ -34,15 +35,14 @@ class OrdersRepository with ChangeNotifier {
   ///?HR: Ovaj class koristi [ProductsRepository], pa ga moramo importati.
   OrdersRepository(this._products);
   final ProductsRepository _products;
-  
+
   ///!EN: We get a ref to the '/orders/' in the database.
   ///
   ///?HR: Spremimo ref od '/orders/' iz databaze.
   CollectionReference ref = Firestore.instance.collection('orders');
 
-
   ///!EN: This function returns a list of [Order], first it checks what the [sort] value is,
-  ///! then it does a query with a limit of 100, to save on reads. Then from that query, we call 
+  ///! then it does a query with a limit of 100, to save on reads. Then from that query, we call
   ///! [.map] on it which goes though all of the items, and returns a list of [Order].
   ///
   ///?HR: Ova funkcija vrati listu [Order], prvo provjeri koja je vrijednost [sort],
@@ -122,28 +122,38 @@ class OrdersRepository with ChangeNotifier {
 
   //todo make this work
 
-  // Future<List<FlSpot>> getChartPositions(OrderFetch orderFetch) async {
-  //   final List<Order> orders = await getAllOrders(OrderSort.Newest);
-  //   final List<Order> validOrders = <Order>[];
-  //   orders.forEach((Order order) {
-
-  //     final DateTime dateTime = DateTime.now();
-  //     if (dateTime.month == order.timestamp.month &&
-  //         dateTime.year == order.timestamp.year) {
-  //       validOrders.add(order);
-  //     }
-  //   });
-
-  //   final List<FlSpot> spots = <FlSpot>[];
-  //   double count = 0;
-
-  // }
-
-  // Future<void> completeOrder(String orderID) {
-  //   return ref.document(orderID).updateData(
-  //     <String, bool>{
-  //       'isCompleted': true,
-  //     },
-  //   );
-  // }
+  Future<List<FlSpot>> calculateGraphDots(OrderFetch time) async {
+    List<FlSpot> spots = [];
+    switch (time) {
+      case OrderFetch.Monthly:
+        final List<Order> ordersInMonth = [];
+        final DateTime month = DateUtils.getMonthDate();
+        final DateTime lastDay = Utils.lastDayOfMonth(month);
+        final QuerySnapshot query = await ref
+            .where('timestamp',
+                isGreaterThanOrEqualTo: month.millisecondsSinceEpoch)
+            .orderBy('timestamp', descending: true)
+            .getDocuments();
+        for (int i = 1; i <= lastDay.day; i++) {
+          ordersInMonth.addAll(query.documents
+              .map((DocumentSnapshot doc) => Order.fromDocument(doc))
+              .where((Order order) {
+            return order.timestamp.isAfter(month.add(Duration(days: i)));
+          }).where((Order order) {
+            return order.timestamp.isBefore(month.add(Duration(days: i + 1)));
+          }).toList());
+        }
+        for (int i = 1; i <= lastDay.day; i++) {
+          final List<Order> todaysOrders = ordersInMonth
+              .where((Order order) => order.timestamp.day == i)
+              .toList();
+          spots.add(FlSpot(i.toDouble(), todaysOrders.length.toDouble()));
+        }
+        return spots;
+        break;
+      case OrderFetch.Today:
+        // TODO: Handle this case.
+        break;
+    }
+  }
 }
