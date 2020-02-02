@@ -16,7 +16,7 @@ class CustomScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFEFEFE),
+      backgroundColor: const Color(0xFFF8F7FC),
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomPadding: false,
       extendBody: true,

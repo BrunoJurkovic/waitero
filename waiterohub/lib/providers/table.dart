@@ -28,7 +28,9 @@ class RestaurantTable with ChangeNotifier {
     };
   }
 
+  set tablePosition(Offset newOffset) => position = newOffset;
+
   final String id;
   final String qrCodeURL;
-  final Offset position;
+  Offset position;
 }
