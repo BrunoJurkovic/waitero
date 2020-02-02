@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:waitero/providers/order.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:waitero/services/database/products_repo.dart';
 
 enum OrderSort {
@@ -92,7 +91,7 @@ class OrdersRepository with ChangeNotifier {
 
     final List<dynamic> productIDs = allOrders[0].products;
     double total = 0;
-    for (dynamic id in productIDs) {
+    for (final dynamic id in productIDs) {
       final double price = await _products.getProductPrice(id as String);
       total += price;
     }

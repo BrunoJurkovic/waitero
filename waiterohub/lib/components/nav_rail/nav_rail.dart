@@ -15,6 +15,9 @@ class NavRail extends StatefulWidget {
 
   final Widget body;
 
+  int get selectedIndex => _selectedIndex;
+  set selectedIndex(int newIndex) => _selectedIndex = newIndex;
+
   @override
   _NavRailState createState() => _NavRailState();
 }

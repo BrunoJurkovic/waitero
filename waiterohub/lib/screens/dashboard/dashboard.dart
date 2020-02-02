@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:waitero/components/scaffold/custom_scaffold.dart';
-import 'package:waitero/providers/order.dart';
 import 'package:waitero/screens/dashboard/widgets/data_container.dart';
 import 'package:waitero/services/database/orders_repo.dart';
 import 'package:waitero/services/database/products_repo.dart';

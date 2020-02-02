@@ -44,9 +44,9 @@ class _AddProductPageState extends State<AddProductPage> {
                   },
                 ),
                 const SizedBox(width: 8),
-                if (widget.name == null) Text(
+                if (widget.name == null) const Text(
                   'Add New Product',
-                  style: const TextStyle(fontSize: 32),
+                  style: TextStyle(fontSize: 32),
                 ) else Text(
                   'Manage "${widget.name.trim()}"',
                   style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
