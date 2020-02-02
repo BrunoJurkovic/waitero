@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
 import 'package:provider/provider.dart';
+import 'package:waitero/components/loading/loading.dart';
 import 'package:waitero/components/scaffold/no_nav_scaffold.dart';
 import 'package:waitero/providers/product.dart';
 import 'package:waitero/routing/router.gr.dart';
@@ -14,7 +15,7 @@ import 'package:waitero/services/database/products_repo.dart';
 
 class AddProductPage extends StatelessWidget {
   const AddProductPage({this.price, this.name, this.id, this.imageUrl});
-  
+
   final String price;
   final String name;
   final String id;
@@ -39,13 +40,17 @@ class AddProductPage extends StatelessWidget {
                   },
                 ),
                 const SizedBox(width: 8),
-                if (name == null) const Text(
-                  'Add New Product',
-                  style: TextStyle(fontSize: 32),
-                ) else Text(
-                  'Manage "${name.trim()}"',
-                  style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-                ),
+                if (name == null)
+                  const Text(
+                    'Add New Product',
+                    style: TextStyle(fontSize: 32),
+                  )
+                else
+                  Text(
+                    'Manage "${name.trim()}"',
+                    style: const TextStyle(
+                        fontSize: 32, fontWeight: FontWeight.bold),
+                  ),
               ],
             ),
           ),
@@ -99,7 +104,8 @@ class _AddProductFormState extends State<_AddProductForm> {
     _productID = widget.id ?? Uuid().v4();
     _imageUrl = widget.imageUrl ?? widget.imageUrl;
     _imagesRepository = Provider.of<ImagesRepository>(context, listen: false);
-    _productsRepository = Provider.of<ProductsRepository>(context, listen: false);
+    _productsRepository =
+        Provider.of<ProductsRepository>(context, listen: false);
     if (mounted) {
       setState(() {});
     }
@@ -182,7 +188,7 @@ class _AddProductFormState extends State<_AddProductForm> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return buildLoadingIndicator(context);
+      return const LoadingIndicator();
     } else {
       return buildForm(context);
     }
@@ -275,7 +281,12 @@ class _AddProductFormState extends State<_AddProductForm> {
                         style: TextStyle(
                             fontSize: fontSize, fontWeight: FontWeight.bold),
                       )
-                    : CachedNetworkImage(imageUrl: _imageUrl, placeholder: (BuildContext ctx, _) {return buildLoadingIndicator(context);},),
+                    : CachedNetworkImage(
+                        imageUrl: _imageUrl,
+                        placeholder: (BuildContext ctx, _) {
+                          return const LoadingIndicator();
+                        },
+                      ),
           ),
         ),
         FlatButton(
@@ -310,16 +321,6 @@ class _AddProductFormState extends State<_AddProductForm> {
             ),
           ),
       ],
-    );
-  }
-
-  Center buildLoadingIndicator(BuildContext context) {
-    return Center(
-      child: Container(
-        child: const CircularProgressIndicator(),
-        width: MediaQuery.of(context).size.width * 0.08,
-        height: MediaQuery.of(context).size.height * 0.08,
-      ),
     );
   }
 }
