@@ -15,6 +15,7 @@ class CustomIconsData extends IconData {
 
 @immutable
 class CustomIcons {
+  //ignore: prefer_const_constructors_in_immutables
   CustomIcons._();
 
   // Generated code: do not hand-edit.
