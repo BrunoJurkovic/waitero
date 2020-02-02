@@ -3,6 +3,11 @@ import 'package:waitero/providers/product.dart';
 import 'package:waitero/routing/router.gr.dart';
 import 'package:waitero/screens/products/widgets/product_item.dart';
 
+/*
+  ! This widget is used for displaying all of the products.
+  ? Ovaj widget se koristi za prikazivanje svih proizovda.
+*/
+
 class ProductsList extends StatelessWidget {
   const ProductsList({
     Key key,
@@ -20,6 +25,11 @@ class ProductsList extends StatelessWidget {
           Radius.circular(20),
         ),
       ),
+
+/*
+  ! We use a GridView.builder which is a fast method of displaying the products and updating them fast.
+  ? Korisitmo GridView.builder koji je optimiziran za ovakav nacin prikazivanja i azuriranja proizovda.
+*/
       child: GridView.builder(
         itemCount: products.length,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

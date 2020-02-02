@@ -7,6 +7,11 @@ import 'package:waitero/screens/orders/widgets/indicator_dot.dart';
 import 'package:waitero/screens/orders/widgets/order_item.dart';
 import 'package:waitero/services/database/orders_repo.dart';
 
+/*
+  ! This screen shows all of the orders that are icoming.
+  ? Na ovom screen-u moze se vidjeti sve narudzbe koje dolaze.
+*/
+
 class OrdersPage extends StatelessWidget {
   const OrdersPage({
     Key key,

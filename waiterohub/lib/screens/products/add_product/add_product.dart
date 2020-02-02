@@ -12,6 +12,11 @@ import 'package:uuid/uuid.dart';
 import 'package:waitero/services/database/images_repo.dart';
 import 'package:waitero/services/database/products_repo.dart';
 
+/*
+  ! This screen gives the ability to add products to the database.
+  ? Na ovom screen-u management moze dodati novi proizvod.
+*/
+
 class AddProductPage extends StatefulWidget {
   const AddProductPage({this.price, this.name, this.id, this.imageUrl});
 
@@ -44,13 +49,17 @@ class _AddProductPageState extends State<AddProductPage> {
                   },
                 ),
                 const SizedBox(width: 8),
-                if (widget.name == null) Text(
-                  'Add New Product',
-                  style: const TextStyle(fontSize: 32),
-                ) else Text(
-                  'Manage "${widget.name.trim()}"',
-                  style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-                ),
+                if (widget.name == null)
+                  const Text(
+                    'Add New Product',
+                    style: TextStyle(fontSize: 32),
+                  )
+                else
+                  Text(
+                    'Manage "${widget.name.trim()}"',
+                    style: const TextStyle(
+                        fontSize: 32, fontWeight: FontWeight.bold),
+                  ),
               ],
             ),
           ),
@@ -280,7 +289,12 @@ class _AddProductFormState extends State<_AddProductForm> {
                         style: TextStyle(
                             fontSize: fontSize, fontWeight: FontWeight.bold),
                       )
-                    : CachedNetworkImage(imageUrl: _imageUrl, placeholder: (BuildContext ctx, _) {return buildLoadingIndicator(context);},),
+                    : CachedNetworkImage(
+                        imageUrl: _imageUrl,
+                        placeholder: (BuildContext ctx, _) {
+                          return buildLoadingIndicator(context);
+                        },
+                      ),
           ),
         ),
         FlatButton(

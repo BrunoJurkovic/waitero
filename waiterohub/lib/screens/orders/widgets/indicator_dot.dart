@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
 
+/*
+  ! We make a enum to simplify the states in which the indicator dot can be in.
+  ? Napravimo enum kako bi smo mogli pojednostaviti stanja u kojem loading indicator moze biti.
+*/
+
 enum OrderStatus {
   Completed,
   Unfinished,
 }
+
+/*
+  ! The IndicatorWidget displays the status of the order.
+  ? Ovaj widget pokazuje stanje narudzbe.
+*/
 
 class IndicatorWidget extends StatelessWidget {
   const IndicatorWidget({Key key, this.status}) : super(key: key);
@@ -42,6 +52,11 @@ class IndicatorWidget extends StatelessWidget {
           );
   }
 }
+
+/*
+  ! To simplify things, we seperated the IndicatorWidget in another class for clarity.
+  ? Kako bi smo pojednostavili stvari, odvojili dio smo IndicatorWidget-a u ovaj class.
+*/
 
 class IndicatorDot extends StatelessWidget {
   const IndicatorDot({Key key, this.status}) : super(key: key);

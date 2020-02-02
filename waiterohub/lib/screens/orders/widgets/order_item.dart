@@ -4,6 +4,11 @@ import 'package:provider/provider.dart';
 import 'package:waitero/screens/orders/widgets/indicator_dot.dart';
 import 'package:waitero/services/database/orders_repo.dart';
 
+/*
+  ! OrderItem is a individual line for an order, has all of the necesary things for management to see where to deliver.
+  ? OrderItem je jedan individualni red za narudzbu, sadrzi sve potrebne stavke kako bi management mogao znati gdje dostaviti narudzbu.
+*/
+
 class OrderItem extends StatelessWidget {
   const OrderItem({
     Key key,
