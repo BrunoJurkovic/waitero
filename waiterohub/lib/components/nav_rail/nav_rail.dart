@@ -8,13 +8,6 @@ import 'package:waitero/routing/router.gr.dart';
 int _selectedIndex = 0;
 
 class NavRail extends StatefulWidget {
-  const NavRail({
-    Key key,
-    this.body,
-  }) : super(key: key);
-
-  final Widget body;
-
   int get selectedIndex => _selectedIndex;
   set selectedIndex(int newIndex) => _selectedIndex = newIndex;
 
@@ -30,9 +23,9 @@ class _NavRailState extends State<NavRail> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        Container(
+    return Drawer(
+      child: SafeArea(
+        child: Container(
           width: 250,
           decoration: const BoxDecoration(
             color: Color(0xFFFEFEFE),
@@ -62,52 +55,48 @@ class _NavRailState extends State<NavRail> {
                   ),
                 ),
               ),
-              Expanded(
-                child: SingleChildScrollView(
-                  primary: false,
-                  padding: const EdgeInsets.symmetric(vertical: 100),
-                  child: Column(
-                    children: <Widget>[
-                      NavRailItem(
-                        icon: OMIcons.barChart,
-                        label: 'Dashboard',
-                        route: Router.dashboard,
-                        index: 0,
-                        onTap: () => _onItemSelected(0),
-                      ),
-                      const SizedBox(height: 20),
-                      NavRailItem(
-                        icon: OMIcons.viewAgenda,
-                        label: 'Orders',
-                        route: Router.orders,
-                        index: 1,
-                        onTap: () => _onItemSelected(1),
-                      ),
-                      const SizedBox(height: 20),
-                      NavRailItem(
-                        icon: OMIcons.attachMoney,
-                        label: 'Products',
-                        route: Router.manageProducts,
-                        index: 2,
-                        onTap: () => _onItemSelected(2),
-                      ),
-                      const SizedBox(height: 20),
-                      NavRailItem(
-                        icon: CustomIcons.table,
-                        label: 'Tables',
-                        route: Router.tables,
-                        index: 3,
-                        onTap: () => _onItemSelected(3),
-                      ),
-                    ],
-                  ),
+              SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(vertical: 32),
+                child: Column(
+                  children: <Widget>[
+                    NavRailItem(
+                      icon: OMIcons.barChart,
+                      label: 'Dashboard',
+                      route: Router.dashboard,
+                      index: 0,
+                      onTap: () => _onItemSelected(0),
+                    ),
+                    const SizedBox(height: 20),
+                    NavRailItem(
+                      icon: OMIcons.viewAgenda,
+                      label: 'Orders',
+                      route: Router.orders,
+                      index: 1,
+                      onTap: () => _onItemSelected(1),
+                    ),
+                    const SizedBox(height: 20),
+                    NavRailItem(
+                      icon: OMIcons.attachMoney,
+                      label: 'Products',
+                      route: Router.manageProducts,
+                      index: 2,
+                      onTap: () => _onItemSelected(2),
+                    ),
+                    const SizedBox(height: 20),
+                    NavRailItem(
+                      icon: CustomIcons.table,
+                      label: 'Tables',
+                      route: Router.tables,
+                      index: 3,
+                      onTap: () => _onItemSelected(3),
+                    ),
+                  ],
                 ),
               ),
             ],
           ),
         ),
-        Expanded(child: widget.body),
-      ],
+      ),
     );
   }
 }

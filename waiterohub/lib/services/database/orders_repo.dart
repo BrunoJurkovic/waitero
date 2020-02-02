@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:waitero/providers/order.dart';
 import 'package:waitero/services/database/products_repo.dart';
+import 'package:waitero/util/date_util.dart';
 
 enum OrderSort {
   Completed,
@@ -55,31 +56,25 @@ class OrdersRepository with ChangeNotifier {
   }
 
   Future<int> countOrders(OrderFetch orderFetch) async {
+    final List<Order> orders = await getAllOrders(OrderSort.Newest);
+    final List<Order> validOrders = <Order>[];
     switch (orderFetch) {
       case OrderFetch.Monthly:
-        final List<Order> orders = await getAllOrders(OrderSort.Newest);
-        final List<Order> validOrders = <Order>[];
-        orders.forEach((Order order) {
-          final DateTime dateTime = DateTime.now();
-          if (dateTime.month == order.timestamp.month &&
-              dateTime.year == order.timestamp.year) {
-            validOrders.add(order);
-          }
-        });
-        return validOrders.length;
+        validOrders.addAll(orders.where(
+          (Order order) => order.timestamp.isAfter(
+            DateUtils.getMonthDate(),
+          ),
+        ));
+        break;
       case OrderFetch.Today:
-        final List<Order> orders = await getAllOrders(OrderSort.Newest);
-        final List<Order> validOrders = <Order>[];
-        orders.forEach((Order order) {
-          final DateTime dateTime = DateTime.now();
-          final DateTime ordertime = order.timestamp;
-          if (dateTime.day == ordertime.day &&
-              dateTime.year == ordertime.year) {
-            validOrders.add(order);
-          }
-        });
-        return validOrders.length;
+        validOrders.addAll(orders.where(
+          (Order order) => order.timestamp.isAfter(
+            DateUtils.getTodaysDate(),
+          ),
+        ));
+        break;
     }
+    return validOrders.length;
   }
 
   Future<double> calculateItemCost(String id) async {
@@ -89,7 +84,7 @@ class OrdersRepository with ChangeNotifier {
         .map((DocumentSnapshot doc) => Order.fromDocument(doc))
         .toList();
 
-    final List<dynamic> productIDs = allOrders[0].products;
+    final List<dynamic> productIDs = allOrders[0].productIDs;
     double total = 0;
     for (final dynamic id in productIDs) {
       final double price = await _products.getProductPrice(id as String);

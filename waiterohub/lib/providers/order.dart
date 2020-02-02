@@ -6,7 +6,7 @@ class Order with ChangeNotifier {
     this.id,
     this.tableID,
     this.isCompleted = false,
-    this.products,
+    this.productIDs,
     this.timestamp,
   });
 
@@ -15,7 +15,7 @@ class Order with ChangeNotifier {
       id: doc['id'] as String,
       tableID: doc['tableID'] as String,  
       isCompleted: doc['isCompleted'] as bool,
-      products: doc['products'] as List<dynamic>,
+      productIDs: doc['products'] as List<dynamic>,
       timestamp: DateTime.fromMillisecondsSinceEpoch(doc['timestamp'] as int),
     );
   }
@@ -25,7 +25,7 @@ class Order with ChangeNotifier {
       'id': id,
       'tableID': tableID,
       'isCompleted': isCompleted,
-      'products': products,
+      'products': productIDs,
       'timestamp': timestamp.millisecondsSinceEpoch,
     };
   }
@@ -33,6 +33,6 @@ class Order with ChangeNotifier {
   final String id;
   final String tableID;
   final bool isCompleted;
-  final List<dynamic> products;
+  final List<dynamic> productIDs;
   final DateTime timestamp;
 }
