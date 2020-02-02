@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:outline_material_icons/outline_material_icons.dart';
+import 'package:provider/provider.dart';
 import 'package:waitero/components/scaffold/custom_scaffold.dart';
+import 'package:waitero/providers/table.dart';
+import 'package:waitero/screens/tables/widgets/table_display.dart';
+import 'package:waitero/screens/tables/widgets/table_item.dart';
+import 'package:waitero/services/database/tables_repo.dart';
 
 class TablesPage extends StatefulWidget {
   const TablesPage({Key key}) : super(key: key);
@@ -11,12 +17,22 @@ class TablesPage extends StatefulWidget {
 class _TablesPageState extends State<TablesPage> {
   Offset offset = Offset.zero;
 
+  bool isEditing = false;
+  Future<List<RestaurantTable>> tableList;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.scheduleFrameCallback((_) {
+      tableList = Provider.of<TablesRepository>(context).getAllTables();
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
-    double screenWidthOffset = screenWidth / 1.43;
-    double screenHeightOffset = screenHeight / 1.205;
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double screenHeight = MediaQuery.of(context).size.height;
+    final TablesRepository tables = Provider.of<TablesRepository>(context);
 
     return CustomScaffold(
       body: Padding(
@@ -27,58 +43,63 @@ class _TablesPageState extends State<TablesPage> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(top: 16.0),
-              child: Text(
-                'Tables',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Diodrum',
-                  fontSize: 30.0,
-                ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    'Table Management',
+                    style: TextStyle(
+                      color: const Color(0xFF20212C),
+                      fontWeight: FontWeight.w800,
+                      fontFamily: 'Diodrum',
+                      fontSize: 35.0,
+                    ),
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(right: 20),
+                        child: IconButton(
+                          icon: isEditing
+                              ? Icon(OMIcons.check)
+                              : Icon(OMIcons.edit),
+                          onPressed: () {
+                            setState(() {
+                              isEditing = !isEditing;
+                            });
+                          },
+                          iconSize: 32,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 6),
+                        child: IconButton(
+                          icon: Icon(OMIcons.add),
+                          onPressed: () {},
+                          iconSize: 32,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
             Expanded(
               child: Container(
                 width: screenWidth / 1.286,
                 height: screenHeight / 1.35,
-                child: Stack(
-                  children: <Widget>[
-                    Positioned(
-                      left: offset.dx,
-                      top: offset.dy,
-                      child: GestureDetector(
-                        onPanUpdate: (DragUpdateDetails details) {
-                          // manual positions
-                          print(offset);
-                          if (offset.dx < 0) {
-                            offset = Offset(5, offset.dy);
-                            return;
-                          }
-                          if (offset.dx > screenWidthOffset) {
-                            offset = Offset(screenWidthOffset - 5, offset.dy);
-                            return; 
-                          }
-                          if (offset.dy < 0) {
-                            offset = Offset(offset.dx, 0);
-                            return;
-                          }
-                          if (offset.dy > screenHeightOffset) {
-                            offset = Offset(offset.dx, screenHeightOffset - 5);
-                            return;
-                          }
-                          setState(() {
-                            offset = Offset(offset.dx + details.delta.dx,
-                                offset.dy + details.delta.dy);
-                          });
-                        },
-                        child: Container(
-                          color: Colors.blue,
-                          width: 100,
-                          height: 100,
-                        ),
-                      ),
-                    ),
-                  ],
+                child: FutureBuilder<List<RestaurantTable>>(
+                  future: tableList,
+                  builder: (BuildContext context,
+                      AsyncSnapshot<List<RestaurantTable>> snapshot) {
+                    if (!snapshot.hasData) {
+                      return SizedBox(); // ! add the universal loader here
+                    }
+                    return TablesDisplay(
+                      isEditing: isEditing,
+                      tables: snapshot.data,
+                    );
+                  },
                 ),
               ),
             ),
