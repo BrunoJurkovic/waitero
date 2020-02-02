@@ -3,7 +3,7 @@ import 'package:waitero/components/nav_rail/nav_rail.dart';
 import 'package:waitero/routing/router.gr.dart';
 
 class CustomRouteObserver extends RouteObserver<PageRoute<dynamic>> {
-  final NavRail rail = const NavRail();
+  final NavRail rail = NavRail();
 
   @override
   void didPop(Route<dynamic> route, Route<dynamic> previousRoute) {

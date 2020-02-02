@@ -18,7 +18,6 @@ class TablesPage extends StatefulWidget {
 class _TablesPageState extends State<TablesPage> {
   bool _isEditing = false;
   Map<String, RestaurantTable> _tablesList;
-  Map<String, RestaurantTable> _cachedTables = <String, RestaurantTable>{};
   bool _init = false;
 
   @override
@@ -26,7 +25,7 @@ class _TablesPageState extends State<TablesPage> {
     super.didChangeDependencies();
     if (!_init) {
       Future<void>.delayed(Duration.zero, () async {
-        await Provider.of<TablesRepository>(context, listen: false).init();
+        Provider.of<TablesRepository>(context, listen: false).init();
       });
       _init = true;
     }
@@ -103,7 +102,6 @@ class _TablesPageState extends State<TablesPage> {
                               icon: Icon(OMIcons.edit),
                               onPressed: () {
                                 setState(() {
-                                  _cachedTables = _tablesList;
                                   _isEditing = true;
                                 });
                               },

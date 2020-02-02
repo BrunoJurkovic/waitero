@@ -19,7 +19,7 @@ class ProductItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Container(
-            height: MediaQuery.of(context).size.height * 0.17,
+            height: MediaQuery.of(context).size.height * 0.15,
             child: CachedNetworkImage(
               imageUrl: product.imageUrl,
               fit: BoxFit.cover,
@@ -37,7 +37,7 @@ class ProductItem extends StatelessWidget {
           ),
           Text(
             '${product.price} USD',
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.black,
               fontSize: 22,
               fontFamily: 'Diodrum',

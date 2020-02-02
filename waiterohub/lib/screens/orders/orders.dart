@@ -122,9 +122,9 @@ class OrdersPage extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 32.0),
                       child: Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: Colors.white,
-                          borderRadius: const BorderRadius.all(Radius.circular(20)),
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
                         ),
                         child: ListView.builder(
                           itemCount: snapshot.data.documents.length,

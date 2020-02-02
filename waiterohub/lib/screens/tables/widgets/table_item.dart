@@ -97,7 +97,7 @@ class _TableItemState extends State<TableItem> {
             print('ended');
           },
           child: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.blue,
             ),
