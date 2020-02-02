@@ -69,10 +69,10 @@ class OrdersPage extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    width: 150,
+                    width: 140,
                     child: Text(
                       'Order Status',
-                      textAlign: TextAlign.center,
+                      textAlign: TextAlign.left,
                       style: TextStyle(
                         fontFamily: 'Diodrum',
                         fontSize: 20,
@@ -110,6 +110,7 @@ class OrdersPage extends StatelessWidget {
                 ],
               ),
             ),
+            const SizedBox(height: 16),
             StreamBuilder<QuerySnapshot>(
               stream: orders.ref.snapshots(),
               builder: (BuildContext context,
@@ -121,9 +122,13 @@ class OrdersPage extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 32.0),
                       child: Container(
-                        color: Colors.white,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: const BorderRadius.all(Radius.circular(20)),
+                        ),
                         child: ListView.builder(
                           itemCount: snapshot.data.documents.length,
+                          padding: const EdgeInsets.symmetric(vertical: 10),
                           itemBuilder: (BuildContext ctx, int index) {
                             final DocumentSnapshot doc =
                                 snapshot.data.documents[index];

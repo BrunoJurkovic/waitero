@@ -15,7 +15,7 @@ class NoNavScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: const Color(0xFFF8F7FC),
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomPadding: false,
       extendBody: true,
