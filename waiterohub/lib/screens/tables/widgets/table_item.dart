@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:waitero/routing/router.gr.dart';
 import 'package:waitero/services/database/tables_repo.dart';
 
 class TableItem extends StatefulWidget {
@@ -79,6 +80,15 @@ class _TableItemState extends State<TableItem> {
             setState(() {
               offset = newOffset;
             });
+          },
+          onTap: () {
+            Router.navigator.pushNamed(
+              Router.tableDetails,
+              arguments: TableDetailsArguments(
+                id: widget.id,
+                qrCodeURL: widget.qrCodeUrl,
+              ),
+            );
           },
           onPanCancel: () {
             print('canceled');

@@ -13,6 +13,7 @@ import 'package:waitero/screens/orders/orders.dart';
 import 'package:waitero/screens/products/products.dart';
 import 'package:waitero/screens/tables/tables.dart';
 import 'package:waitero/screens/products/add_product/add_product.dart';
+import 'package:waitero/screens/tables/table_details/table_details.dart';
 
 class Router {
   static const dashboard = '/';
@@ -20,12 +21,14 @@ class Router {
   static const manageProducts = '/manage-products';
   static const tables = '/tables';
   static const addProduct = '/add-product';
+  static const tableDetails = '/table-details';
   static const routes = [
     dashboard,
     orders,
     manageProducts,
     tables,
     addProduct,
+    tableDetails,
   ];
   static GlobalKey<NavigatorState> get navigatorKey =>
       getNavigatorKey<Router>();
@@ -94,6 +97,19 @@ class Router {
           settings: settings,
           fullscreenDialog: true,
         );
+      case Router.tableDetails:
+        if (hasInvalidArgs<TableDetailsArguments>(args, isRequired: true)) {
+          return misTypedArgsRoute<TableDetailsArguments>(args);
+        }
+        final typedArgs = args as TableDetailsArguments;
+        return MaterialPageRoute(
+          builder: (_) => TableDetails(
+              key: typedArgs.key,
+              id: typedArgs.id,
+              qrCodeURL: typedArgs.qrCodeURL),
+          settings: settings,
+          fullscreenDialog: true,
+        );
       default:
         return unknownRoutePage(settings.name);
     }
@@ -111,4 +127,13 @@ class AddProductPageArguments {
   final String id;
   final String imageUrl;
   AddProductPageArguments({this.price, this.name, this.id, this.imageUrl});
+}
+
+//TableDetails arguments holder class
+class TableDetailsArguments {
+  final Key key;
+  final String id;
+  final String qrCodeURL;
+  TableDetailsArguments(
+      {this.key, @required this.id, @required this.qrCodeURL});
 }
