@@ -4,6 +4,7 @@ import 'package:waitero/screens/dashboard/dashboard.dart';
 import 'package:waitero/screens/products/add_product/add_product.dart';
 import 'package:waitero/screens/products/products.dart';
 import 'package:waitero/screens/orders/orders.dart';
+import 'package:waitero/screens/tables/table_details/table_details.dart';
 import 'package:waitero/screens/tables/tables.dart';
 
 /*
@@ -29,4 +30,6 @@ class $Router {
   TablesPage tables;
   @MaterialRoute(fullscreenDialog: true)
   AddProductPage addProduct;
+  @MaterialRoute(fullscreenDialog: true)
+  TableDetails tableDetails;
 }

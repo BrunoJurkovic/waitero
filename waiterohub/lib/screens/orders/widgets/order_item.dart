@@ -11,39 +11,41 @@ import 'package:waitero/services/database/orders_repo.dart';
 
 class OrderItem extends StatelessWidget {
   const OrderItem({
-    Key key,
     this.status,
     this.tableID,
     this.orderID,
     this.timestamp,
-  }) : super(key: key);
+    this.shouldBeGrey,
+  });
 
   final OrderStatus status;
   final String tableID;
   final String orderID;
   final DateTime timestamp;
+  final bool shouldBeGrey;
 
   @override
   Widget build(BuildContext context) {
     final OrdersRepository orders = Provider.of<OrdersRepository>(context);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 2),
       child: FutureBuilder<double>(
-          future: orders.calculateItemCost(orderID),
-          builder: (BuildContext context, AsyncSnapshot<double> snapshot) {
-            if (!snapshot.hasData) {
-              return const SizedBox();
-            }
-            print(snapshot.data);
-            return ItemBody(
-              orderID: orderID,
-              tableID: tableID,
-              status: status,
-              timestamp: timestamp,
-              total: snapshot.data,
-            );
-          }),
+        future: orders.calculateItemCost(orderID),
+        builder: (BuildContext context, AsyncSnapshot<double> snapshot) {
+          if (!snapshot.hasData) {
+            return const SizedBox();
+          }
+          return ItemBody(
+            orderID: orderID,
+            tableID: tableID,
+            status: status,
+            timestamp: timestamp,
+            total: snapshot.data,
+            shouldBeGrey: shouldBeGrey,
+          );
+        },
+      ),
     );
   }
 }
@@ -56,6 +58,7 @@ class ItemBody extends StatelessWidget {
     @required this.status,
     @required this.timestamp,
     @required this.total,
+    @required this.shouldBeGrey,
   }) : super(key: key);
 
   final String orderID;
@@ -63,55 +66,71 @@ class ItemBody extends StatelessWidget {
   final OrderStatus status;
   final DateTime timestamp;
   final double total;
+  final bool shouldBeGrey;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height * 0.05,
       width: MediaQuery.of(context).size.width * 0.75,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          Text(
-            '#${orderID?.substring(0, 8)?.toUpperCase()}',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: 'Diodrum',
-              fontSize: 20,
-              fontWeight: FontWeight.w400,
+      child: Container(
+        color: shouldBeGrey ? const Color(0xFFF8F7FC) : null,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Container(
+              width: 150,
+              child: Text(
+                '#${orderID?.substring(0, 8)?.toUpperCase()}',
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontFamily: 'Diodrum',
+                  fontSize: 20,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
             ),
-          ),
-          Text(
-            'TBL-$tableID',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: 'Diodrum',
-              fontSize: 20,
-              fontWeight: FontWeight.w400,
+            Container(
+              width: 100,
+              child: Text(
+                'TBL-$tableID',
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontFamily: 'Diodrum',
+                  fontSize: 20,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
             ),
-          ),
-          IndicatorWidget(
-            status: status,
-          ),
-          Text(
-            '\$$total',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: 'Diodrum',
-              fontSize: 20,
-              fontWeight: FontWeight.w400,
+            IndicatorWidget(
+              status: status,
             ),
-          ),
-          Text(
-            '${DateFormat.jm().format(timestamp.toLocal())}',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: 'Diodrum',
-              fontSize: 20,
-              fontWeight: FontWeight.w400,
+            Container(
+              width: 100,
+              child: Text(
+                '$total \$',
+                textAlign: TextAlign.right,
+                style: const TextStyle(
+                  fontFamily: 'Diodrum',
+                  fontSize: 20,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
             ),
-          ),
-        ],
+            Container(
+              width: 100,
+              child: Text(
+                '${DateFormat('HH:mm').format(timestamp.toLocal())}',
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontFamily: 'Diodrum',
+                  fontSize: 20,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

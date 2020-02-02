@@ -18,7 +18,7 @@ class RestaurantTable with ChangeNotifier {
     final double positionY = doc['positionY'] as double;
     final Offset offset = Offset(positionX, positionY);
     return RestaurantTable(
-      id: doc['productId'] as String,
+      id: doc['id'] as String,
       qrCodeURL: doc['imageUrl'] as String,
       position: offset,
     );
@@ -31,14 +31,19 @@ class RestaurantTable with ChangeNotifier {
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
-      'productId': id,
+      'id': id,
       'imageUrl': qrCodeURL,
       'positionX': position.dx,
       'positionY': position.dy,
     };
   }
 
+  set tablePosition(Offset newOffset) {
+    position = newOffset;
+    notifyListeners();
+  }
+
   final String id;
   final String qrCodeURL;
-  final Offset position;
+  Offset position;
 }

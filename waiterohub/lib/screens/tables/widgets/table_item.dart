@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:waitero/routing/router.gr.dart';
+import 'package:waitero/services/database/tables_repo.dart';
 
 class TableItem extends StatefulWidget {
-  const TableItem(
-      {Key key, this.offset, this.qrCodeUrl, this.id, this.isEditing = false})
-      : super(key: key);
+  const TableItem({
+    Key key,
+    this.offset,
+    this.qrCodeUrl,
+    this.id,
+    this.isEditing = false,
+  }) : super(key: key);
 
   final Offset offset;
   final String qrCodeUrl;
@@ -24,11 +31,21 @@ class _TableItemState extends State<TableItem> {
   }
 
   @override
+  void didUpdateWidget(TableItem oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (offset != oldWidget.offset) {
+      offset = widget.offset;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidthOffset = screenWidth / 1.43;
     final double screenHeightOffset = screenHeight / 1.205;
+    final TablesRepository tablesRepository =
+        Provider.of<TablesRepository>(context);
 
     return Container(
       child: Positioned(
@@ -36,7 +53,9 @@ class _TableItemState extends State<TableItem> {
         top: offset.dy,
         child: GestureDetector(
           onPanUpdate: (DragUpdateDetails details) {
-            // manual positions
+            if (!widget.isEditing) {
+              return;
+            }
             if (offset.dx < 0) {
               offset = Offset(5, offset.dy);
               return;
@@ -53,15 +72,32 @@ class _TableItemState extends State<TableItem> {
               offset = Offset(offset.dx, screenHeightOffset - 5);
               return;
             }
-            if (!widget.isEditing) {
-              setState(() {
-                offset = Offset(
-                    offset.dx + details.delta.dx, offset.dy + details.delta.dy);
-              });
-            }
+            final Offset newOffset = Offset(
+              offset.dx + details.delta.dx,
+              offset.dy + details.delta.dy,
+            );
+            tablesRepository.updateLocalTableOffset(widget.id, newOffset);
+            setState(() {
+              offset = newOffset;
+            });
+          },
+          onTap: () {
+            Router.navigator.pushNamed(
+              Router.tableDetails,
+              arguments: TableDetailsArguments(
+                id: widget.id,
+                qrCodeURL: widget.qrCodeUrl,
+              ),
+            );
+          },
+          onPanCancel: () {
+            print('canceled');
+          },
+          onPanEnd: (DragEndDetails endDetails) {
+            print('ended');
           },
           child: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.blue,
             ),
