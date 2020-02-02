@@ -12,19 +12,14 @@ import 'package:uuid/uuid.dart';
 import 'package:waitero/services/database/images_repo.dart';
 import 'package:waitero/services/database/products_repo.dart';
 
-class AddProductPage extends StatefulWidget {
+class AddProductPage extends StatelessWidget {
   const AddProductPage({this.price, this.name, this.id, this.imageUrl});
-
-  @override
-  _AddProductPageState createState() => _AddProductPageState();
-
+  
   final String price;
   final String name;
   final String id;
   final String imageUrl;
-}
 
-class _AddProductPageState extends State<AddProductPage> {
   @override
   Widget build(BuildContext context) {
     return NoNavScaffold(
@@ -44,11 +39,11 @@ class _AddProductPageState extends State<AddProductPage> {
                   },
                 ),
                 const SizedBox(width: 8),
-                if (widget.name == null) Text(
+                if (name == null) const Text(
                   'Add New Product',
-                  style: const TextStyle(fontSize: 32),
+                  style: TextStyle(fontSize: 32),
                 ) else Text(
-                  'Manage "${widget.name.trim()}"',
+                  'Manage "${name.trim()}"',
                   style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
                 ),
               ],
@@ -56,10 +51,10 @@ class _AddProductPageState extends State<AddProductPage> {
           ),
           Expanded(
             child: _AddProductForm(
-              id: widget.id,
-              price: widget.price,
-              imageUrl: widget.imageUrl,
-              name: widget.name,
+              id: id,
+              price: price,
+              imageUrl: imageUrl,
+              name: name,
             ),
           ),
         ],
@@ -103,6 +98,8 @@ class _AddProductFormState extends State<_AddProductForm> {
         widget.price?.substring(1, widget.price.length) ?? '0.00';
     _productID = widget.id ?? Uuid().v4();
     _imageUrl = widget.imageUrl ?? widget.imageUrl;
+    _imagesRepository = Provider.of<ImagesRepository>(context, listen: false);
+    _productsRepository = Provider.of<ProductsRepository>(context, listen: false);
     if (mounted) {
       setState(() {});
     }
@@ -193,8 +190,6 @@ class _AddProductFormState extends State<_AddProductForm> {
 
   Widget buildForm(BuildContext context) {
     final double fontSize = MediaQuery.of(context).size.width / 40;
-    _imagesRepository = Provider.of<ImagesRepository>(context);
-    _productsRepository = Provider.of<ProductsRepository>(context);
 
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 24),

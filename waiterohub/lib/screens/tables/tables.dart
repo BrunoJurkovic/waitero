@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 import 'package:waitero/components/scaffold/custom_scaffold.dart';
 import 'package:waitero/providers/table.dart';
+import 'package:waitero/routing/router.gr.dart';
 import 'package:waitero/screens/tables/widgets/table_display.dart';
-import 'package:waitero/screens/tables/widgets/table_item.dart';
 import 'package:waitero/services/database/tables_repo.dart';
 
 class TablesPage extends StatefulWidget {
@@ -15,95 +16,159 @@ class TablesPage extends StatefulWidget {
 }
 
 class _TablesPageState extends State<TablesPage> {
-  Offset offset = Offset.zero;
-
-  bool isEditing = false;
-  Future<List<RestaurantTable>> tableList;
+  bool _isEditing = false;
+  Map<String, RestaurantTable> _tablesList;
+  Map<String, RestaurantTable> _cachedTables = <String, RestaurantTable>{};
+  bool _init = false;
 
   @override
-  void initState() {
-    WidgetsBinding.instance.scheduleFrameCallback((_) {
-      tableList = Provider.of<TablesRepository>(context).getAllTables();
-    });
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_init) {
+      Future<void>.delayed(Duration.zero, () async {
+        await Provider.of<TablesRepository>(context, listen: false).init();
+      });
+      _init = true;
+    }
+  }
+
+  Future<bool> shouldPop() async {
+    print('shouldPop called');
+    if (!_isEditing) {
+      return true;
+    }
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Text(
+            'Discard changes?',
+            style: TextStyle(
+              fontSize: 14.0,
+              fontFamily: 'Diodrum',
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          actions: <Widget>[
+            MaterialButton(
+              child: const Text('Yes'),
+              onPressed: () => Router.navigator.pop(true),
+            ),
+            MaterialButton(
+              child: const Text('No'),
+              onPressed: () => Router.navigator.pop(false),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
-    final TablesRepository tables = Provider.of<TablesRepository>(context);
 
-    return CustomScaffold(
-      body: Padding(
-        padding: const EdgeInsets.only(left: 32),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    'Table Management',
-                    style: TextStyle(
-                      color: const Color(0xFF20212C),
-                      fontWeight: FontWeight.w800,
-                      fontFamily: 'Diodrum',
-                      fontSize: 35.0,
-                    ),
-                  ),
-                  Row(
+    return WillPopScope(
+      onWillPop: shouldPop,
+      child: CustomScaffold(
+        body: Consumer<TablesRepository>(
+          builder: (BuildContext context, TablesRepository repo, Widget _) {
+            _tablesList = repo.tables;
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(top: 16.0, left: 32),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(right: 20),
-                        child: IconButton(
-                          icon: isEditing
-                              ? Icon(OMIcons.check)
-                              : Icon(OMIcons.edit),
-                          onPressed: () {
-                            setState(() {
-                              isEditing = !isEditing;
-                            });
-                          },
-                          iconSize: 32,
+                      const Text(
+                        'Table Management',
+                        style: TextStyle(
+                          color: Color(0xFF20212C),
+                          fontWeight: FontWeight.w800,
+                          fontFamily: 'Diodrum',
+                          fontSize: 35.0,
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 6),
-                        child: IconButton(
-                          icon: Icon(OMIcons.add),
-                          onPressed: () {},
-                          iconSize: 32,
-                        ),
+                      Row(
+                        children: <Widget>[
+                          const SizedBox(width: 20),
+                          Visibility(
+                            visible: !_isEditing,
+                            child: IconButton(
+                              icon: Icon(OMIcons.edit),
+                              onPressed: () {
+                                setState(() {
+                                  _cachedTables = _tablesList;
+                                  _isEditing = true;
+                                });
+                              },
+                              iconSize: 32,
+                            ),
+                          ),
+                          const SizedBox(width: 6),
+                          Visibility(
+                            visible: _isEditing,
+                            child: Row(
+                              children: <Widget>[
+                                IconButton(
+                                  icon: Icon(OMIcons.add),
+                                  onPressed: () {
+                                    repo.createLocalTable(
+                                      RestaurantTable(
+                                        id: Uuid().v4(),
+                                        position: const Offset(0, 0),
+                                      ),
+                                    );
+                                  },
+                                  iconSize: 32,
+                                ),
+                                const SizedBox(width: 6),
+                                IconButton(
+                                  icon: Icon(OMIcons.check),
+                                  onPressed: () async {
+                                    await repo.sendTables();
+                                    setState(() {
+                                      _isEditing = false;
+                                    });
+                                  },
+                                  iconSize: 32,
+                                ),
+                                const SizedBox(width: 6),
+                                IconButton(
+                                  icon: Icon(OMIcons.cancel),
+                                  onPressed: () {
+                                    _isEditing = false;
+                                    repo.discardChanges();
+                                  },
+                                  iconSize: 32,
+                                ),
+                                const SizedBox(width: 6),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Container(
-                width: screenWidth / 1.286,
-                height: screenHeight / 1.35,
-                child: FutureBuilder<List<RestaurantTable>>(
-                  future: tableList,
-                  builder: (BuildContext context,
-                      AsyncSnapshot<List<RestaurantTable>> snapshot) {
-                    if (!snapshot.hasData) {
-                      return SizedBox(); // ! add the universal loader here
-                    }
-                    return TablesDisplay(
-                      isEditing: isEditing,
-                      tables: snapshot.data,
-                    );
-                  },
                 ),
-              ),
-            ),
-          ],
+                Expanded(
+                  child: Container(
+                    width: screenWidth / 1.286,
+                    height: screenHeight / 1.35,
+                    child: TablesDisplay(
+                      isEditing: _isEditing,
+                      tables: _tablesList,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );

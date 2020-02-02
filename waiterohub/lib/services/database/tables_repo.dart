@@ -1,27 +1,64 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/widgets.dart';
 import 'package:waitero/providers/table.dart';
 
-class TablesRepository {
+class TablesRepository with ChangeNotifier {
   CollectionReference ref = Firestore.instance.collection('tables');
 
-  Future<List<RestaurantTable>> getAllTables() async {
-    final QuerySnapshot query =
-        await ref.orderBy('name', descending: true).getDocuments();
+  final Map<String, RestaurantTable> _localTables = <String, RestaurantTable>{};
+
+  void init() {
+    _getAllTables();
+  }
+
+  Future<void> _getAllTables() async {
+    final QuerySnapshot query = await ref.getDocuments();
     final List<RestaurantTable> allTables = query.documents
         .map((DocumentSnapshot doc) => RestaurantTable.fromDocument(doc))
         .toList();
-    return allTables;
+    for (final RestaurantTable table in allTables) {
+      _localTables[table.id] = table;
+    }
+    notifyListeners();
   }
 
-  Future<void> createTable(RestaurantTable table) {
-    return ref.document(table.id).setData(table.toJson(), merge: true);
+  Map<String, RestaurantTable> get tables {
+    return _localTables ?? <String, RestaurantTable>{};
   }
 
-  Future<void> updateTable(String id, RestaurantTable table) {
-    return ref.document(id).updateData(table.toJson());
+  void createLocalTable(RestaurantTable table) {
+    _localTables[table.id] = table;
+    notifyListeners();
   }
 
-  Future<void> deleteTable(String productID) {
-    return ref.document(productID).delete();
+  void discardChanges() {
+    _getAllTables();
+  }
+
+  void updateLocalTableOffset(String tableID, Offset newOffset) {
+    final RestaurantTable table = _localTables[tableID];
+    table.tablePosition = newOffset;
+    _localTables[tableID] = table;
+  }
+
+  Future<void> updateTable(String id, RestaurantTable newTable) async {
+    _localTables[id] = newTable;
+    await ref.document(id).updateData(newTable.toJson());
+    notifyListeners();
+  }
+
+  Future<void> sendTables() {
+    final WriteBatch batch = Firestore.instance.batch();
+    for (final String id in _localTables.keys) {
+      final DocumentReference docRef = ref.document(id);
+      batch.setData(docRef, _localTables[id].toJson());
+    }
+    return batch.commit();
+  }
+
+  Future<void> deleteTable(String tableID) async {
+    _localTables.remove(tableID);
+    await ref.document(tableID).delete();
+    notifyListeners();
   }
 }

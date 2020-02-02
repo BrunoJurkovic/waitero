@@ -8,6 +8,9 @@ import 'package:waitero/routing/router.gr.dart';
 int _selectedIndex = 0;
 
 class NavRail extends StatefulWidget {
+  int get selectedIndex => _selectedIndex;
+  set selectedIndex(int newIndex) => _selectedIndex = newIndex;
+
   @override
   _NavRailState createState() => _NavRailState();
 }
