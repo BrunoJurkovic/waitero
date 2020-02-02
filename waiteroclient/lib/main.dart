@@ -4,7 +4,7 @@ import 'package:firebase/firebase.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
-import 'package:waiteroclient/analytics_route_observer/analytics_route_observer.dart';
+import 'package:waiteroclient/components/analytics_route_observer/analytics_route_observer.dart';
 import 'package:waiteroclient/screens/order/order.dart';
 import 'package:waiteroclient/services/database/products_repository.dart';
 

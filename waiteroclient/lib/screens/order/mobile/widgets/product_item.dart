@@ -1,10 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:waiteroclient/models/product.dart';
 
-import 'package:waitero/providers/product.dart';
-
-class ProductItem extends StatelessWidget {
-  const ProductItem({Key key, this.product}) : super(key: key);
+class ProductItemMobile extends StatelessWidget {
+  const ProductItemMobile({Key key, this.product}) : super(key: key);
 
   final Product product;
 
@@ -13,6 +12,7 @@ class ProductItem extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
+        color: Colors.brown,
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -20,9 +20,8 @@ class ProductItem extends StatelessWidget {
         children: <Widget>[
           Container(
             height: MediaQuery.of(context).size.height * 0.17,
-            child: CachedNetworkImage(
-              imageUrl: product.imageUrl,
-              fit: BoxFit.cover,
+            child: Image(
+              image: NetworkImage(product.imageUrl),
             ),
           ),
           const SizedBox(height: 8),
@@ -30,7 +29,7 @@ class ProductItem extends StatelessWidget {
             product.name,
             style: TextStyle(
               color: Colors.black,
-              fontSize: 28,
+              fontSize: 20,
               fontFamily: 'Diodrum',
               fontWeight: FontWeight.w600,
             ),
@@ -39,8 +38,9 @@ class ProductItem extends StatelessWidget {
             '${product.price} USD',
             style: TextStyle(
               color: Colors.black,
-              fontSize: 22,
+              fontSize: 14,
               fontFamily: 'Diodrum',
+              fontWeight: FontWeight.w600,
             ),
           ),
         ],
