@@ -16,8 +16,8 @@ class ImagesRepository {
 */
   StorageReference ref = FirebaseStorage.instance.ref();
 
-  ///! This function uploads a image that we provide it, sets the name of the to-be-uplaoded file, then it returns a URL.
-  ///? Ova funkcija uploada sliku koju joj posaljemo, postavi zadano ime slike koja ce biti uploadana, i onda nam vrati URL.
+  ///!EN: This function uploads a image that we provide it, sets the name of the to-be-uplaoded file, then it returns a URL.
+  ///?HR: Ova funkcija uploada sliku koju joj posaljemo, postavi zadano ime slike koja ce biti uploadana, i onda nam vrati URL.
 
   Future<String> uploadProductImageAndGetURL(
       File file, String productID) async {
@@ -28,9 +28,9 @@ class ImagesRepository {
     return await storageSnap.ref.getDownloadURL() as String;
   }
 
-  ///! This function deleted the image with the provided product ID.
+  ///!EN: This function deleted the image with the provided product ID.
   ///
-  ///? Ova funkcija izbrise sliku sa zadanim ID-em proizvoda.
+  ///?HR: Ova funkcija izbrise sliku sa zadanim ID-em proizvoda.
   Future<void> deleteProductImage(String productID) {
     return ref.child('product_$productID.jpg').delete();
   }
