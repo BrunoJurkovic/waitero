@@ -123,10 +123,10 @@ class OrdersRepository with ChangeNotifier {
   //todo make this work
 
   Future<List<FlSpot>> calculateGraphDots(OrderFetch time) async {
-    List<FlSpot> spots = [];
+    final List<FlSpot> spots = <FlSpot>[];
     switch (time) {
       case OrderFetch.Monthly:
-        final List<Order> ordersInMonth = [];
+        final List<Order> ordersInMonth = <Order>[];
         final DateTime month = DateUtils.getMonthDate();
         final DateTime lastDay = Utils.lastDayOfMonth(month);
         final QuerySnapshot query = await ref
@@ -149,11 +149,38 @@ class OrdersRepository with ChangeNotifier {
               .toList();
           spots.add(FlSpot(i.toDouble(), todaysOrders.length.toDouble()));
         }
-        return spots;
         break;
       case OrderFetch.Today:
-        // TODO: Handle this case.
+        final List<List<Order>> ordersInDay = <List<Order>>[];
+        final DateTime day = DateUtils.getTodaysDate();
+        final QuerySnapshot query = await ref
+            .where('timestamp',
+                isGreaterThanOrEqualTo: day.millisecondsSinceEpoch)
+            .orderBy('timestamp', descending: true)
+            .getDocuments();
+        for (int i = 0; i <= 24; i++) {
+          ordersInDay.add(query.documents
+              .map((DocumentSnapshot doc) => Order.fromDocument(doc))
+              .where((Order order) {
+            return order.timestamp.isAfter(day.add(Duration(hours: i)));
+          }).where((Order order) {
+            return order.timestamp.isBefore(day.add(Duration(hours: i + 1)));
+          }).toList());
+        }
+        for (final List<Order> orders in ordersInDay) {
+          if (orders.isEmpty) {
+            spots.add(FlSpot(ordersInDay.indexOf(orders).toDouble(), 0));
+            continue;
+          }
+          spots.add(
+            FlSpot(
+              orders.first.timestamp.hour.toDouble(),
+              orders.length.toDouble(),
+            ),
+          );
+        }
         break;
     }
+    return spots;
   }
 }

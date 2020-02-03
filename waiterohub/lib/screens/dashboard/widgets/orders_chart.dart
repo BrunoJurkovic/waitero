@@ -10,9 +10,12 @@ class OrdersChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<LineChartBarData> linesBar(AsyncSnapshot<List<FlSpot>> snapshot) {
+    List<LineChartBarData> linesBar(
+        AsyncSnapshot<Map<String, List<FlSpot>>> snapshot) {
       final LineChartBarData lineChartBarData1 = LineChartBarData(
-        spots: snapshot.hasData ? snapshot.data : <FlSpot>[const FlSpot(1, 1)],
+        spots: snapshot.hasData
+            ? snapshot.data['daily']
+            : <FlSpot>[const FlSpot(1, 1)],
         isCurved: true,
         colors: const <Color>[
           Color(0xFFEF7198),
@@ -27,25 +30,20 @@ class OrdersChart extends StatelessWidget {
           show: false,
         ),
       );
-      const LineChartBarData lineChartBarData2 = LineChartBarData(
-        spots: <FlSpot>[
-          FlSpot(1, 1),
-          FlSpot(3, 2.8),
-          FlSpot(7, 1.2),
-          FlSpot(10, 2.8),
-          FlSpot(12, 2.6),
-          FlSpot(13, 3.9),
-        ],
+      final LineChartBarData lineChartBarData2 = LineChartBarData(
+        spots: snapshot.hasData
+            ? snapshot.data['monthly']
+            : <FlSpot>[const FlSpot(1, 1)],
         isCurved: true,
         colors: <Color>[
-          Color(0xFF5EC999),
+          const Color(0xFF5EC999),
         ],
         barWidth: 5,
         isStrokeCapRound: true,
-        dotData: FlDotData(
+        dotData: const FlDotData(
           show: false,
         ),
-        belowBarData: BarAreaData(
+        belowBarData: const BarAreaData(
           show: false,
           colors: <Color>[Color(0x00aa4cfc), Color(0xFF7EDDB9)],
         ),
@@ -56,13 +54,22 @@ class OrdersChart extends StatelessWidget {
       ];
     }
 
-    return FutureBuilder<List<FlSpot>>(
-        future: Provider.of<OrdersRepository>(context)
+    Future<Map<String, List<FlSpot>>> _getFutures() async {
+      return <String, List<FlSpot>>{
+        'monthly': await Provider.of<OrdersRepository>(context, listen: false)
             .calculateGraphDots(OrderFetch.Monthly),
-        builder: (BuildContext context, AsyncSnapshot<List<FlSpot>> snapshot) {
+        'daily': await Provider.of<OrdersRepository>(context, listen: false)
+            .calculateGraphDots(OrderFetch.Today),
+      };
+    }
+
+    return FutureBuilder<Map<String, List<FlSpot>>>(
+        future: _getFutures(),
+        builder: (BuildContext context,
+            AsyncSnapshot<Map<String, List<FlSpot>>> snapshot) {
           return Container(
             height: MediaQuery.of(context).size.height * 0.4,
-            width: MediaQuery.of(context).size.width * 0.5,
+            width: MediaQuery.of(context).size.width * 0.7,
             child: LineChart(
               LineChartData(
                 lineTouchData: LineTouchData(

@@ -1,4 +1,3 @@
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:waitero/components/fade_in/fade_in.dart';
@@ -109,7 +108,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           ),
                         ),
                         SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.16,
+                          width: MediaQuery.of(context).size.width * 0.33,
                         ),
                         const FadeIn(
                           child: ChartLegend(),
@@ -121,7 +120,13 @@ class _DashboardPageState extends State<DashboardPage> {
                   const SizedBox(
                     height: 24,
                   ),
-                  const FadeIn(child: OrdersChart(), delay: 0.7,),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 32),
+                    child: FadeIn(
+                      child: OrdersChart(),
+                      delay: 0.7,
+                    ),
+                  ),
                 ],
               ),
             );
