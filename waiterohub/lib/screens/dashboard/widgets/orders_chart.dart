@@ -12,7 +12,7 @@ class OrdersChart extends StatelessWidget {
   Widget build(BuildContext context) {
     List<LineChartBarData> linesBar(AsyncSnapshot<List<FlSpot>> snapshot) {
       final LineChartBarData lineChartBarData1 = LineChartBarData(
-        spots: snapshot.data,
+        spots: snapshot.hasData ? snapshot.data : <FlSpot>[const FlSpot(1, 1)],
         isCurved: true,
         colors: const <Color>[
           Color(0xFFEF7198),
@@ -59,7 +59,7 @@ class OrdersChart extends StatelessWidget {
     return FutureBuilder<List<FlSpot>>(
         future: Provider.of<OrdersRepository>(context)
             .calculateGraphDots(OrderFetch.Monthly),
-        builder: (context, snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<List<FlSpot>> snapshot) {
           return Container(
             height: MediaQuery.of(context).size.height * 0.4,
             width: MediaQuery.of(context).size.width * 0.5,

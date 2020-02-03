@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:waitero/components/fade_in/fade_in.dart';
 import 'package:waitero/components/loading/loading.dart';
 import 'package:waitero/components/scaffold/custom_scaffold.dart';
 import 'package:waitero/screens/dashboard/widgets/chart_legend.dart';
@@ -65,14 +66,17 @@ class _DashboardPageState extends State<DashboardPage> {
                     ),
                   ),
                   const SizedBox(height: 32),
-                  Text(
-                    'Analytical Overview',
-                    style: TextStyle(
-                      color: const Color(0xFF20212C),
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 0.6,
-                      fontFamily: 'Diodrum',
-                      fontSize: 24.0,
+                  FadeIn(
+                    delay: 0.33,
+                    child: Text(
+                      'Analytical Overview',
+                      style: TextStyle(
+                        color: const Color(0xFF20212C),
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 0.6,
+                        fontFamily: 'Diodrum',
+                        fontSize: 24.0,
+                      ),
                     ),
                   ),
                   Padding(
@@ -90,28 +94,34 @@ class _DashboardPageState extends State<DashboardPage> {
                       ),
                     ),
                   ),
-                  Row(
-                    children: <Widget>[
-                      Text(
-                        'Order Insight',
-                        style: TextStyle(
-                          color: const Color(0xFF20212C),
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 0.6,
-                          fontFamily: 'Diodrum',
-                          fontSize: 24.0,
+                  FadeIn(
+                    delay: 0.6,
+                    child: Row(
+                      children: <Widget>[
+                        Text(
+                          'Order Insight',
+                          style: TextStyle(
+                            color: const Color(0xFF20212C),
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 0.6,
+                            fontFamily: 'Diodrum',
+                            fontSize: 24.0,
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.16,
-                      ),
-                      const ChartLegend()
-                    ],
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.16,
+                        ),
+                        const FadeIn(
+                          child: ChartLegend(),
+                          delay: 0.65,
+                        )
+                      ],
+                    ),
                   ),
                   const SizedBox(
                     height: 24,
                   ),
-                  OrdersChart(),
+                  const FadeIn(child: OrdersChart(), delay: 0.7,),
                 ],
               ),
             );
@@ -126,4 +136,3 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 }
-
