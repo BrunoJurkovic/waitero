@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:waitero/components/loading/loading.dart';
 import 'package:waitero/components/scaffold/custom_scaffold.dart';
-import 'package:waitero/providers/order.dart';
-import 'package:waitero/screens/orders/widgets/indicator_dot.dart';
-import 'package:waitero/screens/orders/widgets/order_item.dart';
+import 'package:waitero/screens/orders/widgets/order_legend.dart';
+import 'package:waitero/screens/orders/widgets/order_list.dart';
 import 'package:waitero/services/database/orders_repo.dart';
 
 /*
@@ -42,79 +41,7 @@ class OrdersPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
-            Container(
-              width: MediaQuery.of(context).size.width * 0.75,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Container(
-                    width: 150,
-                    child: Text(
-                      'Order ID',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontFamily: 'Diodrum',
-                        fontSize: 20,
-                        color: Colors.grey,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: 100,
-                    child: Text(
-                      'Table ID',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontFamily: 'Diodrum',
-                        fontSize: 20,
-                        color: Colors.grey,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: 140,
-                    child: Text(
-                      'Order Status',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontFamily: 'Diodrum',
-                        fontSize: 20,
-                        color: Colors.grey,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: 75,
-                    child: Text(
-                      'Total',
-                      textAlign: TextAlign.right,
-                      style: TextStyle(
-                        fontFamily: 'Diodrum',
-                        fontSize: 20,
-                        color: Colors.grey,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: 100,
-                    child: Text(
-                      'Time',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontFamily: 'Diodrum',
-                        fontSize: 20,
-                        color: Colors.grey,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            const OrderLegend(),
             const SizedBox(height: 16),
             StreamBuilder<QuerySnapshot>(
               stream: orders.ref.snapshots(),
@@ -131,25 +58,7 @@ class OrdersPage extends StatelessWidget {
                           color: Colors.white,
                           borderRadius: BorderRadius.all(Radius.circular(20)),
                         ),
-                        child: ListView.builder(
-                          itemCount: snapshot.data.documents.length,
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          itemBuilder: (BuildContext ctx, int index) {
-                            final DocumentSnapshot doc =
-                                snapshot.data.documents[index];
-                            final Order order = Order.fromDocument(doc);
-                            final OrderStatus status = order.isCompleted
-                                ? OrderStatus.Completed
-                                : OrderStatus.Unfinished;
-                            return OrderItem(
-                              orderID: order.id,
-                              status: status,
-                              shouldBeGrey: index % 2 == 0,
-                              tableID: order.tableID,
-                              timestamp: order.timestamp,
-                            );
-                          },
-                        ),
+                        child: OrderList(snapshot: snapshot),
                       ),
                     ),
                   );

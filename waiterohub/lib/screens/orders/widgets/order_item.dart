@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:waitero/components/fade_in/fade_in.dart';
 import 'package:waitero/screens/orders/widgets/indicator_dot.dart';
 import 'package:waitero/services/database/orders_repo.dart';
 
@@ -80,52 +81,71 @@ class ItemBody extends StatelessWidget {
           children: <Widget>[
             Container(
               width: 150,
-              child: Text(
-                '#${orderID?.substring(0, 8)?.toUpperCase()}',
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontFamily: 'Diodrum',
-                  fontSize: 20,
-                  fontWeight: FontWeight.w400,
+              child: FadeIn(
+                delay: 0.45,
+                child: Text(
+                  '#${orderID?.substring(0, 8)?.toUpperCase()}',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontFamily: 'Diodrum',
+                    fontSize: 20,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
               ),
             ),
-            Container(
-              width: 100,
-              child: Text(
-                'TBL-$tableID',
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontFamily: 'Diodrum',
-                  fontSize: 20,
-                  fontWeight: FontWeight.w400,
+            FadeIn(
+              delay: 0.5,
+              child: Container(
+                width: 100,
+                child: Text(
+                  'TBL-$tableID',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontFamily: 'Diodrum',
+                    fontSize: 20,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
               ),
             ),
-            IndicatorWidget(
-              status: status,
-            ),
-            Container(
-              width: 100,
-              child: Text(
-                '$total \$',
-                textAlign: TextAlign.right,
-                style: const TextStyle(
-                  fontFamily: 'Diodrum',
-                  fontSize: 20,
-                  fontWeight: FontWeight.w400,
+            FadeIn(
+              delay: 0.55,
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 400),
+                child: IndicatorWidget(
+                  key: ValueKey<OrderStatus>(status),
+                  status: status,
                 ),
               ),
             ),
-            Container(
-              width: 100,
-              child: Text(
-                '${DateFormat('HH:mm').format(timestamp.toLocal())}',
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontFamily: 'Diodrum',
-                  fontSize: 20,
-                  fontWeight: FontWeight.w400,
+            FadeIn(
+              delay: 0.60,
+              child: Container(
+                width: 100,
+                child: Text(
+                  '$total \$',
+                  textAlign: TextAlign.right,
+                  style: const TextStyle(
+                    fontFamily: 'Diodrum',
+                    fontSize: 20,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+            ),
+            FadeIn(
+              delay: 0.65,
+              child: Container(
+                width: 100,
+                child: Text(
+                  '${DateFormat('HH:mm').format(timestamp.toLocal())}',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontFamily: 'Diodrum',
+                    fontSize: 20,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
               ),
             ),
