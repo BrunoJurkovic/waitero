@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +11,7 @@ import 'package:waitero/services/database/orders_repo.dart';
   ? OrderItem je jedan individualni red za narudzbu, sadrzi sve potrebne stavke kako bi management mogao znati gdje dostaviti narudzbu.
 */
 
-class OrderItem extends StatelessWidget {
+class OrderItem extends StatefulWidget {
   const OrderItem({
     this.status,
     this.tableID,
@@ -26,24 +27,48 @@ class OrderItem extends StatelessWidget {
   final bool shouldBeGrey;
 
   @override
+  _OrderItemState createState() => _OrderItemState();
+}
+
+class _OrderItemState extends State<OrderItem> {
+  AudioPlayer audioPlayer = AudioPlayer();
+  int temp;
+
+  @override
+  void initState() {
+    Future<void>.delayed(
+      Duration.zero,
+      () async => temp = await audioPlayer.play(
+          'https://raw.githubusercontent.com/BrunoJurkovic/waitero/dev/waiterohub/assets/sounds/notif.mp3'),
+    );
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    audioPlayer.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final OrdersRepository orders = Provider.of<OrdersRepository>(context);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 2),
       child: FutureBuilder<double>(
-        future: orders.calculateItemCost(orderID),
+        future: orders.calculateItemCost(widget.orderID),
         builder: (BuildContext context, AsyncSnapshot<double> snapshot) {
           if (!snapshot.hasData) {
             return const SizedBox();
           }
           return ItemBody(
-            orderID: orderID,
-            tableID: tableID,
-            status: status,
-            timestamp: timestamp,
+            orderID: widget.orderID,
+            tableID: widget.tableID,
+            status: widget.status,
+            timestamp: widget.timestamp,
             total: snapshot.data,
-            shouldBeGrey: shouldBeGrey,
+            shouldBeGrey: widget.shouldBeGrey,
           );
         },
       ),

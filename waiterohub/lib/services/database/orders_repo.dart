@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_utils/date_utils.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -35,6 +36,8 @@ class OrdersRepository with ChangeNotifier {
   ///?HR: Ovaj class koristi [ProductsRepository], pa ga moramo importati.
   OrdersRepository(this._products);
   final ProductsRepository _products;
+
+  AudioPlayer audioPlayer = AudioPlayer();
 
   ///!EN: We get a ref to the '/orders/' in the database.
   ///
