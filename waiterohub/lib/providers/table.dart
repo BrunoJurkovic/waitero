@@ -6,6 +6,7 @@ class RestaurantTable with ChangeNotifier {
     this.id,
     this.qrCodeURL,
     this.position,
+    this.isRound
   });
 
   /*
@@ -21,6 +22,7 @@ class RestaurantTable with ChangeNotifier {
       id: doc['id'] as String,
       qrCodeURL: doc['imageUrl'] as String,
       position: offset,
+      isRound: doc['isRound'] as bool,
     );
   }
 
@@ -35,6 +37,7 @@ class RestaurantTable with ChangeNotifier {
       'imageUrl': qrCodeURL,
       'positionX': position.dx,
       'positionY': position.dy,
+      'isRound': isRound,
     };
   }
 
@@ -46,4 +49,5 @@ class RestaurantTable with ChangeNotifier {
   final String id;
   final String qrCodeURL;
   Offset position;
+  final bool isRound;
 }
