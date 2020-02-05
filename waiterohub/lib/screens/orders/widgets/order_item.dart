@@ -45,12 +45,6 @@ class _OrderItemState extends State<OrderItem> {
   }
 
   @override
-  void dispose() {
-    audioPlayer.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final OrdersRepository orders = Provider.of<OrdersRepository>(context);
 
