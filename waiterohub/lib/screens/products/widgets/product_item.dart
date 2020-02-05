@@ -31,13 +31,17 @@ class ProductItem extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          Text(
-            product.name,
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 28,
-              fontFamily: 'Diodrum',
-              fontWeight: FontWeight.w600,
+          Container(
+            child: Text(
+              product.name,
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 28,
+                fontFamily: 'Diodrum',
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
           Text(
