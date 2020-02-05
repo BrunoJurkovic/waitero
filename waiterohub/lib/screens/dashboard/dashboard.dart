@@ -65,12 +65,12 @@ class _DashboardPageState extends State<DashboardPage> {
                     ),
                   ),
                   const SizedBox(height: 32),
-                  FadeIn(
+                  const FadeIn(
                     delay: 0.33,
                     child: Text(
                       'Analytical Overview',
                       style: TextStyle(
-                        color: const Color(0xFF20212C),
+                        color: Color(0xFF20212C),
                         fontWeight: FontWeight.w600,
                         letterSpacing: 0.6,
                         fontFamily: 'Diodrum',
@@ -97,10 +97,10 @@ class _DashboardPageState extends State<DashboardPage> {
                     delay: 0.6,
                     child: Row(
                       children: <Widget>[
-                        Text(
+                        const Text(
                           'Order Insight',
                           style: TextStyle(
-                            color: const Color(0xFF20212C),
+                            color: Color(0xFF20212C),
                             fontWeight: FontWeight.w600,
                             letterSpacing: 0.6,
                             fontFamily: 'Diodrum',

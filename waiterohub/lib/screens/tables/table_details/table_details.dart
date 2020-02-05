@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
+import 'package:provider/provider.dart';
 import 'package:waitero/components/scaffold/no_nav_scaffold.dart';
+import 'package:waitero/components/submit_button/submit_button.dart';
 import 'package:waitero/routing/router.gr.dart';
+import 'package:waitero/services/database/tables_repo.dart';
 
 class TableDetails extends StatefulWidget {
   const TableDetails({
@@ -63,13 +66,16 @@ class _TableDetailsState extends State<TableDetails> {
                       child: FormBuilder(
                         key: _fbKey,
                         initialValue: <String, dynamic>{
-                          'id': widget.id,
+                          'id': 'TBL-${widget.id}',
                           'isRound':
                               widget.isRound ? 'Circular' : 'Rectangular',
                         },
                         autovalidate: true,
+                        
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             FormBuilderTextField(
                               attribute: 'id',
@@ -80,64 +86,62 @@ class _TableDetailsState extends State<TableDetails> {
                                 fontFamily: 'Diodrum',
                                 fontWeight: FontWeight.w600,
                               ),
-                              decoration:
-                                  const InputDecoration(labelText: 'ID'),
+                              decoration: const InputDecoration(
+                                  labelText: 'ID',
+                                  border: OutlineInputBorder()),
+                            ),
+                            SizedBox(
+                              height:
+                                  MediaQuery.of(context).size.height * 0.075,
                             ),
                             FormBuilderDropdown(
                               attribute: 'isRound',
-                              decoration:
-                                  const InputDecoration(labelText: 'Table Shape'),
-                              validators: <String Function(dynamic)>[
-                                FormBuilderValidators.required()
-                              ],
+                              decoration: const InputDecoration(
+                                labelText: 'Table Shape',
+                                labelStyle: TextStyle(
+                                  fontSize: 25.0,
+                                  fontFamily: 'Diodrum',
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              style: const TextStyle(
+                                  fontSize: 25.0,
+                                  fontFamily: 'Diodrum',
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black),
                               items: <String>['Circular', 'Rectangular']
                                   .map(
-                                      (String type) => DropdownMenuItem<String>(
-                                            child: Text(
-                                              '$type',
-                                              style: const TextStyle(
-                                                fontSize: 20.0,
-                                                fontFamily: 'Diodrum',
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
-                                            value: type,
-                                          ))
+                                    (String type) => DropdownMenuItem<String>(
+                                      child: Text(
+                                        '$type',
+                                        style: const TextStyle(
+                                          fontSize: 20.0,
+                                          fontFamily: 'Diodrum',
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      value: type,
+                                    ),
+                                  )
                                   .toList(),
                             ),
-                            // Container(
-                            //   height: 100,
-                            //   child: TextFormField(
-                            //     readOnly: true,
-                            //     enabled: false,
-                            //     initialValue: id,
-                            //     style: const TextStyle(
-                            //       fontSize: 30.0,
-                            //       fontFamily: 'Diodrum',
-                            //       fontWeight: FontWeight.w600,
-                            //     ),
-                            //     decoration: const InputDecoration(
-                            //       labelText: 'Table ID',
-                            //       border: OutlineInputBorder(),
-                            //     ),
-                            //   ),
-                            // ),
-                            // Container(
-                            //   height: 100,
-                            //   child: TextFormField(
-                            //     enabled: true,
-                            //     initialValue: id,
-                            //     style: const TextStyle(
-                            //       fontSize: 30.0,
-                            //       fontFamily: 'Diodrum',
-                            //       fontWeight: FontWeight.w600,
-                            //     ),
-                            //     decoration: const InputDecoration(
-                            //       labelText: 'Table ID',
-                            //       border: OutlineInputBorder(),
-                            //     ),
-                            //   ),
-                            // ),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.45,
+                            ),
+                            SubmitButton(
+                              gradient: const LinearGradient(
+                                colors: <Color>[
+                                  Color(0xFFEF7198),
+                                  Color(0xFFF296B7),
+                                ],
+                              ),
+                              onPressed: () async {
+                                if (_fbKey.currentState.saveAndValidate()) {
+                                  Router.navigator.pop(_fbKey.currentState.value);
+                                  
+                                }
+                              },
+                            ),
                           ],
                         ),
                       ),

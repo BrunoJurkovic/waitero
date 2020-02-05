@@ -46,8 +46,13 @@ class RestaurantTable with ChangeNotifier {
     notifyListeners();
   }
 
+  set tableShape(bool isRound) {
+    this.isRound = isRound;
+    notifyListeners();
+  }
+
   final String id;
   final String qrCodeURL;
   Offset position;
-  final bool isRound;
+  bool isRound;
 }
