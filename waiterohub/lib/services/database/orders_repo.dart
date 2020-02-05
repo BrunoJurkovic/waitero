@@ -52,7 +52,6 @@ class OrdersRepository with ChangeNotifier {
   ///? pa izvrsi query sa limitom 100, kako bi smo mogli sacuvati na readovima. Onda iz tog query-a
   ///? zovemo [.map] koji provrti kroz sve stvari, i onda vrati listu [Order].
   Future<List<Order>> getAllOrders(OrderSort sort) async {
-    print('aa1');
     QuerySnapshot query;
     switch (sort) {
       case OrderSort.Completed:
@@ -87,7 +86,6 @@ class OrdersRepository with ChangeNotifier {
   }
 
   Future<int> countOrders(OrderFetch orderFetch) async {
-    print('aa2');
     final List<Order> orders = await getAllOrders(OrderSort.Newest);
     final List<Order> validOrders = <Order>[];
     switch (orderFetch) {
@@ -110,7 +108,6 @@ class OrdersRepository with ChangeNotifier {
   }
 
   Future<double> calculateItemCost(String id) async {
-    print('aa3');
     final QuerySnapshot query =
         await ref.where('id', isEqualTo: id).getDocuments();
     final List<Order> allOrders = query.documents
@@ -129,7 +126,6 @@ class OrdersRepository with ChangeNotifier {
   //todo make this work
 
   Future<List<FlSpot>> calculateGraphDots(OrderFetch time) async {
-    print('aa4');
     final List<FlSpot> spots = <FlSpot>[];
     switch (time) {
       case OrderFetch.Monthly:
@@ -158,7 +154,6 @@ class OrdersRepository with ChangeNotifier {
         }
         break;
       case OrderFetch.Today:
-      print('aa5');
         final List<List<Order>> ordersInDay = <List<Order>>[];
         final DateTime day = DateUtils.getTodaysDate();
         final QuerySnapshot query = await ref

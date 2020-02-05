@@ -41,7 +41,7 @@ class _TablesPageState extends State<TablesPage> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          content: Text(
+          content: const Text(
             'Discard changes?',
             style: TextStyle(
               fontSize: 14.0,
@@ -118,9 +118,9 @@ class _TablesPageState extends State<TablesPage> {
                                   onPressed: () {
                                     repo.createLocalTable(
                                       RestaurantTable(
-                                        id: Uuid().v4(),
-                                        position: const Offset(0, 0),
-                                      ),
+                                          id: repo.getNextID().toString(),
+                                          position: const Offset(0, 0),
+                                          isRound: false),
                                     );
                                   },
                                   iconSize: 32,

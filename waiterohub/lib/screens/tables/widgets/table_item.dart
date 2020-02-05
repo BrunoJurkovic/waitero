@@ -9,6 +9,7 @@ class TableItem extends StatefulWidget {
     this.offset,
     this.qrCodeUrl,
     this.id,
+    this.isRound,
     this.isEditing = false,
   }) : super(key: key);
 
@@ -16,6 +17,7 @@ class TableItem extends StatefulWidget {
   final String qrCodeUrl;
   final String id;
   final bool isEditing;
+  final bool isRound;
 
   @override
   _TableItemState createState() => _TableItemState();
@@ -87,6 +89,7 @@ class _TableItemState extends State<TableItem> {
               arguments: TableDetailsArguments(
                 id: widget.id,
                 qrCodeURL: widget.qrCodeUrl,
+                isRound: widget.isRound,
               ),
             );
           },
@@ -97,8 +100,8 @@ class _TableItemState extends State<TableItem> {
             print('ended');
           },
           child: Container(
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
+            decoration: BoxDecoration(
+              shape: widget.isRound ? BoxShape.circle : BoxShape.rectangle,
               color: Colors.blue,
             ),
             width: 250,

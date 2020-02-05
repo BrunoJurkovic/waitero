@@ -6,7 +6,7 @@ class RestaurantTable with ChangeNotifier {
     this.id,
     this.qrCodeURL,
     this.position,
-    this.isRound
+    this.isRound = false,
   });
 
   /*

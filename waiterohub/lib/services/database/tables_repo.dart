@@ -59,6 +59,34 @@ class TablesRepository with ChangeNotifier {
     _getAllTables();
   }
 
+  int getNextID() {
+    int tempId = 0;
+    final List<int> ids = <int>[];
+
+    if (_localTables.isEmpty) {
+      return 0;
+    }
+
+    _localTables.forEach((String id, RestaurantTable table) {
+      ids.add(
+        int.parse(id),
+      );
+    });
+
+    for (final int id in ids) {
+      if (ids.isEmpty) {
+        return 0;
+      }
+      if (id == tempId) {
+        tempId++;
+        continue;
+      } else {
+        break;
+      }
+    }
+    return tempId;
+  }
+
   ///!EN: This function updates the table offset, it gets a 'tableID' and a 'newOffset',
   ///! then sets the 'newOffset' at the table that has the same 'tableID'.
   ///

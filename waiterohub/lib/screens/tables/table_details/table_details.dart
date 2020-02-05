@@ -1,16 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:waitero/components/scaffold/no_nav_scaffold.dart';
 import 'package:waitero/routing/router.gr.dart';
 
-class TableDetails extends StatelessWidget {
+class TableDetails extends StatefulWidget {
   const TableDetails({
     Key key,
     @required this.id,
     @required this.qrCodeURL,
+    @required this.isRound,
   }) : super(key: key);
 
   final String id;
+  final bool isRound;
   final String qrCodeURL;
+
+  @override
+  _TableDetailsState createState() => _TableDetailsState();
+}
+
+class _TableDetailsState extends State<TableDetails> {
+  final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +43,7 @@ class TableDetails extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  'Manage "${id.trim()}"',
+                  'Manage "${widget.id.trim()}"',
                   style: const TextStyle(
                       fontSize: 32, fontWeight: FontWeight.bold),
                 ),
@@ -49,27 +60,86 @@ class TableDetails extends StatelessWidget {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 64.0),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Container(
-                            height: 100,
-                            child: TextFormField(
-                              readOnly: true,
+                      child: FormBuilder(
+                        key: _fbKey,
+                        initialValue: <String, dynamic>{
+                          'id': widget.id,
+                          'isRound':
+                              widget.isRound ? 'Circular' : 'Rectangular',
+                        },
+                        autovalidate: true,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            FormBuilderTextField(
+                              attribute: 'id',
                               enabled: false,
-                              initialValue: id,
+                              readOnly: true,
                               style: const TextStyle(
-                                fontSize: 30.0,
+                                fontSize: 25.0,
                                 fontFamily: 'Diodrum',
                                 fontWeight: FontWeight.w600,
                               ),
-                              decoration: const InputDecoration(
-                                labelText: 'Table ID',
-                                border: OutlineInputBorder(),
-                              ),
+                              decoration:
+                                  const InputDecoration(labelText: 'ID'),
                             ),
-                          ),
-                        ],
+                            FormBuilderDropdown(
+                              attribute: 'isRound',
+                              decoration:
+                                  const InputDecoration(labelText: 'Table Shape'),
+                              validators: <String Function(dynamic)>[
+                                FormBuilderValidators.required()
+                              ],
+                              items: <String>['Circular', 'Rectangular']
+                                  .map(
+                                      (String type) => DropdownMenuItem<String>(
+                                            child: Text(
+                                              '$type',
+                                              style: const TextStyle(
+                                                fontSize: 20.0,
+                                                fontFamily: 'Diodrum',
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                            value: type,
+                                          ))
+                                  .toList(),
+                            ),
+                            // Container(
+                            //   height: 100,
+                            //   child: TextFormField(
+                            //     readOnly: true,
+                            //     enabled: false,
+                            //     initialValue: id,
+                            //     style: const TextStyle(
+                            //       fontSize: 30.0,
+                            //       fontFamily: 'Diodrum',
+                            //       fontWeight: FontWeight.w600,
+                            //     ),
+                            //     decoration: const InputDecoration(
+                            //       labelText: 'Table ID',
+                            //       border: OutlineInputBorder(),
+                            //     ),
+                            //   ),
+                            // ),
+                            // Container(
+                            //   height: 100,
+                            //   child: TextFormField(
+                            //     enabled: true,
+                            //     initialValue: id,
+                            //     style: const TextStyle(
+                            //       fontSize: 30.0,
+                            //       fontFamily: 'Diodrum',
+                            //       fontWeight: FontWeight.w600,
+                            //     ),
+                            //     decoration: const InputDecoration(
+                            //       labelText: 'Table ID',
+                            //       border: OutlineInputBorder(),
+                            //     ),
+                            //   ),
+                            // ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -79,9 +149,10 @@ class TableDetails extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
-                          if (qrCodeURL != null) ...<Widget>[
+                          if (widget.qrCodeURL != null) ...<Widget>[
                             Container(
-                              child: Image(image: NetworkImage(qrCodeURL)),
+                              child:
+                                  Image(image: NetworkImage(widget.qrCodeURL)),
                             ),
                             Container(
                               child: const Text(
