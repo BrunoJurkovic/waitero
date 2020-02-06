@@ -28,12 +28,12 @@ class OrdersPage extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 16.0),
+            const Padding(
+              padding: EdgeInsets.only(top: 16.0),
               child: Text(
                 'Incoming Orders',
                 style: TextStyle(
-                  color: const Color(0xFF20212C),
+                  color: Color(0xFF20212C),
                   fontWeight: FontWeight.w600,
                   fontFamily: 'Diodrum',
                   fontSize: 30.0,

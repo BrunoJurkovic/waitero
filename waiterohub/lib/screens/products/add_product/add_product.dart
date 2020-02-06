@@ -86,8 +86,7 @@ class _AddProductForm extends StatefulWidget {
   _AddProductFormState createState() => _AddProductFormState();
 }
 
-class _AddProductFormState extends State<_AddProductForm>
-    with AutomaticKeepAliveClientMixin {
+class _AddProductFormState extends State<_AddProductForm> {
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
   final FocusNode _node = FocusNode();
 
@@ -213,7 +212,7 @@ class _AddProductFormState extends State<_AddProductForm>
           FormBuilderTextField(
             attribute: 'name',
             maxLines: 1,
-            validators: [
+            validators: <String Function(dynamic)>[
               FormBuilderValidators.required(),
               FormBuilderValidators.maxLength(24),
             ],
@@ -230,7 +229,9 @@ class _AddProductFormState extends State<_AddProductForm>
           const SizedBox(height: 50),
           FormBuilderTextField(
             attribute: 'price',
-            validators: [FormBuilderValidators.required()],
+            validators: <String Function(dynamic)>[
+              FormBuilderValidators.required()
+            ],
             maxLines: 1,
             onChanged: (dynamic val) {
               _fbKey.currentState.value['price'] = val.toString();
@@ -448,7 +449,4 @@ class _AddProductFormState extends State<_AddProductForm>
     //   ],
     // );
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }

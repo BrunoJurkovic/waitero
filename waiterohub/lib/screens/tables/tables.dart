@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
 import 'package:waitero/components/scaffold/custom_scaffold.dart';
 import 'package:waitero/providers/table.dart';
 import 'package:waitero/routing/router.gr.dart';

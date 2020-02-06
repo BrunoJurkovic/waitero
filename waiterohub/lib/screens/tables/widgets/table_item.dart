@@ -89,7 +89,7 @@ class _TableItemState extends State<TableItem> {
             });
           },
           onTap: () async {
-            dynamic result = await Router.navigator.pushNamed(
+            final dynamic result = await Router.navigator.pushNamed(
               Router.tableDetails,
               arguments: TableDetailsArguments(
                 id: widget.id,
