@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
 
 class SubmitButton extends StatelessWidget {
-  const SubmitButton({
-    Key key,
-    this.gradient,
-    this.onPressed,
-  }) : super(key: key);
+  const SubmitButton(
+      {Key key,
+      this.gradient,
+      this.onPressed,
+      this.text,
+      this.width,
+      this.height})
+      : super(key: key);
 
   final Gradient gradient;
   final VoidCallback onPressed;
+  final String text;
+  final double width;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        width: MediaQuery.of(context).size.width * 0.25,
-        height: MediaQuery.of(context).size.height * 0.1,
+        width: width,
+        height: height,
         child: FlatButton(
           onPressed: onPressed,
           shape:
@@ -33,12 +39,13 @@ class SubmitButton extends StatelessWidget {
                 minHeight: 36.0,
               ),
               alignment: Alignment.center,
-              child: const Text(
-                'Update Tables',
+              child: Text(
+                text,
                 style: TextStyle(
                   fontSize: 25.0,
                   fontFamily: 'Diodrum',
                   fontWeight: FontWeight.w600,
+                  color: Colors.black87,
                 ),
                 textAlign: TextAlign.center,
               ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:waitero/components/scaffold/no_nav_scaffold.dart';
 import 'package:waitero/components/submit_button/submit_button.dart';
 import 'package:waitero/routing/router.gr.dart';
@@ -71,7 +72,6 @@ class _TableDetailsState extends State<TableDetails> {
                               widget.isRound ? 'Circular' : 'Rectangular',
                         },
                         autovalidate: true,
-                        
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -126,21 +126,42 @@ class _TableDetailsState extends State<TableDetails> {
                                   .toList(),
                             ),
                             SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.45,
+                              height: MediaQuery.of(context).size.height * 0.05,
                             ),
-                            SubmitButton(
-                              gradient: const LinearGradient(
-                                colors: <Color>[
-                                  Color(0xFFEF7198),
-                                  Color(0xFFF296B7),
-                                ],
-                              ),
-                              onPressed: () async {
-                                if (_fbKey.currentState.saveAndValidate()) {
-                                  Router.navigator.pop(_fbKey.currentState.value);
-                                  
-                                }
-                              },
+                            Container(
+                               height: MediaQuery.of(context).size.height * 0.3,
+                               width: MediaQuery.of(context).size.width * 0.35,
+
+                                child: const Image(
+                              image: AssetImage('assets/images/rest.png'),
+                              fit: BoxFit.cover,
+                            )),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.1,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                SubmitButton(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.1,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.45,
+                                  text: 'Submit Tables',
+                                  gradient: const LinearGradient(
+                                    colors: <Color>[
+                                      Color(0xFFEF7198),
+                                      Color(0xFFF296B7),
+                                    ],
+                                  ),
+                                  onPressed: () async {
+                                    if (_fbKey.currentState.saveAndValidate()) {
+                                      Router.navigator
+                                          .pop(_fbKey.currentState.value);
+                                    }
+                                  },
+                                ),
+                              ],
                             ),
                           ],
                         ),
@@ -153,33 +174,36 @@ class _TableDetailsState extends State<TableDetails> {
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
-                          if (widget.qrCodeURL != null) ...<Widget>[
-                            Container(
-                              child:
-                                  Image(image: NetworkImage(widget.qrCodeURL)),
-                            ),
-                            Container(
-                              child: const Text(
-                                'Please scan this QR code.',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 30.0,
-                                  fontFamily: 'Diodrum',
-                                  fontWeight: FontWeight.w600,
-                                ),
+                          QrImage(
+                            data:
+                                'https://waitero.firebaseapp.com/?tableID=${widget.id}#',
+                            version: QrVersions.auto,
+                            size: 300,
+                          ),
+                          Container(
+                            child: const Text(
+                              'Print QR Code',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 30.0,
+                                fontFamily: 'Diodrum',
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
-                          ] else
-                            Container(
-                              child: const Text(
-                                'No QR code found',
-                                style: TextStyle(
-                                  fontSize: 30.0,
-                                  fontFamily: 'Diodrum',
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 20),
+                            child: SubmitButton(
+                              width: MediaQuery.of(context).size.width * 0.35,
+                              height: MediaQuery.of(context).size.height * 0.08,
+                              text: 'Print',
+                              onPressed: null,
+                              gradient: const LinearGradient(colors: <Color>[
+                                Color(0xFF5EC999),
+                                Color(0xFF7EDDB9),
+                              ]),
                             ),
+                          ),
                         ],
                       ),
                     ),
