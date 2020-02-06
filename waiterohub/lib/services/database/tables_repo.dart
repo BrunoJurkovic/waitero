@@ -35,7 +35,7 @@ class TablesRepository with ChangeNotifier {
     notifyListeners();
   }
 
-  ///!EN: This getter returns the [_localTables] list, unless if it is empty, then it returns an empty map.
+  ///!EN: This getter returns the [_localTablet, unless if it is empty, then it returns an empty map.
   ///
   ///?HR: Ovaj getter vrati [_localTables], osim ako je prazna, onda vrati praznu mapu.
   Map<String, RestaurantTable> get tables {
@@ -59,6 +59,34 @@ class TablesRepository with ChangeNotifier {
     _getAllTables();
   }
 
+  int getNextID() {
+    int tempId = 0;
+    final List<int> ids = <int>[];
+
+    if (_localTables.isEmpty) {
+      return 0;
+    }
+
+    _localTables.forEach((String id, RestaurantTable table) {
+      ids.add(
+        int.parse(id),
+      );
+    });
+
+    for (final int id in ids) {
+      if (ids.isEmpty) {
+        return 0;
+      }
+      if (id == tempId) {
+        tempId++;
+        continue;
+      } else {
+        break;
+      }
+    }
+    return tempId;
+  }
+
   ///!EN: This function updates the table offset, it gets a 'tableID' and a 'newOffset',
   ///! then sets the 'newOffset' at the table that has the same 'tableID'.
   ///
@@ -78,6 +106,18 @@ class TablesRepository with ChangeNotifier {
   Future<void> updateTable(String id, RestaurantTable newTable) async {
     _localTables[id] = newTable;
     await ref.document(id).updateData(newTable.toJson());
+    notifyListeners();
+  }
+
+  Future<void> switchTableShape(String id, bool isRound) async {
+    print(isRound);
+    _localTables[id].tableShape = isRound;
+    print(_localTables[id].isRound);
+    await ref.document(id).updateData(
+      <String, bool>{
+        'isRound': isRound,
+      }
+    );
     notifyListeners();
   }
 

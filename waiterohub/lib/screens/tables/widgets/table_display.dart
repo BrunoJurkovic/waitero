@@ -21,6 +21,7 @@ class TablesDisplay extends StatelessWidget {
                     offset: table.position,
                     qrCodeUrl: table.qrCodeURL,
                     isEditing: isEditing,
+                    isRound: table.isRound,
                   ))
               ?.toList() ??
           <Widget>[Container()],

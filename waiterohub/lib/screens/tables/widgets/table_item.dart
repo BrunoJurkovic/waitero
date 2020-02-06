@@ -9,6 +9,7 @@ class TableItem extends StatefulWidget {
     this.offset,
     this.qrCodeUrl,
     this.id,
+    this.isRound,
     this.isEditing = false,
   }) : super(key: key);
 
@@ -16,6 +17,7 @@ class TableItem extends StatefulWidget {
   final String qrCodeUrl;
   final String id;
   final bool isEditing;
+  final bool isRound;
 
   @override
   _TableItemState createState() => _TableItemState();
@@ -23,10 +25,12 @@ class TableItem extends StatefulWidget {
 
 class _TableItemState extends State<TableItem> {
   Offset offset = Offset.zero;
+  bool isRound = false;
 
   @override
   void initState() {
     offset = widget.offset;
+    isRound = widget.isRound;
     super.initState();
   }
 
@@ -35,6 +39,9 @@ class _TableItemState extends State<TableItem> {
     super.didUpdateWidget(oldWidget);
     if (offset != oldWidget.offset) {
       offset = widget.offset;
+    }
+    if (widget.isRound != oldWidget.isRound) {
+      isRound = widget.isRound;
     }
   }
 
@@ -81,14 +88,16 @@ class _TableItemState extends State<TableItem> {
               offset = newOffset;
             });
           },
-          onTap: () {
-            Router.navigator.pushNamed(
+          onTap: () async {
+            dynamic result = await Router.navigator.pushNamed(
               Router.tableDetails,
               arguments: TableDetailsArguments(
                 id: widget.id,
                 qrCodeURL: widget.qrCodeUrl,
+                isRound: isRound,
               ),
             );
+            await _updateShape(result as Map<String, dynamic>, context);
           },
           onPanCancel: () {
             print('canceled');
@@ -97,15 +106,40 @@ class _TableItemState extends State<TableItem> {
             print('ended');
           },
           child: Container(
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.blue,
+            decoration: BoxDecoration(
+              borderRadius: !isRound ? BorderRadius.circular(12) : null,
+              shape: isRound ? BoxShape.circle : BoxShape.rectangle,
+              color: isRound ? Colors.brown[400] : Colors.brown,
             ),
-            width: 250,
-            height: 100,
+            width: isRound ? 200 : 150,
+            height: isRound ? 75 : 75,
+            child: Center(
+              child: Text(
+                widget.id,
+                style: TextStyle(
+                  fontSize: 25.0,
+                  fontFamily: 'Diodrum',
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
           ),
         ),
       ),
     );
+  }
+
+  Future<void> _updateShape(
+      Map<String, dynamic> result, BuildContext context) async {
+    if (result != null) {
+      bool response;
+      if (result['isRound'] == 'Circular') {
+        response = true;
+      } else {
+        response = false;
+      }
+      await Provider.of<TablesRepository>(context, listen: false)
+          .switchTableShape(widget.id, response);
+    }
   }
 }

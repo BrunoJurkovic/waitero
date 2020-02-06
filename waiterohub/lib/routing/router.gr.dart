@@ -106,7 +106,8 @@ class Router {
           builder: (_) => TableDetails(
               key: typedArgs.key,
               id: typedArgs.id,
-              qrCodeURL: typedArgs.qrCodeURL),
+              qrCodeURL: typedArgs.qrCodeURL,
+              isRound: typedArgs.isRound),
           settings: settings,
           fullscreenDialog: true,
         );
@@ -134,6 +135,10 @@ class TableDetailsArguments {
   final Key key;
   final String id;
   final String qrCodeURL;
+  final bool isRound;
   TableDetailsArguments(
-      {this.key, @required this.id, @required this.qrCodeURL});
+      {this.key,
+      @required this.id,
+      @required this.qrCodeURL,
+      @required this.isRound});
 }
