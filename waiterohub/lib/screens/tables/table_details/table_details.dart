@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:outline_material_icons/outline_material_icons.dart';
-import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:waitero/components/scaffold/no_nav_scaffold.dart';
 import 'package:waitero/components/submit_button/submit_button.dart';
 import 'package:waitero/routing/router.gr.dart';
-import 'package:waitero/services/database/tables_repo.dart';
+
+import 'package:printing/printing.dart';
+import 'package:pdf/pdf.dart' as pdfpack;
+import 'package:pdf/widgets.dart' as pdfs;
 
 class TableDetails extends StatefulWidget {
   const TableDetails({
@@ -26,6 +28,121 @@ class TableDetails extends StatefulWidget {
 
 class _TableDetailsState extends State<TableDetails> {
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
+
+  pdfs.PageTheme myPageTheme(pdfpack.PdfPageFormat format) {
+    const pdfpack.PdfColor green = pdfpack.PdfColor.fromInt(0xff9ce5d0);
+    const pdfpack.PdfColor lightGreen = pdfpack.PdfColor.fromInt(0xffcdf1e7);
+    return pdfs.PageTheme(
+      pageFormat: format.applyMargin(
+          left: 2.0 * pdfpack.PdfPageFormat.cm,
+          top: 4.0 * pdfpack.PdfPageFormat.cm,
+          right: 2.0 * pdfpack.PdfPageFormat.cm,
+          bottom: 2.0 * pdfpack.PdfPageFormat.cm),
+      buildBackground: (pdfs.Context context) {
+        return pdfs.FullPage(
+          ignoreMargins: true,
+          child: pdfs.CustomPaint(
+            size: pdfpack.PdfPoint(format.width, format.height),
+            painter: (pdfpack.PdfGraphics canvas, pdfpack.PdfPoint size) {
+              context.canvas
+                ..setColor(lightGreen)
+                ..moveTo(0, size.y)
+                ..lineTo(0, size.y - 230)
+                ..lineTo(60, size.y)
+                ..fillPath()
+                ..setColor(green)
+                ..moveTo(0, size.y)
+                ..lineTo(0, size.y - 100)
+                ..lineTo(100, size.y)
+                ..fillPath()
+                ..setColor(lightGreen)
+                ..moveTo(30, size.y)
+                ..lineTo(110, size.y - 50)
+                ..lineTo(150, size.y)
+                ..fillPath()
+                ..moveTo(size.x, 0)
+                ..lineTo(size.x, 230)
+                ..lineTo(size.x - 60, 0)
+                ..fillPath()
+                ..setColor(green)
+                ..moveTo(size.x, 0)
+                ..lineTo(size.x, 100)
+                ..lineTo(size.x - 100, 0)
+                ..fillPath()
+                ..setColor(lightGreen)
+                ..moveTo(size.x - 30, 0)
+                ..lineTo(size.x - 110, 50)
+                ..lineTo(size.x - 150, 0)
+                ..fillPath();
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  Future<List<int>> writePdf(pdfpack.PdfPageFormat format) async {
+    final ByteData font =
+        await rootBundle.load('assets/fonts/Diodrum-Semibold.ttf');
+    final pdfs.Font ttf = pdfs.Font.ttf(font);
+    final pdfs.PageTheme pageTheme = myPageTheme(format);
+    final pdfs.Document pdf = pdfs.Document();
+    pdf.addPage(
+      pdfs.Page(
+        pageTheme: pageTheme,
+        build: (pdfs.Context context) {
+          return pdfs.Center(
+            child: pdfs.Container(
+              child: pdfs.Column(
+                children: <pdfs.Widget>[
+                  pdfs.QrCodeWidget(
+                    data:
+                        'https://waitero.firebaseapp.com/?tableID=${widget.id}#',
+                    version: 3,
+                    size: 200,
+                  ),
+                  pdfs.SizedBox(height: 25),
+                  pdfs.Text(
+                    'Welcome!',
+                    textAlign: pdfs.TextAlign.center,
+                    style: pdfs.TextStyle(
+                        fontSize: 50,
+                        fontWeight: pdfs.FontWeight.bold,
+                        font: ttf),
+                  ),
+                  pdfs.SizedBox(height: 15),
+                  pdfs.Text(
+                    'Scan this QR code',
+                    textAlign: pdfs.TextAlign.center,
+                    style: pdfs.TextStyle(
+                        fontSize: 30,
+                        font: ttf),
+                  ),
+                  pdfs.SizedBox(height: 15),
+                  pdfs.Text(
+                    'to make an order!',
+                    textAlign: pdfs.TextAlign.center,
+                    style: pdfs.TextStyle(
+                        fontSize: 30,
+                        font: ttf),
+                  ),
+                  pdfs.SizedBox(height: 5),
+                  pdfs.Text(
+                    'Powered by Waitero <3',
+                    textAlign: pdfs.TextAlign.center,
+                    style: pdfs.TextStyle(
+                        fontSize: 8,
+                        font: ttf),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+    return pdf.save();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -129,13 +246,13 @@ class _TableDetailsState extends State<TableDetails> {
                               height: MediaQuery.of(context).size.height * 0.05,
                             ),
                             Container(
-                               height: MediaQuery.of(context).size.height * 0.3,
-                               width: MediaQuery.of(context).size.width * 0.35,
-
+                                height:
+                                    MediaQuery.of(context).size.height * 0.3,
+                                width: MediaQuery.of(context).size.width * 0.35,
                                 child: const Image(
-                              image: AssetImage('assets/images/rest.png'),
-                              fit: BoxFit.cover,
-                            )),
+                                  image: AssetImage('assets/images/rest.png'),
+                                  fit: BoxFit.cover,
+                                )),
                             SizedBox(
                               height: MediaQuery.of(context).size.height * 0.1,
                             ),
@@ -197,7 +314,12 @@ class _TableDetailsState extends State<TableDetails> {
                               width: MediaQuery.of(context).size.width * 0.35,
                               height: MediaQuery.of(context).size.height * 0.08,
                               text: 'Print',
-                              onPressed: null,
+                              onPressed: () async {
+                                await Printing.layoutPdf(
+                                  onLayout: (pdfpack.PdfPageFormat format) =>
+                                      writePdf(format),
+                                );
+                              },
                               gradient: const LinearGradient(colors: <Color>[
                                 Color(0xFF5EC999),
                                 Color(0xFF7EDDB9),

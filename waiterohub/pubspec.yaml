@@ -27,6 +27,8 @@ dependencies:
   audioplayers: ^0.14.0
   flutter_form_builder: ^3.7.3
   qr_flutter: ^3.2.0
+  printing: ^3.1.0
+  pdf: ^1.4.1
 
 dev_dependencies:
   flutter_test:
