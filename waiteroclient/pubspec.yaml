@@ -10,11 +10,10 @@ dependencies:
   flutter:
     sdk: flutter
   auto_route: ^0.2.2
-  responsive_builder: ^0.1.4
   flutter_inner_drawer: ^0.5.4
   firebase: ^7.2.0
   provider: ^4.0.2
-  cached_network_image: ^2.0.0
+  uuid: ^2.0.4
 
 dev_dependencies:
   flutter_test:

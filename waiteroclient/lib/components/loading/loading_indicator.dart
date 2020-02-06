@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 
 class LoadingIndicator extends StatelessWidget {
-  const LoadingIndicator({Key key}) : super(key: key);
+  const LoadingIndicator({Key key, this.height, this.width}) : super(key: key);
+
+  final double width;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.03,
-      height: MediaQuery.of(context).size.width * 0.05,
-      child: const CircularProgressIndicator(),
+    return Center(
+      child: Container(
+        height: height,
+        width: width,
+        child: const CircularProgressIndicator(),
+      ),
     );
   }
 }

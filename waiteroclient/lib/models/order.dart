@@ -1,13 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
+import 'package:firebase/firestore.dart';
 
-/*
-  ! We use a state management system called provider which handles our state.
-  ? Koristimo state management sustav koji se zove Provider, koji nam cuva state.
-*/
-
-
-class Order with ChangeNotifier {
+class Order {
   Order({
     this.id,
     this.tableID,
@@ -28,11 +21,11 @@ class Order with ChangeNotifier {
 
   factory Order.fromDocument(DocumentSnapshot doc) {
     return Order(
-      id: doc['id'] as String,
-      tableID: doc['tableID'] as String,  
-      isCompleted: doc['isCompleted'] as bool,
-      productIDs: doc['products'] as List<dynamic>,
-      timestamp: DateTime.fromMillisecondsSinceEpoch(doc['timestamp'] as int),
+      id: doc.get('id') as String,
+      tableID: doc.get('tableID') as String,  
+      isCompleted: doc.get('isCompleted') as bool,
+      productIDs: doc.get('products') as List<dynamic>,
+      timestamp: DateTime.fromMillisecondsSinceEpoch(doc.get('timestamp') as int),
     );
   }
 
@@ -51,14 +44,9 @@ class Order with ChangeNotifier {
     };
   }
 
-  void toggleComplete() {
-    isCompleted = !isCompleted;
-    notifyListeners();
-  }
-
   final String id;
   final String tableID;
-  bool isCompleted;
+  final bool isCompleted;
   final List<dynamic> productIDs;
   final DateTime timestamp;
 }

@@ -1,39 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:responsive_builder/responsive_builder.dart';
 import 'package:waiteroclient/components/scaffold/custom_scaffold.dart';
 import 'package:waiteroclient/components/unsupported_platform/unsupported_platform.dart';
 import 'package:waiteroclient/screens/order/index.dart';
+import 'package:waiteroclient/util/breakpoints.dart';
 
-class OrderPage extends StatefulWidget {
-  const OrderPage({Key key}) : super(key: key);
-
-  @override
-  _OrderPageState createState() => _OrderPageState();
-}
-
-class _OrderPageState extends State<OrderPage> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
+class OrderPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-      body: ResponsiveBuilder(
-        builder: (BuildContext context, SizingInformation sizing) {
-          switch (sizing.deviceScreenType) {
-            case DeviceScreenType.Mobile:
-              return const OrderPageMobile();
-            case DeviceScreenType.Tablet:
-              return const OrderPageTablet();
-            case DeviceScreenType.Desktop:
-              return const OrderPageDesktop();
-            default:
-              return const UnsupportedPlatform();
+      body: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          if (constraints.maxWidth >= Breakpoints.desktopBreakpoint) {
+            return const OrderPageDesktop();
+          } else if (constraints.maxWidth >= Breakpoints.tabletBreakpoint) {
+            return const OrderPageTablet();
+          } else if (constraints.maxWidth >= Breakpoints.mobileBreakpoint) {
+            return const OrderPageMobile();
           }
+          return const UnsupportedPlatform();
         },
-        breakpoints: ScreenBreakpoints(desktop: 1023, tablet: 768, watch: null),
       ),
     );
   }

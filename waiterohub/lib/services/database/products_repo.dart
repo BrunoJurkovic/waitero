@@ -26,6 +26,11 @@ class ProductsRepository {
     return allProducts;
   }
 
+  Future<Product> getProduct(String id) async {
+    final QuerySnapshot query = await ref.where('productId', isEqualTo: id).getDocuments();
+    return Product.fromDocument(query.documents.first);
+  }
+
   ///!EN: This function returns a [int] which is the number of all products in the database,
   ///! it saves the list of [Product] in a variable, and returns a [.length] of the list.
   ///

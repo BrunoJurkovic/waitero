@@ -1,53 +1,60 @@
 import 'package:flutter/material.dart';
 import 'package:waiteroclient/models/product.dart';
+import 'package:waiteroclient/theme/style.dart';
 
 class ProductItemDesktop extends StatelessWidget {
-  const ProductItemDesktop({Key key, this.product}) : super(key: key);
+  const ProductItemDesktop({
+    Key key,
+    this.product,
+    @required this.onPressed,
+  }) : super(key: key);
 
   final Product product;
+  final Function(Product) onPressed;
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-
-      child: Container(
-        decoration: BoxDecoration(
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.05,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Material(
+        type: MaterialType.transparency,
+        child: InkWell(
+          onTap: () => onPressed(product),
           borderRadius: BorderRadius.circular(15),
-          color: Colors.brown,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              height: MediaQuery.of(context).size.height * 0.17,
-              child: Image(
-                image: NetworkImage(product.imageUrl),
-              ),
-            ),
-            const SizedBox(height: 8),
-            Container(
-              child: Text(
-                product.name,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 22,
-                  fontFamily: 'Diodrum',
-                  fontWeight: FontWeight.w600,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.1,
+                  child: Image(
+                    image: NetworkImage(product.imageUrl),
+                  ),
                 ),
-              ),
+                const SizedBox(height: 8),
+                Container(
+                  child: Text(
+                    product.name,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    style: Style.common.copyWith(fontSize: 22),
+                  ),
+                ),
+                Text(
+                  '${product.price} USD',
+                  maxLines: 1,
+                  style: Style.common.copyWith(fontSize: 16),
+                ),
+              ],
             ),
-            Text(
-              '${product.price} USD',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 16,
-                fontFamily: 'Diodrum',
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );

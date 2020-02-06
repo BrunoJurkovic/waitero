@@ -24,11 +24,9 @@ class OrderList extends StatelessWidget {
             ? OrderStatus.Completed
             : OrderStatus.Unfinished;
         return OrderItem(
-          orderID: order.id,
+          order: order,
           status: status,
           shouldBeGrey: index % 2 == 0,
-          tableID: order.tableID,
-          timestamp: order.timestamp,
         );
       },
     );

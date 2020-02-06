@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 import 'package:waiteroclient/components/analytics_route_observer/analytics_route_observer.dart';
-import 'package:waiteroclient/screens/order/order.dart';
+import 'package:waiteroclient/providers/cart.dart';
+import 'package:waiteroclient/router/router.gr.dart';
+import 'package:waiteroclient/services/database/orders_repository.dart';
 import 'package:waiteroclient/services/database/products_repository.dart';
 
 void main() {
@@ -29,10 +31,14 @@ class WaiteroClientApp extends StatelessWidget {
     return MultiProvider(
       providers: <SingleChildWidget>[
         Provider<ProductsRepository>(create: (_) => ProductsRepository()),
+        Provider<OrdersRepository>(create: (_) => OrdersRepository()),
+        ChangeNotifierProvider<CartProvider>(create: (_) => CartProvider()),
       ],
       child: MaterialApp(
         title: 'Material App',
-        home: const OrderPage(),
+        initialRoute: Router.routes[0],
+        navigatorKey: Router.navigatorKey,
+        onGenerateRoute: Router.onGenerateRoute,
         debugShowCheckedModeBanner: false,
         navigatorObservers: <NavigatorObserver>[
           AnalyticsRouteObserver(

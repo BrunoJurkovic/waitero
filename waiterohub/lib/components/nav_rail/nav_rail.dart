@@ -23,8 +23,9 @@ class NavRail extends StatefulWidget {
 
 class _NavRailState extends State<NavRail> {
   void _onItemSelected(int index) {
-    _selectedIndex = index;
-    setState(() {});
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   @override
