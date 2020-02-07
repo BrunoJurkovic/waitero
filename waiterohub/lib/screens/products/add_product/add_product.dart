@@ -186,6 +186,7 @@ class _AddProductFormState extends State<_AddProductForm> {
     setState(() {
       _fbKey.currentState?.reset();
     });
+    Router.navigator.pop();
   }
 
   @override
@@ -202,7 +203,7 @@ class _AddProductFormState extends State<_AddProductForm> {
       key: _fbKey,
       initialValue: <String, String>{
         'name': widget.name ?? '',
-        'price': widget.price ?? '',
+        'price': widget.price?.substring(1) ?? '',
         'image': widget.name ?? '',
       },
       autovalidate: true,
