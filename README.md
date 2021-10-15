@@ -1,5 +1,7 @@
 [![Codemagic build status](https://api.codemagic.io/apps/5e20cf4dc5faa61476296a4b/5e20cf4dc5faa61476296a4a/status_badge.svg)](https://codemagic.io/apps/5e20cf4dc5faa61476296a4b/5e20cf4dc5faa61476296a4a/latest_build)
 # Waitero
+
+# ‼️PLEASE NOTE THAT THIS WAS BUILT FOR A HACKATHON UNDER A VERY STRICT DEADLINE, CODE WILL NOT BE PERFECT‼️
 Waitero is a **smart ordering system** to be used in bars, coffee shops, restaurants and similar places. 
 
 The flow of the system goes in this order:
